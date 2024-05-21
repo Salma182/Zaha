@@ -1,0 +1,56 @@
+:root {
+  --light-color: #f1f1f1;
+  --bg-color: #f3dade;
+  --dark-color: #333;
+  scroll-behavior: smooth !important;
+}
+
+body {
+  /* height: 5000px; */
+  /* font-family: "arial", sans-serif !important; */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a,
+a:hover {
+  color: #333;
+}
+
+.space-top {
+  margin-top: 100px;
+}
+
+.space-bottom {
+  margin-bottom: 100px;
+}
+
+.bg-color {
+  background-color: var(--bg-color);
+}
+
+.light-color {
+  color: var(--light-color);
+}
+
+.dark-color {
+  color: var(--dark-color);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.shadowx {
+  box-shadow: 0px 5px 10 2px 1px #ccc !important;
+}
+
+.slideme {
+  max-height: 100% !important;
+  min-height: 100% !important;
+}
+
+.tabLink.active {
+  background-color: var(--bg-color) !important;
+  color: var(--dark-color) !important;
+}
+
