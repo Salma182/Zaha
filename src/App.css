@@ -17,11 +17,11 @@ width: 45%;
 padding: 1.5%;
 color: white;
 }
-.editBtn:hover{
+/* .editBtn:hover{
     background-color: #dfa5af;
     border:1px solid #dfa5af;
     color: white;
-}
+} */
 
 .deleteBtn{
     border-radius: 7px;
@@ -35,12 +35,12 @@ color: white;
 
 }
 
-.deleteBtn:hover{
-    background-color: rgb(218, 12, 12);
-    border:1px solid rgb(218, 12, 12);
-    color: white;
+    /* .deleteBtn:hover{
+        background-color: rgb(218, 12, 12);
+        border:1px solid rgb(218, 12, 12);
+        color: white;
 
-}
+    } */
 
 .addBtn{
 
