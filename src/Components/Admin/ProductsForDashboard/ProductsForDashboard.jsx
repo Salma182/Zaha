@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 
 export default function ProductsForDashboard() {
+
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -49,7 +50,6 @@ export default function ProductsForDashboard() {
           },
         }
       );
-      // console.log(data.SubCategory.data);
       setSubcategories(data.SubCategory.data);
     } catch (error) {
       console.error("Error fetching subcategories:", error);
@@ -68,7 +68,7 @@ export default function ProductsForDashboard() {
       formData.append("images", images);
       formData.append("colors", colors);
       formData.append("subcategory_id", categoryId);
-      // console.log(formData);
+
       console.log({
         name,
         desc,
@@ -80,6 +80,7 @@ export default function ProductsForDashboard() {
         colors,
         subcategory_id: categoryId,
       });
+
       await axios.post(
         `https://zahaback.com/api/product/create`,
         formData,
@@ -189,8 +190,7 @@ export default function ProductsForDashboard() {
     fetchSubcategories();
   }, []);
 
-  return (
-    <>
+  return <>
       {products.length > 0 ? (
         <div className="container">
           <div className="row g-3">
@@ -199,7 +199,7 @@ export default function ProductsForDashboard() {
                 <div className="card p-2">
                   <img
                     src={product.images[0]}
-                    className="card-img-top"
+                    className="w-100 object-fit-cover"
                     alt="Product"
                   />
                   <div className="card-body">
@@ -207,50 +207,54 @@ export default function ProductsForDashboard() {
                       <span>Name: </span> {product.name}
                     </h5>
                     <p className="card-text">
-                      <span className="fw-bold">Desc</span>
+                      <span className="fw-bold">Desc:</span>{" "}
                       {product.desc}
                     </p>
                     <p className="card-text">
-                      <span className="fw-bold">Price</span>Price:{" "}
+                      <span className="fw-bold">Price:</span>{" "}
                       {product.price}
                     </p>
                     <p className="card-text">
-                      <span className="fw-bold">Size</span>Size: {product.size}
+                      <span className="fw-bold">Size:</span> {product.size}
                     </p>
                     <p className="card-text">
-                      <span className="fw-bold">Material</span>Material:{" "}
+                      <span className="fw-bold">Material:</span>{" "}
                       {product.material}
                     </p>
                     <p className="card-text">
-                      <span className="fw-bold">quantity</span>quantity:{" "}
+                      <span className="fw-bold">quantity:</span>{" "}
                       {product.quantity}
                     </p>
                     <p className="card-text">
                       <span className="fw-bold">SubCategory</span>:{" "}
                       {product.subcategory_id}
                     </p>
-                    <p className="fw-bold mb-1">Colors :</p>
-                    {/* {product?.colors.map((color) =>
-                      color?.name.map((c, index) => (
-                        <span key={index}>{c}, </span>
-                      ))
-                    )} */}
-                    <Button
-                      variant="primary my-2 w-100"
+                    
+                    {/* <p className="fw-bold mb-1">
+                  Colors:{" "}
+                  {product.colors[0].split(',').map((colors,index) => (
+                    <span key={index}>{colors.trim()}{index < colors.length - 1 ? ', ' : ''}</span>
+                  ))}
+                </p> */}
+                   <div className="buttons">
+                   <button
+                      className="editBtn"
                       onClick={() => {
                         setSelectedProductId(product.id);
                         setShowUpdateModal(true);
                       }}
                     >
                       Edit
-                    </Button>
-                    <Button
-                      className="my-2 w-100"
-                      variant="danger"
+                    </button>
+                    <button
+                      className="deleteBtn"
                       onClick={() => deleteProduct(product.id)}
                     >
                       Delete
-                    </Button>
+                    </button>
+
+                    </div>
+                   
                   </div>
                 </div>
               </div>
@@ -262,14 +266,13 @@ export default function ProductsForDashboard() {
       )}
 
       {/* Add Product Button */}
-      <div className="my-3">
-        <Button
-          className="w-100"
-          variant="success"
+      <div className="Btn">
+        <button
+          className="addBtn"
           onClick={() => setShowAddModal(true)}
         >
           Add Product
-        </Button>
+        </button>
       </div>
 
       {/* Add Product Modal */}
@@ -484,5 +487,5 @@ export default function ProductsForDashboard() {
         </Modal.Footer>
       </Modal>
     </>
-  );
+  
 }

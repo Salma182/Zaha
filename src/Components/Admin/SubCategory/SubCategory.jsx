@@ -230,13 +230,14 @@ console.log(products)
         </div>
       </div>
 
-      <Button
-        className="w-100 my-3"
+      <div className="Btn">
+      <button
+        className="addBtn"
         variant="success"
-        onClick={() => setShowAddModal(true)}
-      >
+        onClick={() => setShowAddModal(true)} >
         Add Sub Category
-      </Button>
+      </button>
+</div>
 
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>

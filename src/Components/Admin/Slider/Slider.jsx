@@ -15,7 +15,12 @@ export default function Slider() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [editingSlide, setEditingSlide] = useState(null);
+  const [editingImage, setEditingImage] = useState(null);
   const [updatedSlideName, setUpdatedSlideName] = useState("");
+
+  // setEditingSlide(slide);
+  // setUpdatedSlideName(slide.name);
+  // handleShowUpdateModal();
 
   const handleCloseAddModal = () => {
     setShowAddModal(false);
@@ -29,6 +34,7 @@ export default function Slider() {
     setShowUpdateModal(false);
     setEditingSlide(null);
     setUpdatedSlideName("");
+    setEditingImage(null); 
   };
 
   const handleShowUpdateModal = () => setShowUpdateModal(true);
@@ -42,6 +48,7 @@ export default function Slider() {
         },
       }
     );
+    console.log(data)
     setImages(data.slider.data);
     setCurrentPage(data.slider.current_page);
     setLastPage(data.slider.last_page);
@@ -51,6 +58,7 @@ export default function Slider() {
     setImageFile(e.target.files[0]);
   };
 
+  
   const addSlide = async () => {
     const formData = new FormData();
     formData.append("name", slideName);
@@ -118,10 +126,15 @@ export default function Slider() {
       });
     }
   };
-
+  
+  
   const updateSlide = async () => {
+
     const formData = new FormData();
     formData.append("name", updatedSlideName);
+    if (editingImage) {
+      formData.append('path', editingImage);
+    }
 
     try {
       let { data } = await axios.post(
@@ -133,16 +146,19 @@ export default function Slider() {
           },
         }
       );
-      if (data.message === "slider updated successfully") {
+      if (data.message === "Slider updated successfully") {
         Swal.fire({
           position: "center",
           icon: "success",
           title: data.message,
           showConfirmButton: false,
           timer: 2000,
-        });
-        setShowUpdateModal(false);
-        getSliderImages(currentPage);
+        }).then(() =>{
+          setShowUpdateModal(false);
+          getSliderImages(currentPage);
+          window.location.reload();
+        })
+  
       }
     } catch (error) {
       console.error("Error updating slide:", error);
@@ -154,11 +170,17 @@ export default function Slider() {
     }
   };
 
+  const handleUpdateImage = (e) => {
+    setEditingImage(e.target.files[0]);
+    handleShowUpdateModal();
+  }
+
   const handleEditSlide = (slide) => {
     setEditingSlide(slide);
     setUpdatedSlideName(slide.name);
     handleShowUpdateModal();
   };
+
 
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
@@ -193,18 +215,26 @@ export default function Slider() {
             Images.map((img) => (
               <div key={img.id} className="col-md-3">
                 <div className="item">
-                  <img
-                    src={img.path}
+
+                  {editingImage ? <img
+                    src={editingImage} 
                     className="w-100 object-fit-cover"
                     height={300}
                     alt=""
-                  />
+                  /> :
+                   <img
+                  src={img.path} 
+                  className="w-100 object-fit-cover"
+                  height={300}
+                  alt=""
+                />}
+                  
                   <p className="fw-bold text-center text-capitalize my-2">
                     {img.name}
                   </p>
-                  <Button
-                    variant="danger"
-                    className="w-100"
+                  <div className="buttons"> 
+                  <button
+                    className="deleteBtn"
                     onClick={() => {
                       Swal.fire({
                         title: "Are you sure?",
@@ -222,14 +252,16 @@ export default function Slider() {
                     }}
                   >
                     Delete
-                  </Button>
-                  <Button
-                    variant="primary"
-                    className="w-100 mt-2"
+                  </button>
+                  <button
+                    className="editBtn"
                     onClick={() => handleEditSlide(img)}
                   >
                     Edit
-                  </Button>
+                  </button>
+
+                  </div>
+                  
                 </div>
               </div>
             ))
@@ -243,9 +275,12 @@ export default function Slider() {
         {paginationBasic}
       </div>
 
-      <Button className="w-100 my-3" variant="success" onClick={handleShowAddModal}>
+<div className="Btn">
+<button className="addBtn" variant="success" onClick={handleShowAddModal}>
         Add Slide
-      </Button>
+      </button>
+</div>
+
 
       {/* Add Slide Modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
@@ -295,6 +330,12 @@ export default function Slider() {
                 onChange={(e) => setUpdatedSlideName(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="image">
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" onChange={handleUpdateImage} />
+            </Form.Group>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>

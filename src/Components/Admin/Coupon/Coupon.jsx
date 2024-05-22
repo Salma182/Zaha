@@ -209,8 +209,11 @@ export default function Coupon() {
                     <span className="fw-bold text-capitalize">Discount</span>:{" "}
                     {coupon.discount}
                   </p>
-                  <button
-                    className="btn btn-danger w-100 my-2"
+                  <div>
+
+                <div className="buttons"> 
+                <button
+                    className="deleteBtn"
                     onClick={() => {
                       Swal.fire({
                         title: "Are you sure?",
@@ -230,20 +233,28 @@ export default function Coupon() {
                     Delete
                   </button>
                   <button
-                    className="btn btn-primary w-100"
+                    className="editBtn"
                     onClick={() => handleShowUpdate(coupon)}
                   >
                     Edit
                   </button>
+                </div>
+                
+
+                    </div>
+             
                 </div>
               </div>
             ))}
         </div>
       </div>
 
-      <Button className="w-100 my-3" variant="success" onClick={handleShow}>
-        Add Coupon
-      </Button>
+      <div className="Btn">
+      <button className="addBtn" variant="success" onClick={handleShow}>
+              Add Coupon
+            </button>
+      </div>
+ 
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -133,11 +133,12 @@ export default function Categories() {
           {categories.length > 0 ? (
             categories.map((category) => (
               <div className="col-md-3" key={category.id}>
-                <div className="bg-danger bg-opacity-25 p-2 rounded-3 text-center text-capitalize fw-bolder">
+                <div className="bg-opacity-25 p-2 rounded-3 text-center text-capitalize fw-bolder">
                   <h3>{category.name}</h3>
                   <p className="h6 my-2">Category id : {category.id}</p>
+                  <div className="buttons">
                   <button
-                    className="btn btn-danger mx-2"
+                    className="deleteBtn"
                     onClick={() => {
                       Swal.fire({
                         title: "Are you sure?",
@@ -157,7 +158,7 @@ export default function Categories() {
                     Delete
                   </button>
                   <button
-                    className="btn btn-warning mx-2"
+                    className="editBtn"
                     onClick={() => {
                       setCategoryIdToUpdate(category.id);
                       setShowUpdateModal(true);
@@ -165,6 +166,8 @@ export default function Categories() {
                   >
                     Edit
                   </button>
+                    </div>
+                 
                 </div>
               </div>
             ))
@@ -173,12 +176,15 @@ export default function Categories() {
               No Categories yet
             </p>
           )}
+          <div className="Btn">
           <button
-            className="btn btn-success my-3"
+            className="addBtn"
             onClick={() => setShowAddModal(true)}
           >
             Add Category
           </button>
+          </div>
+    
         </div>
       </div>
 
@@ -226,12 +232,12 @@ export default function Categories() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+          <button variant="secondary" onClick={() => setShowUpdateModal(false)}>
             Close
-          </Button>
-          <Button variant="primary" onClick={updateCategory}>
+          </button>
+          <button variant="primary" onClick={updateCategory}>
             Update Category
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
 

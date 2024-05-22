@@ -42,7 +42,22 @@ color: white;
 
     } */
 
+    .Btn{
+        display: flex;
+        justify-content: center; 
+        width: 100%;
+        align-items: center; 
+        margin: 2% 0;
+    }
+
 .addBtn{
-
-
+    border-radius: 7px;
+    background-color: black;
+    font-weight: 500;
+    width: 50%;
+    border:1px solid transparent;
+    box-shadow: 0px 3px 5px rgb(0, 0, 0, 0.1);
+    padding: 1%;
+    color: white;
 }
+
