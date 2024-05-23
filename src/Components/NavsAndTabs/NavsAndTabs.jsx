@@ -2,9 +2,27 @@ import React, { useEffect, useState } from "react";
 import style from "./NavsAndTabs.module.css";
 import img from "../../Images/fff.jpg";
 import axios from "axios";
+import ProductDetails from "../ProductDetails/ProductDetails";
+import { useNavigate } from "react-router-dom";
 
 export default function NavsAndTabs() {
+  const navigate= useNavigate();
   const [product, setProduct] = useState([]);
+
+  const [nav, setNav]= useState('');
+
+  async function Navs() {
+const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
+{
+  headers: {
+    Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+  },
+}
+)
+setNav(data.category)
+console.log("navs",data.category)
+  }
+
   async function getAllProducts() {
     const { data } = await axios.get(
       `https://zahaback.com/api/userproduct/all`,
@@ -16,73 +34,62 @@ export default function NavsAndTabs() {
     );
     setProduct(data.products);
     console.log(data.products);
+
   }
+
+  const handleProductClick = (productId) => {
+    navigate(`/productdetails/${productId}`);
+  };
 
   useEffect(() => {
     getAllProducts();
   }, []);
 
+  useEffect(() => {
+    Navs();
+  }, []);
   return (
     <>
       <div className="mt-5">
-        <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
-          <li className="nav-item" role="presentation">
-            <button
-              className={`nav-link tabLink ${style.link} active `}
-              id="all-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#all"
-              type="button"
-              role="tab"
-              aria-controls="all"
-              aria-selected="true"
-            >
-              all
-            </button>
-          </li>
-          <li className="nav-item" role="presentation">
-            <button
-              className={`nav-link tabLink ${style.link}`}
-              id="coats-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#coats"
-              type="button"
-              role="tab"
-              aria-controls="coats"
-              aria-selected="false"
-            >
-              Coats
-            </button>
-          </li>
-          <li className="nav-item" role="presentation">
-            <button
-              className={`nav-link tabLink ${style.link}`}
-              id="dresses-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#dresses"
-              type="button"
-              role="tab"
-              aria-controls="dresses"
-              aria-selected="false"
-            >
-              Dresses
-            </button>
-          </li>
-          <li className="nav-item" role="presentation">
-            <button
-              className={`nav-link tabLink ${style.link}`}
-              id="sets-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#sets"
-              type="button"
-              role="tab"
-              aria-controls="sets"
-              aria-selected="false"
-            >
-              Sets
-            </button>
-          </li>
-        </ul>
+      <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
+   <li className="nav-item" role="presentation">
+     <button
+       className={`nav-link tabLink ${style.link} active `}
+       id="all-tab"
+       data-bs-toggle="tab"
+       data-bs-target="#all"
+       type="button"
+       role="tab"
+       aria-controls="all"
+       aria-selected="true"
+     >
+       all
+     </button>
+   </li>
+
+{nav ? nav.map((link) => (
+   
+
+    <li className="nav-item" role="presentation">
+    <button
+      className={`nav-link tabLink ${style.link}`}
+      id=""
+      data-bs-toggle=""
+      data-bs-target=""
+      type="button"
+      role="tab"
+      aria-controls=""
+      aria-selected=""
+    >
+     {link.name}
+    </button>
+  </li>
+
+))
+: ""}
+          
+          </ul>
+
         <div className="tab-content text-capitalize" id="myTabContent">
           <div
             className="tab-pane fade show active"
@@ -95,7 +102,7 @@ export default function NavsAndTabs() {
                 {product.length > 0
                   ? product.map((product) => (
                       <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
-                        <div className="mycard rounded rounded-3 overflow-hidden">
+                        <div className="mycard rounded rounded-3 overflow-hidden" onClick={()=>handleProductClick(product.id)}>
                           <div className={`${style.myimg}`}>
                             <img src={product.images[1]} height={200} className="w-100 object-fit-cover" alt="img" />
                             <div className={`${style.layer}`}>

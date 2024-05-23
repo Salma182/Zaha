@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./SearchInput.module.css";
 import "animate.css";
+import axios from "axios";
 
 export default function SearchInput({ searchOpen, setSearchOpen }) {
+  const[input, setInput] =useState("")
   function remove(e) {
     if (e.target.classList.contains("search")) {
       setSearchOpen(false);
     }
   }
+  // async function Search(){
+  //   const {data}= await axios.get(`https://zahaback.com/api/userproduct/search?search=shifon`,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+  //     },
+  //   }
+  //   ).then((json)=>{
+  //     const result = json.filter()
+  //   })
+  //   console.log(data)
+  // }
+
+
   return (
     <>
 
@@ -16,6 +32,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
         type="text"
         className={style.search_input}
         placeholder="I'm shopping for ..."
+        // onChange={()=>Search()}
       />
       <button className={style.search_button}>
         <i className="fa fa-search"></i>

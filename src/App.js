@@ -43,7 +43,7 @@ let routers = createBrowserRouter([
       { path: "wishlist", element: <Wishlist /> },
       { path: "register", element: <Register /> },
       { path: "recentlyviewd", element: <RecentlyViewd /> },
-      { path: "productdetails", element: <ProductDetails /> },
+      { path: `productdetails/:productId`, element: <ProductDetails /> },
       { path: "*", element: <Notfound /> },
     ],
   },

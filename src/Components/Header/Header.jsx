@@ -47,7 +47,7 @@ export default function Header() {
         </div>
         <TopNav />
       </nav>
-      <SideNav isOpen={isOpen} setIsOpen={setIsOpen} />
+      <TopNav isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }

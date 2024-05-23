@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ProductDetails.module.css";
 import image from "../../Images/model.jpg";
 import Delivery from "./../Delivery/Delivery";
@@ -6,83 +6,110 @@ import CallBack from "./../CallBack/CallBack";
 import BackToTop from "./../BackToTop/BackToTop";
 import DeliveryDetails from "../DeliveryDetails/DeliveryDetails";
 import AskQuestions from './../AskQuestions/AskQuestions';
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function ProductDetails() {
+  const [productdetails, setProductDetails] = useState([]);
+  const { productId } = useParams();
+
+async function ProductDetails(productId)  {
+const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
+{
+  headers: {
+    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+  },
+}
+)
+setProductDetails(data.product)
+// console.log(data.product)
+}
+// console.log("productdetails:",productdetails)
+
+useEffect(() => {
+  ProductDetails(productId);
+}, [productId]);
+
   return (
     <>
       <div className="py-5"></div>
-      <div className="container my-5 ">
-        <div className="row g-3">
-          <div className="col-lg-4 text-center">
-            {" "}
-            <img src={image} alt="model dress" className="w-100" />
-          </div>
-          <div className="col-lg-8">
-            <div className="item">
-              <h2>Daniah Black Abaya</h2>
-              <h3>1.800,00 EGP</h3>
-              <p>size</p>
-              <ul className="list-unstyled d-flex gap-3">
-                <li className="rounded-circle border p-1">L/XL</li>
-                <li className="rounded-circle border p-1">XS/S</li>
-                <li className="rounded-circle border p-1">M/L</li>
-              </ul>
-              <form>
-                <div className="buy d-flex align-items-center">
-                  <input
-                    type="number"
-                    placeholder="number of items"
-                    className={`${style.input} form-control w-25`}
-                    min={0}
-                    max={100}
-                  />
-                  <button className="btn btn-success mx-2 px-4">
-                    Add to cart
-                  </button>
-                  <button className="btn btn-success px-4">Buy now</button>
-                </div>
-              </form>
-              <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
-                <h3>Thouria satin set</h3>
-                <div className="rate">
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <span className="ms-2">(7 customer reviews)</span>
-                </div>
-              </div>
-              <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
-                <h4>Color</h4>
-                <div className="color my-2 d-flex align-items-center">
-                  <div className={`${style.ball}`}></div>
-                  <div className={`${style.ball} mx-2`}></div>
-                  <div className={`${style.ball}`}></div>
-                  <div className={`${style.ball} mx-2`}></div>
-                  <div className={`${style.ball}`}></div>
-                </div>
-              </div>{" "}
-              <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
-                <span>
-                  <i className="fa-solid fa-heart"></i> Add To WhishList
-                </span>
-              </div>
-              <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
-                <CallBack />
-              </div>
-              <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
-                <AskQuestions />
-              </div>
-              <div className="item my-2 p-2 rounded-3 bg-light shadow-sm">
-                <span>
-                  <i className="fa-solid fa-truck-fast"></i> Estimated Delivery:
-                  Mar 07 – Mar 09
-                </span>
-              </div>
+      <div className="container my-5">
+
+    {productdetails ?
+      <div className="row g-3">
+      <div className="col-lg-4 text-center">
+        {" "}
+        <img src={image} alt="model dress" className="w-100" />
+      </div>
+      <div className="col-lg-8">
+        <div className="item">
+          <h2>{productdetails.name}</h2>
+          <h3>{productdetails.price} EGP</h3>
+          <p>size</p>
+          <ul className="list-unstyled d-flex gap-3">
+            <li className="rounded-circle border p-1">{productdetails.size}</li>
+            <li className="rounded-circle border p-1">XS/S</li>
+            <li className="rounded-circle border p-1">M/L</li>
+          </ul>
+          <form>
+            <div className="buy d-flex align-items-center">
+              <input
+                type="number"
+                placeholder="number of items"
+                className={`${style.input} form-control w-25`}
+                min={0}
+                max={100}
+              />
+              <button className="btn btn-success mx-2 px-4">
+                Add to cart
+              </button>
+              <button className="btn btn-success px-4">Buy now</button>
+            </div>
+          </form>
+          <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
+            <h3>{productdetails.material}</h3>
+            <div className="rate">
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <span className="ms-2">(7 customer reviews)</span>
             </div>
           </div>
+          <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
+            <h4>Color</h4>
+            <div className="color my-2 d-flex align-items-center">
+              <div className={`${style.ball}`}></div>
+              <div className={`${style.ball} mx-2`}></div>
+              <div className={`${style.ball}`}></div>
+              <div className={`${style.ball} mx-2`}></div>
+              <div className={`${style.ball}`}></div>
+            </div>
+          </div>{" "}
+          <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
+            <span>
+              <i className="fa-solid fa-heart"></i> Add To WhishList
+            </span>
+          </div>
+          <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
+            <CallBack />
+          </div>
+          <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
+            <AskQuestions />
+          </div>
+          <div className="item my-2 p-2 rounded-3 bg-light shadow-sm">
+            <span>
+              <i className="fa-solid fa-truck-fast"></i> Estimated Delivery:
+              Mar 07 – Mar 09
+            </span>
+          </div>
         </div>
+      </div>
+    </div>
+    :""}
+        
+
       </div>
 
       <div className="container my-5">
