@@ -1,3 +1,20 @@
+.topnav{
+display: block;
+}
+
+/* .topnav::before{
+    content: "";
+    position: absolute;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    border-width: 0 0.1em 0.1em 0;
+    height: 1px;
+    top: 50%;
+    left:0;
+    width: 100%;
+} */
+
+
 .buttons{
     display: flex;
     flex-direction: row;
@@ -61,3 +78,36 @@ color: white;
     color: white;
 }
 
+.search-icon{
+    display: none!important;
+}
+.sidebar{
+    display: none;
+}
+
+.logo{
+    display: block;
+}
+.bottom-navbar{
+    display: none;
+}
+@media (max-width: 768px) {
+
+    .search-icon{
+        display: inline-block!important;
+    }
+
+    .sidebar{
+        display: block;
+    }
+    .logo{
+        display: none;
+    }
+    .bottom-navbar{
+        display: block;
+    }
+    .topnav{
+        display: none;
+        }
+        
+}

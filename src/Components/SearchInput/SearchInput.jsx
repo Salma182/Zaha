@@ -10,6 +10,19 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
   }
   return (
     <>
+
+<div className={style.search_bar}>
+      <input
+        type="text"
+        className={style.search_input}
+        placeholder="I'm shopping for ..."
+      />
+      <button className={style.search_button}>
+        <i className="fa fa-search"></i>
+      </button>
+    </div>
+
+
       <div
         onClick={(e) => remove(e)}
         // className={`${style.side}`}
@@ -17,6 +30,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
           searchOpen ? "visible opacity-1 " : "invisible opacity-0 "
         } search`}
       >
+
         <div className={`${style.links} p-3 animate__animated`}>
           <div className="container">
             <div className="d-flex align-items-center justify-content-center">

@@ -14,7 +14,8 @@ export default function Categories() {
   const [categoryIdToUpdate, setCategoryIdToUpdate] = useState("");
   
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1); 
+  // const [isHome, setIsHome] = useState(false);
 
   async function getAllCategories(page = 1) {
     try {
@@ -26,12 +27,25 @@ export default function Categories() {
           },
         }
       );
-      setCategories(data.category.data);
+      const updatedCategories = data.category.data.map(category => ({
+        ...category,
+        is_home: category.is_home === "true",
+      }));
+      setCategories(updatedCategories);
       setCurrentPage(data.category.current_page);
       setLastPage(data.category.last_page);
+      // setIsHome(data.category.data.is_home === "true");
+      console.log(data)
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
+  }
+
+  const handleCheckboxChange = async (categoryId, isChecked) => {
+    const updatedCategories = categories.map(category =>
+      category.id === categoryId ? { ...category, is_home: isChecked } : category
+    );
+    setCategories(updatedCategories);
   }
 
   async function addCategory() {
@@ -167,7 +181,16 @@ export default function Categories() {
                     Edit
                   </button>
                     </div>
-                 
+
+                 <label>
+            <input
+              type="checkbox"
+              checked={category.is_home}
+              onChange={e => handleCheckboxChange(category.id, e.target.checked)}
+            />
+            {" in home ?"}
+          </label>
+
                 </div>
               </div>
             ))

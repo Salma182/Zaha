@@ -230,12 +230,15 @@ export default function ProductsForDashboard() {
                       {product.subcategory_id}
                     </p>
                     
-                    {/* <p className="fw-bold mb-1">
-                  Colors:{" "}
-                  {product.colors[0].split(',').map((colors,index) => (
-                    <span key={index}>{colors.trim()}{index < colors.length - 1 ? ', ' : ''}</span>
-                  ))}
-                </p> */}
+                    <p className="fw-bold mb-1">
+                    Colors:{" "}
+                    {product.colors.map((color, index) => (
+                      <span key={index}>
+                        {color}
+                        {index < product.colors.length - 1 && " , "}
+                      </span>
+                    ))}
+                </p>
                    <div className="buttons">
                    <button
                       className="editBtn"

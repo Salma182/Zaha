@@ -31,7 +31,6 @@ export default function SideNav({ isOpen, setIsOpen }) {
             <li>dress</li>
             <li>sets</li>
             <li>coats</li>
-            <li></li>
           </ul>
           <div
             className={`${style.toggle} test`}
