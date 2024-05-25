@@ -69,7 +69,6 @@ console.log("navs",data.category)
 
 {nav ? nav.map((link) => (
    
-
     <li className="nav-item" role="presentation">
     <button
       className={`nav-link tabLink ${style.link}`}
@@ -104,7 +103,7 @@ console.log("navs",data.category)
                       <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
                         <div className="mycard rounded rounded-3 overflow-hidden" onClick={()=>handleProductClick(product.id)}>
                           <div className={`${style.myimg}`}>
-                            <img src={product.images[1]} height={200} className="w-100 object-fit-cover" alt="img" />
+                            <img src={product.images[1]} height={400} className="w-100 object-fit-cover" alt="img" />
                             <div className={`${style.layer}`}>
                               {product.quantity == 0 ? <div className={`${style.sold}`}>sold out</div> : ""}
                               <span className={`${style.eye}`}>

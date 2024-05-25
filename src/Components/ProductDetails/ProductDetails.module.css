@@ -1,12 +1,20 @@
 .ball {
   width: 20px;
   height: 20px;
-  background-color: #09c;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
+  cursor: pointer;
+}
+
+.imgDefault  {
+  width: 100%; 
+  height: auto; 
+  display: block; 
+  box-sizing: border-box;
+  object-fit: fill;
 }
 
 .hr {

@@ -8,10 +8,24 @@ import DeliveryDetails from "../DeliveryDetails/DeliveryDetails";
 import AskQuestions from './../AskQuestions/AskQuestions';
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductDetails() {
   const [productdetails, setProductDetails] = useState([]);
   const { productId } = useParams();
+const[quantity, setQuantity] = useState(1);
+const [selectedImage, setSelectedImage] = useState('');
+const [selectedColor, setSelectedColor] = useState('');
+
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
 async function ProductDetails(productId)  {
 const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
@@ -21,8 +35,9 @@ const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/$
   },
 }
 )
+// console.log(data)
 setProductDetails(data.product)
-// console.log(data.product)
+console.log(data.product)
 }
 // console.log("productdetails:",productdetails)
 
@@ -30,6 +45,38 @@ useEffect(() => {
   ProductDetails(productId);
 }, [productId]);
 
+const handleQuantityChange = (e) => {
+  setQuantity(e.target.value);
+};
+
+async function Addtocart(e) {
+  e.preventDefault(); 
+   
+  const cartItems= {
+    product_id: productId,
+    quantity: quantity,
+  }
+
+  try{
+    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, cartItems,
+    {
+     headers: {
+       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+     },
+   }
+   )
+   console.log('Item added to cart:', data);
+
+   }
+  catch(error){
+    console.error('Error adding item to cart:', error);
+  }
+}
+
+const handleColorChange = (color, image) => {
+  setSelectedColor(color);
+  setSelectedImage(image);
+};
   return (
     <>
       <div className="py-5"></div>
@@ -39,28 +86,46 @@ useEffect(() => {
       <div className="row g-3">
       <div className="col-lg-4 text-center">
         {" "}
-        <img src={image} alt="model dress" className="w-100" />
+        {/* <img src={selectedImage} alt="model dress" className="w-100" /> */}
+
+     
+  <Slider {...settings}>
+  {productdetails.images?.map((image, index) => (
+          <div key={index}>
+            <img src={image} alt="" className={style.imgDefault} />
+          </div>
+        ))}
+    </Slider>
+
+    {/* <AwesomeSlider>
+        {productdetails.images?.map((image, index) => (
+          <div key={index}>
+            <img src={image} alt="" className={style.imgDefault} />
+          </div>
+        ))}
+      </AwesomeSlider> */}
+
       </div>
       <div className="col-lg-8">
         <div className="item">
           <h2>{productdetails.name}</h2>
           <h3>{productdetails.price} EGP</h3>
-          <p>size</p>
+          <p>Sizes</p>
           <ul className="list-unstyled d-flex gap-3">
             <li className="rounded-circle border p-1">{productdetails.size}</li>
-            <li className="rounded-circle border p-1">XS/S</li>
-            <li className="rounded-circle border p-1">M/L</li>
           </ul>
-          <form>
+          <form onSubmit={Addtocart}>
             <div className="buy d-flex align-items-center">
               <input
                 type="number"
                 placeholder="number of items"
                 className={`${style.input} form-control w-25`}
-                min={0}
+                min={1}
                 max={100}
+                value={quantity}
+                onChange={handleQuantityChange}
               />
-              <button className="btn btn-success mx-2 px-4">
+              <button type="submit" className="btn btn-success mx-2 px-4">
                 Add to cart
               </button>
               <button className="btn btn-success px-4">Buy now</button>
@@ -80,11 +145,15 @@ useEffect(() => {
           <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
             <h4>Color</h4>
             <div className="color my-2 d-flex align-items-center">
-              <div className={`${style.ball}`}></div>
-              <div className={`${style.ball} mx-2`}></div>
-              <div className={`${style.ball}`}></div>
-              <div className={`${style.ball} mx-2`}></div>
-              <div className={`${style.ball}`}></div>
+            {productdetails.colors?.map((color, index) => (
+                <div
+                  key={color}
+                  className={`${style.ball} mx-2`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => handleColorChange(color, productdetails.images[index])}
+                ></div>
+              ))}        
+             
             </div>
           </div>{" "}
           <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
@@ -308,3 +377,4 @@ useEffect(() => {
     </>
   );
 }
+

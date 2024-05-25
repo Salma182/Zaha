@@ -9,6 +9,7 @@ export default function Cart({ cartOpen, setCartOpen }) {
       setCartOpen(false);
     }
   }
+
   return (
     <>
       <div
@@ -66,131 +67,7 @@ export default function Cart({ cartOpen, setCartOpen }) {
                     </div>
                   </div>
                 </div>
-                <div className="col-12">
-                  <div className="container single-prod">
-                    <div className="row g-2">
-                      <div className="col-md-3">
-                        <div className="img">
-                          <img className="w-100" src={img} alt="img" />
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="desc">
-                          <p className="mt-0 mb-1 fw-bold small">
-                            Thouria satin set
-                          </p>
-                          <p className="my-1 small">1.150,00 EGP</p>
-                          <p className="my-1 small">SELECT OPTIONS</p>
-                        </div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className="close">
-                          <i className="fa-solid fa-xmark pointer"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12">
-                  <div className="container single-prod">
-                    <div className="row g-2">
-                      <div className="col-md-3">
-                        <div className="img">
-                          <img className="w-100" src={img} alt="img" />
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="desc">
-                          <p className="mt-0 mb-1 fw-bold small">
-                            Thouria satin set
-                          </p>
-                          <p className="my-1 small">1.150,00 EGP</p>
-                          <p className="my-1 small">SELECT OPTIONS</p>
-                        </div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className="close">
-                          <i className="fa-solid fa-xmark pointer"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12">
-                  <div className="container single-prod">
-                    <div className="row g-2">
-                      <div className="col-md-3">
-                        <div className="img">
-                          <img className="w-100" src={img} alt="img" />
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="desc">
-                          <p className="mt-0 mb-1 fw-bold small">
-                            Thouria satin set
-                          </p>
-                          <p className="my-1 small">1.150,00 EGP</p>
-                          <p className="my-1 small">SELECT OPTIONS</p>
-                        </div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className="close">
-                          <i className="fa-solid fa-xmark pointer"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12">
-                  <div className="container single-prod">
-                    <div className="row g-2">
-                      <div className="col-md-3">
-                        <div className="img">
-                          <img className="w-100" src={img} alt="img" />
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="desc">
-                          <p className="mt-0 mb-1 fw-bold small">
-                            Thouria satin set
-                          </p>
-                          <p className="my-1 small">1.150,00 EGP</p>
-                          <p className="my-1 small">SELECT OPTIONS</p>
-                        </div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className="close">
-                          <i className="fa-solid fa-xmark pointer"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12">
-                  <div className="container single-prod">
-                    <div className="row g-2">
-                      <div className="col-md-3">
-                        <div className="img">
-                          <img className="w-100" src={img} alt="img" />
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="desc">
-                          <p className="mt-0 mb-1 fw-bold small">
-                            Thouria satin set
-                          </p>
-                          <p className="my-1 small">1.150,00 EGP</p>
-                          <p className="my-1 small">SELECT OPTIONS</p>
-                        </div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className="close">
-                          <i className="fa-solid fa-xmark pointer"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
