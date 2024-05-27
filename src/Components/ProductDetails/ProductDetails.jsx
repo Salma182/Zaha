@@ -52,14 +52,18 @@ const handleQuantityChange = (e) => {
 async function Addtocart(e) {
   e.preventDefault(); 
    
-  const cartItems= {
-    product_id: productId,
-    quantity: quantity,
-  }
+  const cartItems = [
+    {
+      product_id: +productId,
+      quantity: quantity,
+    }
+  ]; 
+
+  console.log("items",cartItems)
 
   try{
-    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, cartItems,
-    {
+    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, {items: cartItems} ,
+    {  
      headers: {
        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
      },
