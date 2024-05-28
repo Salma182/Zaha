@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "./ProductDetails.module.css";
 import image from "../../Images/model.jpg";
 import Delivery from "./../Delivery/Delivery";
@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Cart from "../Cart/Cart";
 
 export default function ProductDetails() {
   const [productdetails, setProductDetails] = useState([]);
@@ -18,13 +19,17 @@ export default function ProductDetails() {
 const[quantity, setQuantity] = useState(1);
 const [selectedImage, setSelectedImage] = useState('');
 const [selectedColor, setSelectedColor] = useState('');
+const[response, setResponse] = useState(null)
+
 
 const settings = {
   dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
+    infinite: true,
+    autoplay: false, // Disable autoplay to handle manually
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    swipeToSlide: true,
 };
 
 async function ProductDetails(productId)  {
@@ -59,8 +64,6 @@ async function Addtocart(e) {
     }
   ]; 
 
-  console.log("items",cartItems)
-
   try{
     const {data} = await axios.post(`https://zahaback.com/api/cart/add`, {items: cartItems} ,
     {  
@@ -69,13 +72,13 @@ async function Addtocart(e) {
      },
    }
    )
-   console.log('Item added to cart:', data);
-
+   setResponse(data.cart_items)
    }
   catch(error){
     console.error('Error adding item to cart:', error);
   }
 }
+console.log("response", response)
 
 const handleColorChange = (color, image) => {
   setSelectedColor(color);
@@ -88,26 +91,18 @@ const handleColorChange = (color, image) => {
 
     {productdetails ?
       <div className="row g-3">
-      <div className="col-lg-4 text-center">
+      <div className="col-lg-4 text-center pointer" >
         {" "}
         {/* <img src={selectedImage} alt="model dress" className="w-100" /> */}
 
      
-  <Slider {...settings}>
+  <Slider  {...settings}>
   {productdetails.images?.map((image, index) => (
           <div key={index}>
             <img src={image} alt="" className={style.imgDefault} />
           </div>
         ))}
     </Slider>
-
-    {/* <AwesomeSlider>
-        {productdetails.images?.map((image, index) => (
-          <div key={index}>
-            <img src={image} alt="" className={style.imgDefault} />
-          </div>
-        ))}
-      </AwesomeSlider> */}
 
       </div>
       <div className="col-lg-8">
@@ -135,6 +130,7 @@ const handleColorChange = (color, image) => {
               <button className="btn btn-success px-4">Buy now</button>
             </div>
           </form>
+          {response && <Cart response={response} />}
           <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
             <h3>{productdetails.material}</h3>
             <div className="rate">

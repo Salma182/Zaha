@@ -39,7 +39,9 @@ color: white;
     border:1px solid #dfa5af;
     color: white;
 } */
-
+.side{
+    width: 25%;
+}
 .deleteBtn{
     border-radius: 7px;
     background-color: rgb(218, 12, 12);
@@ -110,5 +112,14 @@ color: white;
     .topnav{
         display: none;
         }
+        .side{
+            width: 30%;
+        }
         
 }
+@media (max-width: 400px) {
+    .side{
+        width: 50%;
+    }
+}
+

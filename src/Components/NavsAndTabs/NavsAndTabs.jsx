@@ -1,15 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "./NavsAndTabs.module.css";
 import img from "../../Images/fff.jpg";
 import axios from "axios";
 import ProductDetails from "../ProductDetails/ProductDetails";
 import { useNavigate } from "react-router-dom";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function NavsAndTabs() {
   const navigate= useNavigate();
   const [product, setProduct] = useState([]);
-
   const [nav, setNav]= useState('');
+  const [isHovering, setIsHovering] = useState(false);
+  const sliderRef = useRef(null);
+  
+  useEffect(() => {
+    let interval;
+    if (isHovering) {
+      interval = setInterval(() => {
+        if (sliderRef.current) {
+          sliderRef.current.slickNext();
+        }
+      }, 1000); // Adjust the interval as needed
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isHovering]);
+
+const settings = {
+  dots: true,
+    infinite: true,
+    autoplay: false, // Disable autoplay to handle manually
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+};
 
   async function Navs() {
 const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
@@ -67,7 +95,7 @@ console.log("navs",data.category)
      </button>
    </li>
 
-{nav ? nav.map((link) => (
+    {nav ? nav.map((link) => (
    
     <li className="nav-item" role="presentation">
     <button
@@ -84,8 +112,8 @@ console.log("navs",data.category)
     </button>
   </li>
 
-))
-: ""}
+  ))
+  : ""}
           
           </ul>
 
@@ -101,9 +129,22 @@ console.log("navs",data.category)
                 {product.length > 0
                   ? product.map((product) => (
                       <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
-                        <div className="mycard rounded rounded-3 overflow-hidden" onClick={()=>handleProductClick(product.id)}>
+                        
+                        <div className="mycard rounded rounded-3 overflow-hidden pointer" 
+                        onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)} 
+                        onClick={()=>handleProductClick(product.id)}>
+
                           <div className={`${style.myimg}`}>
-                            <img src={product.images[1]} height={400} className="w-100 object-fit-cover" alt="img" />
+   
+                          <Slider  ref={sliderRef} {...settings}>
+                            {product.images?.map((image, index) => (
+                                    <div key={index}>
+                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
+                                    </div>
+                                  ))}
+                              </Slider>
+
                             <div className={`${style.layer}`}>
                               {product.quantity == 0 ? <div className={`${style.sold}`}>sold out</div> : ""}
                               <span className={`${style.eye}`}>

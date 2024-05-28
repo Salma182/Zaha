@@ -7,12 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
 
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [phone, setPhone] = useState("");
-  // const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  // const [admin, setAdmin] = useState("");
   let [error, setError] =useState('')
   let [UserToken,setUserToken]=useState(null)
   let navigate = useNavigate();
@@ -28,7 +22,6 @@ const user = {
 
   const errors = {};
   
- 
   if (!user.email) {
     errors.email = "Required";
   }
@@ -47,7 +40,7 @@ const user = {
       .matches(emailRegex, "Invalid email address")
       .email("Invalid")
       .required("Required"),
-      password: Yup.string().required('Password is required').matches(/^[A-Z][a-z0-9]{4,10}$/, 'Password must start with a capital letter and be between 5-11 characters long'),
+      password: Yup.string().required('Password is required'),
       password_confirmation: Yup.string().required('Password confirmation is required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
       phone:Yup.string().required('Phone number is required').matches(/^(01)[0-2|5][0-9]{8}$/,'Enter Valid Number')
     });

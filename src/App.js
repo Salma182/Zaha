@@ -27,6 +27,7 @@ import EsimateArea from "./Components/Admin/EsimateArea/EsimateArea.jsx";
 import ImgForDashboard from "./Components/Admin/ImgForInsta/ImgForInsta.jsx";
 import ProductsForDashboard from "./Components/Admin/ProductsForDashboard/ProductsForDashboard";
 import CallbacksForDashboard from "./Components/Admin/CallbacksForDashboard/CallbacksForDashboard";
+import Checkout from "./Components/Checkout/Checkout.jsx";
 
 let routers = createBrowserRouter([
   {
@@ -44,6 +45,8 @@ let routers = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "recentlyviewd", element: <RecentlyViewd /> },
       { path: `productdetails/:productId`, element: <ProductDetails /> },
+      { path: `checkout`, element: <Checkout /> },
+
       { path: "*", element: <Notfound /> },
     ],
   },

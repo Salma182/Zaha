@@ -6,76 +6,75 @@ export default function Dashboard() {
   return (
 
 
-    
     <>
       <div className="page d-flex">
-        <div className="side w-25 bg-color vh-100 px-2 overflow-auto">
+        <div className={`side bg-color vh-100 px-2 overflow-auto `}>
           <h1 className="bg-light h4 text-dark text-center fw-bold mb-5 p-3 rounded-bottom-5">
             choose what you want to do{" "}
           </h1>
-          <div className=" d-flex flex-column ">
-            <Link className="text-decoration-none" to="/dashboard">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize pointer rounded  m-auto">
+          <div className={style.DashboardList}>
+            <Link className={` ${style.dashboardBtn}`} to="/dashboard">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 orders
               </button>
             </Link>
             
-            <Link className="text-decoration-none" to="reviews">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize pointer my-4 rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="reviews">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 reviews
               </button>
             </Link>
-            <Link className="text-decoration-none" to="subcategory">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize pointer rounded w-75 m-auto">
-                subcategory
+            <Link className={` ${style.dashboardBtn}`}  to="subcategory">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
+                sub-category
               </button>
             </Link>
-            <Link className="text-decoration-none" to="products">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="products">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 products
               </button>
             </Link>
-            <Link className="text-decoration-none" to="categories">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="categories">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 Categories
               </button>
             </Link> 
 
-            <Link className="text-decoration-none" to="callbacks">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="callbacks">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 callbacks
               </button>
             </Link>
 
-            <Link className="text-decoration-none" to="questions">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="questions">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 questions
               </button>
             </Link>
 
-            <Link className="text-decoration-none" to="sociallinks">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="sociallinks">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 social links
               </button>
             </Link>
 
-            <Link className="text-decoration-none" to="imageforinsta">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="imageforinsta">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 image for insta
               </button>
             </Link>
-            <Link className="text-decoration-none" to="slider">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="slider">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 slider
               </button>
             </Link>
-            <Link className="text-decoration-none" to="area">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="area">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 area
               </button>
             </Link>
-            <Link className="text-decoration-none" to="Coupon">
-              <button className="p-2 bg-white border-0 text-dark text-center fw-bold text-capitalize mt-4 pointer rounded w-75 m-auto">
+            <Link className={` ${style.dashboardBtn}`}  to="Coupon">
+            <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 Coupon
               </button>
             </Link>
