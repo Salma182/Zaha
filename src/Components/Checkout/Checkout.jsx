@@ -5,34 +5,33 @@ import axios from "axios";
 
 export default function Checkout() {
 
- const token = localStorage.getItem("token")
 const [cities, setCities]= useState([])
 const [cityId, setCityId]= useState("")
 
-    const user = {
-        "first_name": "",
-        "last_name": "",
-        "email":"",
-        "state": "",
-        "phone":"",
-        "address":"",
-        "additional_phone":"",
-        "city":"",
-      "instagram_user": ""
-      }
+    // const user = {
+    //     "first_name": "",
+    //     "last_name": "",
+    //     "email":"",
+    //     "state": "",
+    //     "phone":"",
+    //     "address":"",
+    //     "additional_phone":"",
+    //     "city":"",
+    //   "instagram_user": ""
+    //   }
 
       const errors = {};
 
-      if (!user.email) {
-        errors.email = "Required";
-      }
+      // if (!user.email) {
+      //   errors.email = "Required";
+      // }
     
       const emailRegex =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/i;
     
-      if (!emailRegex.test(user.email)) {
-        errors.email ="Invalid email address";
-      }
+      // if (!emailRegex.test(user.email)) {
+      //   errors.email ="Invalid email address";
+      // }
 
       let valid = Yup.object({
         first_name: Yup.string().matches(/^(?=.*[a-zA-Zء-ي].*[a-zA-Zء-ي])[\s\S]*$/, "Invalid name").required("Required"),
@@ -48,33 +47,41 @@ const [cityId, setCityId]= useState("")
     });
 
     const formik = useFormik({
-      initialValues: user,
-      validationSchema:valid,
-      onSubmit: (values) => {
-        const FormData = { ...values, city: cityId.toString()};
-        console.log('Form data:', FormData);
-        Checkout()
+      initialValues: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        state: '',
+        city: '',
+        phone: '',
+        address: '',
+        additional_phone: '',
+        instagram_user: '',
       },
-      initialErrors: errors,
+      validationSchema: valid,
+      onSubmit: (values) => {
+        const FormData = { ...values, city: cityId.toString() };
+        console.log('Form data:', FormData);
+        Checkout(FormData);
+      },
+      initialErrors: {}, // No initial errors
     });
-
-      async function Checkout(values){
-         const token = localStorage.getItem("token")
-        try{
-          const {data} = await axios.post(`https://zahaback.com/api/checkout/${token}`, {values} , 
-          {  
-            headers: {
-              Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-            },
-          }
-          )
-          console.log(data)
-        } catch(error){
-          console.error('Error:', error);
-          // console.log(token)
-
-        }
+  
+    const Checkout = async (values) => {
+      const token = localStorage.getItem('guestToken');
+      try {
+        const { data } = await axios.post(`https://zahaback.com/api/checkout/${token}`, values, {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        });
+        console.log(data);
+        // Handle successful response
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error response
       }
+    };
 
 async function Getcity(){
 const {data} = await axios.get(`https://zahaback.com/api/getAreaEstimate`,
