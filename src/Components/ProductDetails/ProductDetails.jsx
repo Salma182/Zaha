@@ -44,7 +44,6 @@ const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/$
 )
 // console.log(data)
 setProductDetails(data.product)
-setGuestToken(data.guest_token)
 }
 // console.log("productdetails:",productdetails)
 
@@ -75,6 +74,7 @@ async function Addtocart(e) {
    }
    )
    setResponse(data.cart_items)
+setGuestToken(data.guest_token)
    console.log(data)
    }
   catch(error){
