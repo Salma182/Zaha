@@ -20,7 +20,9 @@ const[quantity, setQuantity] = useState(1);
 const [selectedImage, setSelectedImage] = useState('');
 const [selectedColor, setSelectedColor] = useState('');
 const[response, setResponse] = useState(null)
+const[guestToken, setGuestToken] = useState('')
 
+const userToken = localStorage.setItem('guestToken', guestToken)
 
 const settings = {
   dots: true,
@@ -42,7 +44,7 @@ const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/$
 )
 // console.log(data)
 setProductDetails(data.product)
-console.log(data.product)
+setGuestToken(data.guest_token)
 }
 // console.log("productdetails:",productdetails)
 
@@ -73,6 +75,7 @@ async function Addtocart(e) {
    }
    )
    setResponse(data.cart_items)
+   console.log(data)
    }
   catch(error){
     console.error('Error adding item to cart:', error);
@@ -127,7 +130,7 @@ const handleColorChange = (color, image) => {
               <button type="submit" className="btn btn-success mx-2 px-4">
                 Add to cart
               </button>
-              <button className="btn btn-success px-4">Buy now</button>
+              {/* <button className="btn btn-success px-4">Buy now</button> */}
             </div>
           </form>
           {response && <Cart response={response} />}
@@ -158,7 +161,7 @@ const handleColorChange = (color, image) => {
           </div>{" "}
           <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
             <span>
-              <i className="fa-solid fa-heart"></i> Add To WhishList
+              <i className="fa-solid fa-heart"></i> Add To WishList
             </span>
           </div>
           <div className="item my-2 bg-light rounded-3 shadow-lg pointer">

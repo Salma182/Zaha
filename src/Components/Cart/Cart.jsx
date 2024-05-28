@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Cart.module.css";
 import "animate.css";
 import img from "../../Images/model.jpg";
+import axios from "axios";
 
-export default function Cart({ cartOpen, setCartOpen, response }) {
+export default function Cart({ cartOpen, setCartOpen, response}) {
+
+  const[cartData,setCartData] =useState([])
 
   function remove(e) {
     if (e.target.classList.contains("cart")) {
       setCartOpen(false);
     }
   }
-  const cart= response
-  console.log("cart",cart)
+  const userToken= localStorage.getItem("userToken");
+  // const cart= response
+  
+  async function GetToCart(userToken){
+try {
+const {data} = await axios.get(`https://zahaback.com/api/cart/${userToken}`,
+{  
+  headers: {
+    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+  },
+}
+)
+setCartData(data.cart)
+console.log(data.cart)
+}catch(error) {
+  console.error(error);
+}
+  }
+  
+  
+  useEffect(() => {
+    GetToCart();
+  }, [userToken]);
   
   
   return (
@@ -44,14 +68,20 @@ export default function Cart({ cartOpen, setCartOpen, response }) {
             </div>
           </div>
         
-          {response? (response?.map((item, index) => (
+        {cartOpen ? 
+
+        <div>
+          alll
+          </div> : ""}
+{/*         
+          {cartData && cartOpen && (cartData?.map((item, index) => (
         <div key={index} className="response-item">
           <p><strong>Product ID:</strong> {item.product_id}</p>
           <p><strong>Quantity:</strong> {item.quantity}</p>
-          {/* Add other fields if necessary */}
         </div>
-      ))) : ""}
-          
+      ))) }
+           */}
+
           <div
             className={`${style.toggle} test`}
             onClick={() => {

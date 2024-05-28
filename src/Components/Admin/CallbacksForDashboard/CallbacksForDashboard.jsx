@@ -21,6 +21,7 @@ export default function CallbacksForDashboard() {
   useEffect(() => {
     getCallBackes();
   }, []);
+  
   return (
     <>
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">

@@ -10,16 +10,15 @@ const [cities, setCities]= useState([])
 const [cityId, setCityId]= useState("")
 
     const user = {
-        first_name: "",
-        last_name: "",
-        email:"",
-        state: "",
-        phone:"",
-        address:"",
-        additional_phone:"",
-        city:"",
-      instagram_user: ""
-
+        "first_name": "",
+        "last_name": "",
+        "email":"",
+        "state": "",
+        "phone":"",
+        "address":"",
+        "additional_phone":"",
+        "city":"",
+      "instagram_user": ""
       }
 
       const errors = {};
@@ -60,6 +59,7 @@ const [cityId, setCityId]= useState("")
     });
 
       async function Checkout(values){
+         const token = localStorage.getItem("token")
         try{
           const {data} = await axios.post(`https://zahaback.com/api/checkout/${token}`, {values} , 
           {  
@@ -71,6 +71,8 @@ const [cityId, setCityId]= useState("")
           console.log(data)
         } catch(error){
           console.error('Error:', error);
+          // console.log(token)
+
         }
       }
 
