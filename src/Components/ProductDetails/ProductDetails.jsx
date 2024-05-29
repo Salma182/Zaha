@@ -20,9 +20,8 @@ const[quantity, setQuantity] = useState(1);
 const [selectedImage, setSelectedImage] = useState('');
 const [selectedColor, setSelectedColor] = useState('');
 const[response, setResponse] = useState(null)
-const[guestToken, setGuestToken] = useState('')
+const [guestToken, setGuestToken] = useState(localStorage.getItem('guestToken') || '');
 
-const userToken = localStorage.setItem('guestToken', guestToken)
 
 const settings = {
   dots: true,
@@ -74,7 +73,11 @@ async function Addtocart(e) {
    }
    )
    setResponse(data.cart_items)
-setGuestToken(data.guest_token)
+   if (!guestToken) {
+    const newGuestToken = data.guest_token;
+    setGuestToken(newGuestToken);
+    localStorage.setItem('guestToken', newGuestToken);
+  }
    console.log(data)
    }
   catch(error){

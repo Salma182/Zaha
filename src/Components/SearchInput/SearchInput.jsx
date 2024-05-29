@@ -80,6 +80,10 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     }
   };
 
+  // if (products && products.length > 0) 
+  // {navigate("/searchedProducts")}
+   
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -127,7 +131,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
         </div>
       )}
 
-      {products ? <SearchedProducts products={products} /> : ""}
+      {/* {products ? <SearchedProducts products={products} /> : ""} */}
 
 </div>
 

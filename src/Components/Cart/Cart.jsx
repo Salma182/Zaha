@@ -3,11 +3,12 @@ import style from "./Cart.module.css";
 import "animate.css";
 import img from "../../Images/model.jpg";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Cart({ cartOpen, setCartOpen, response}) {
 
   const[cartData,setCartData] =useState([])
-
+  const navigate = useNavigate()
   function remove(e) {
     if (e.target.classList.contains("cart")) {
       setCartOpen(false);
@@ -16,7 +17,9 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
 
   const guestToken= localStorage.getItem("guestToken");
 
-  async function GetToCart(guestToken){
+  async function GetToCart(){
+    const guestToken= localStorage.getItem("guestToken");
+
 try {
 const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
 {  
@@ -26,17 +29,21 @@ const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
 }
 )
 setCartData(data.cart)
-console.log("cart", data.cart.name)
+console.log("cart", data.cart)
 }catch(error) {
   console.error(error);
 
 }
   }
   
+  function handlecheckout(){
+    setCartOpen(false)
+    navigate("/checkout")
+  }
   useEffect(() => {
+    console.log("Fetching cart data for guestToken:", guestToken);
     GetToCart();
-  }, [guestToken]);
-  
+  }, []);
   
   return (
     <>
@@ -57,7 +64,22 @@ console.log("cart", data.cart.name)
           <h4 className="text-center fw-bold my-4">My Cart</h4>
          
 
-          <div className="cont text-center">
+          
+                    
+          {cartData.length > 0 ? (
+        cartData.map((item, index) => (
+          <div key={index}>
+            <p>{item.product.name}</p>
+            <p>{item.product.desc}</p>
+            <p>{item.product.price}</p>
+            <p>{item.product.size}</p>
+
+            <button onClick={()=> handlecheckout()}>Checkout</button>
+
+          </div>
+        ))
+      ) : (
+        <div className="cont text-center">
             <i className="fa-solid fa-bag-shopping text-secondary d-block  fs-1 my-5"></i>
             <p>No Product To Show </p>
             <div
@@ -67,15 +89,15 @@ console.log("cart", data.cart.name)
               Return To Shop
             </div>
           </div>
-        
-          
-                    
-        {cartOpen && cartData ?
+      )}
+
+
+        {/* {cartOpen && cartData ?
           cartData.map((cart)=>{
             <div className="row g-2">
             <div className="col-md-3">
               <div className="img">
-                {/* <img className="w-100" src={cart.images[0]} alt="img" /> */}
+                <img className="w-100" src={cart.images[0]} alt="img" />
               </div>
             </div>
             <div className="col-md-7">
@@ -84,7 +106,7 @@ console.log("cart", data.cart.name)
                   {cart.name}
                 </p>
                 <p className="my-1 small">{cart.price} EGP</p>
-                {/* <p className="my-1 small">SELECT OPTIONS</p> */}
+                <p className="my-1 small">SELECT OPTIONS</p>
               </div>
             </div>
             <div className="col-md-2">
@@ -97,7 +119,7 @@ console.log("cart", data.cart.name)
           })
           
         
-       :"" }
+       :"" } */}
 
 {/*         
           {cartData && cartOpen && (cartData?.map((item, index) => (
