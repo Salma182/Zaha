@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import style from "./TopNav.module.css"
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 export default function TopNav ({isOpen, setIsOpen}){
 
@@ -31,14 +32,14 @@ useEffect(() => {
     return <>
 
     <div className="container topnav">
-    <ul className={style.NavLinks}>
-      <li className={style.nav_link}>Home</li>
+    <div className={style.NavLinks}>
+      <NavLink to="/" className={style.nav_link}>Home </NavLink>
       {categories ? categories.map(category => 
       
-      <li className={style.nav_link}>{category.name}</li>
+      <NavLink className={style.nav_link}>{category.name}</NavLink>
       )
       : ""}
- </ul>
+ </div>
     </div>
 
 
@@ -56,14 +57,14 @@ useEffect(() => {
           }`}
         >
           <h1 className="text-center text-uppercase">Zaha</h1>
-          <ul className="list-unstyled">
-            <li className={style.nav_link}>Home</li>
+          <div className="list-unstyled">
+            <NavLink to="/" className={style.nav_link}>Home</NavLink>
           {categories ? categories.map(category => 
       
-        <li className={style.nav_link}>{category.name}</li>
+        <NavLink className={style.nav_link}>{category.name}</NavLink>
       )
       : ""}
-          </ul>
+          </div>
           <div
             className={`${style.toggle} test`}
             onClick={() => {

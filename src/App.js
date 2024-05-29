@@ -28,6 +28,7 @@ import ImgForDashboard from "./Components/Admin/ImgForInsta/ImgForInsta.jsx";
 import ProductsForDashboard from "./Components/Admin/ProductsForDashboard/ProductsForDashboard";
 import CallbacksForDashboard from "./Components/Admin/CallbacksForDashboard/CallbacksForDashboard";
 import Checkout from "./Components/Checkout/Checkout.jsx";
+import SearchedProducts from "./Components/SearchedProducts/SearchedProducts.jsx";
 
 let routers = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ let routers = createBrowserRouter([
       { path: "recentlyviewd", element: <RecentlyViewd /> },
       { path: `productdetails/:productId`, element: <ProductDetails /> },
       { path: `checkout`, element: <Checkout /> },
+      { path: `searchedproducts`, element: <SearchedProducts /> },
 
       { path: "*", element: <Notfound /> },
     ],

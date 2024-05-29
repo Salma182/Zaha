@@ -8,30 +8,30 @@ export default function Checkout() {
 const [cities, setCities]= useState([])
 const [cityId, setCityId]= useState("")
 
-    // const user = {
-    //     "first_name": "",
-    //     "last_name": "",
-    //     "email":"",
-    //     "state": "",
-    //     "phone":"",
-    //     "address":"",
-    //     "additional_phone":"",
-    //     "city":"",
-    //   "instagram_user": ""
-    //   }
+    const user = {
+      first_name: "",
+      last_name: "",
+      email:"",
+      state: "",
+      phone:"",
+      address:"",
+      additional_phone:"",
+      city:"",
+    instagram_user: ""
+      }
 
       const errors = {};
 
-      // if (!user.email) {
-      //   errors.email = "Required";
-      // }
+      if (!user.email) {
+        errors.email = "Required";
+      }
     
       const emailRegex =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/i;
     
-      // if (!emailRegex.test(user.email)) {
-      //   errors.email ="Invalid email address";
-      // }
+      if (!emailRegex.test(user.email)) {
+        errors.email ="Invalid email address";
+      }
 
       let valid = Yup.object({
         first_name: Yup.string().matches(/^(?=.*[a-zA-Zء-ي].*[a-zA-Zء-ي])[\s\S]*$/, "Invalid name").required("Required"),
@@ -47,17 +47,7 @@ const [cityId, setCityId]= useState("")
     });
 
     const formik = useFormik({
-      initialValues: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        state: '',
-        city: '',
-        phone: '',
-        address: '',
-        additional_phone: '',
-        instagram_user: '',
-      },
+      initialValues: user,
       validationSchema: valid,
       onSubmit: (values) => {
         const FormData = { ...values, city: cityId.toString() };
@@ -76,10 +66,8 @@ const [cityId, setCityId]= useState("")
           },
         });
         console.log(data);
-        // Handle successful response
       } catch (error) {
         console.error('Error:', error);
-        // Handle error response
       }
     };
 

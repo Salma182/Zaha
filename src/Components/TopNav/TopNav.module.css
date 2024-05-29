@@ -12,7 +12,10 @@
         margin-right: 3%;
         font-weight: bold;
         cursor: pointer;
+        color: black;
         text-transform: none;
+        text-decoration: none;
+
     }
 
     .side {

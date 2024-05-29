@@ -5,7 +5,7 @@ import Cart from "./../Cart/Cart";
 import style from "./Header.module.css";
 import { Link } from "react-router-dom";
 import TopNav from "../TopNav/TopNav";
-
+import logo from '../../Images/logo.jpg'
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -24,9 +24,7 @@ export default function Header() {
           </div>
           <div className="logo">
             <Link className={style.link} to="/">
-              <h2 className="my-0 pointer text-dark fw-bold text-uppercase logo">
-                ZAHA
-              </h2>
+          {/* <img src={logo} alt="" /> */}
             </Link>
           </div>
 
