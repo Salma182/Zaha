@@ -13,7 +13,7 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
       setCartOpen(false);
     }
   }
-  // const cart= response
+
   const guestToken= localStorage.getItem("guestToken");
 
   async function GetToCart(guestToken){
@@ -26,7 +26,7 @@ const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
 }
 )
 setCartData(data.cart)
-console.log(data.cart)
+console.log("cart", data.cart.name)
 }catch(error) {
   console.error(error);
 
@@ -75,7 +75,7 @@ console.log(data.cart)
             <div className="row g-2">
             <div className="col-md-3">
               <div className="img">
-                <img className="w-100" src={cart.images[0]} alt="img" />
+                {/* <img className="w-100" src={cart.images[0]} alt="img" /> */}
               </div>
             </div>
             <div className="col-md-7">

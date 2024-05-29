@@ -41,7 +41,7 @@ export default function SearchedProducts({products}) {
   };
 
 
-console.log(products)
+console.log("searched",products)
 
     return <>
 
