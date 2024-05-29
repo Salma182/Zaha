@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "./ProductDetails.module.css";
 import image from "../../Images/model.jpg";
 import Delivery from "./../Delivery/Delivery";
@@ -12,15 +12,16 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Cart from "../Cart/Cart";
+import CartContext from "../../CartContext/CartContext";
 
 export default function ProductDetails() {
+  const { cart, setCart, guestToken, setGuestToken } = useContext(CartContext);
   const [productdetails, setProductDetails] = useState([]);
   const { productId } = useParams();
 const[quantity, setQuantity] = useState(1);
 const [selectedImage, setSelectedImage] = useState('');
 const [selectedColor, setSelectedColor] = useState('');
 const[response, setResponse] = useState(null)
-const [guestToken, setGuestToken] = useState(localStorage.getItem('guestToken') || '');
 
 
 const settings = {
@@ -41,7 +42,6 @@ const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/$
   },
 }
 )
-// console.log(data)
 setProductDetails(data.product)
 }
 // console.log("productdetails:",productdetails)
@@ -78,7 +78,9 @@ async function Addtocart(e) {
     setGuestToken(newGuestToken);
     localStorage.setItem('guestToken', newGuestToken);
   }
-   console.log(data)
+  setCart((prevCart) => [...prevCart, ...data.cart_items]);
+
+console.log("addtocart", data)
    }
   catch(error){
     console.error('Error adding item to cart:', error);

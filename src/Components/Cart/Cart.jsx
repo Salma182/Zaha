@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import style from "./Cart.module.css";
 import "animate.css";
 import img from "../../Images/model.jpg";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import CartContext from "../../CartContext/CartContext";
 
 export default function Cart({ cartOpen, setCartOpen, response}) {
 
-  const[cartData,setCartData] =useState([])
+  const { cart, setCart } = useContext(CartContext);
+
   const navigate = useNavigate()
   function remove(e) {
     if (e.target.classList.contains("cart")) {
@@ -28,7 +30,7 @@ const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
   },
 }
 )
-setCartData(data.cart)
+setCart(data.cart)
 console.log("cart", data.cart)
 }catch(error) {
   console.error(error);
@@ -66,13 +68,13 @@ console.log("cart", data.cart)
 
           
                     
-          {cartData.length > 0 ? (
-        cartData.map((item, index) => (
+          {cart && cart.length > 0 ? (
+        cart?.map((item, index) => (
           <div key={index}>
-            <p>{item.product.name}</p>
+            {/* <p>{item.product.name}</p>
             <p>{item.product.desc}</p>
             <p>{item.product.price}</p>
-            <p>{item.product.size}</p>
+            <p>{item.product.size}</p> */}
 
             <button onClick={()=> handlecheckout()}>Checkout</button>
 

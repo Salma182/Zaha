@@ -9,12 +9,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function NavsAndTabs() {
-  const navigate= useNavigate();
   const [product, setProduct] = useState([]);
   const [nav, setNav]= useState('');
   const [isHovering, setIsHovering] = useState(false);
   const sliderRef = useRef(null);
-  
+  const navigate = useNavigate()
   useEffect(() => {
     let interval;
     if (isHovering) {
