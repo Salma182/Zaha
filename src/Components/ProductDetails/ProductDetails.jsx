@@ -23,7 +23,6 @@ const [selectedImage, setSelectedImage] = useState('');
 const [selectedColor, setSelectedColor] = useState('');
 const[response, setResponse] = useState(null)
 
-
 const settings = {
   dots: true,
     infinite: true,
@@ -42,6 +41,7 @@ const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/$
   },
 }
 )
+// console.log(data)
 setProductDetails(data.product)
 }
 // console.log("productdetails:",productdetails)
@@ -56,16 +56,18 @@ const handleQuantityChange = (e) => {
 
 async function Addtocart(e) {
   e.preventDefault(); 
-   
-  const cartItems = [
-    {
+
+  const payload= { 
+   items : [{
       product_id: +productId,
       quantity: quantity,
-    }
-  ]; 
+    }],
+  guest_token: guestToken
+}
+ 
 
   try{
-    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, {items: cartItems} ,
+    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload ,
     {  
      headers: {
        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -80,7 +82,8 @@ async function Addtocart(e) {
   }
   setCart((prevCart) => [...prevCart, ...data.cart_items]);
 
-console.log("addtocart", data)
+  console.log("addtocart", data)
+
    }
   catch(error){
     console.error('Error adding item to cart:', error);
@@ -132,7 +135,7 @@ const handleColorChange = (color, image) => {
                 value={quantity}
                 onChange={handleQuantityChange}
               />
-              <button type="submit" className="btn btn-success mx-2 px-4">
+              <button type="submit" className="addBtn mx-2 ">
                 Add to cart
               </button>
               {/* <button className="btn btn-success px-4">Buy now</button> */}

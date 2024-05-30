@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import style from "./TopNav.module.css"
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import logo from '../../Images/Logo PNG.png'
 
 export default function TopNav ({isOpen, setIsOpen}){
 
@@ -56,8 +57,8 @@ useEffect(() => {
               : "animate__fadeOutLeft delay-2s"
           }`}
         >
-          <h1 className="text-center text-uppercase">Zaha</h1>
-          <div className="list-unstyled">
+          <img width={150} src={logo} alt="" />
+          <div className={style.NavLinks}>
             <NavLink to="/" className={style.nav_link}>Home</NavLink>
           {categories ? categories.map(category => 
       

@@ -11,9 +11,13 @@ import 'slick-carousel/slick/slick-theme.css';
 export default function NavsAndTabs() {
   const [product, setProduct] = useState([]);
   const [nav, setNav]= useState('');
+  const[specificProducts,setSpecificProducts] = useState([])
   const [isHovering, setIsHovering] = useState(false);
   const sliderRef = useRef(null);
+  const[categories, setCategories] = useState([])
   const navigate = useNavigate()
+   const[Id, setId] = useState(null)
+  
   useEffect(() => {
     let interval;
     if (isHovering) {
@@ -47,6 +51,7 @@ const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
 }
 )
 setNav(data.category)
+setId(null)
 console.log("navs",data.category)
   }
 
@@ -60,83 +65,117 @@ console.log("navs",data.category)
       }
     );
     setProduct(data.products);
+    setSpecificProducts(data.products);
     console.log(data.products);
 
   }
 
+  async function getCategories(){
+    const{data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
+    {
+      headers: {
+        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      },
+    }
+    )
+    setCategories(data.category)
+    setId(data.category.id)
+    console.log("productCategory",data.category)
+  }
+
+
+  async function getSpecificProducts(Id){
+    const{data}= await axios.get(`https://zahaback.com/api/products/category/${Id}`,
+    {
+      headers: {
+        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      },
+    }
+    )
+    setSpecificProducts(data.products)
+    console.log("productCategory",data.products)
+  }
   const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);
   };
 
+
+  const handleTabClick = (categoryId) => {
+    setId(categoryId);
+  };
+
   useEffect(() => {
+    getCategories();
+    Navs()
     getAllProducts();
   }, []);
 
   useEffect(() => {
-    Navs();
-  }, []);
+    if (Id !== null) {
+      getSpecificProducts(Id);
+    } else {
+      setSpecificProducts(product); // Show all products when no category is selected
+    }
+  }, [Id, product]);
+
   return (
     <>
-      <div className="mt-5">
+
+<div className="mt-5">
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
-   <li className="nav-item" role="presentation">
-     <button
-       className={`nav-link tabLink ${style.link} active `}
-       id="all-tab"
-       data-bs-toggle="tab"
-       data-bs-target="#all"
-       type="button"
-       role="tab"
-       aria-controls="all"
-       aria-selected="true"
-     >
-       all
-     </button>
-   </li>
-
-    {nav ? nav.map((link) => (
-   
-    <li className="nav-item" role="presentation">
-    <button
-      className={`nav-link tabLink ${style.link}`}
-      id=""
-      data-bs-toggle=""
-      data-bs-target=""
-      type="button"
-      role="tab"
-      aria-controls=""
-      aria-selected=""
-    >
-     {link.name}
-    </button>
-  </li>
-
-  ))
-  : ""}
-          
-          </ul>
-
-        <div className="tab-content text-capitalize" id="myTabContent">
-          <div
-            className="tab-pane fade show active"
-            id="all"
-            role="tabpanel"
-            aria-labelledby="all-tab"
+        <li className="nav-item" role="presentation">
+          <button
+            className={`nav-link tabLink ${style.link} ${Id === null ? 'active' : ''}`}
+            id="all-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#all"
+            type="button"
+            role="tab"
+            aria-controls="all"
+            aria-selected={Id === null}
+            onClick={() => setId(null)}
           >
-            <div className="container my-5">
-              <div className="row g-3">
-                {product.length > 0
-                  ? product.map((product) => (
-                      <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
-                        
-                        <div className="mycard rounded rounded-3 overflow-hidden pointer" 
-                        onMouseEnter={() => setIsHovering(true)}
+            All
+          </button>
+        </li>
+        {categories.map((category) => (
+          <li className="nav-item" role="presentation" key={category.id}>
+            <button
+              className={`nav-link tabLink ${style.link} ${Id === category.id ? 'active' : ''}`}
+              id={`${category.name}-tab`}
+              data-bs-toggle="tab"
+              data-bs-target={`#${category.name}`}
+              type="button"
+              role="tab"
+              aria-controls={category.name}
+              aria-selected={Id === category.id}
+              onClick={() => handleTabClick(category.id)}
+            >
+              {category.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div className="tab-content" id="myTabContent">
+        <div
+          className={`tab-pane fade ${Id === null ? 'show active' : ''}`}
+          id="all"
+          role="tabpanel"
+          aria-labelledby="all-tab"
+        >
+          <div className="container my-5">
+            <div className="row g-3">
+              {product.map((product) => (
+                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+                  <div className="mycard rounded rounded-3 overflow-hidden pointer"
+                  onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)} 
                         onClick={()=>handleProductClick(product.id)}>
 
-                          <div className={`${style.myimg}`}>
-   
-                          <Slider  ref={sliderRef} {...settings}>
+
+                    <div className={`${style.myimg}`}>
+                    <Slider  ref={sliderRef} {...settings}>
                             {product.images?.map((image, index) => (
                                     <div key={index}>
                                       <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
@@ -144,628 +183,113 @@ console.log("navs",data.category)
                                   ))}
                               </Slider>
 
-                            <div className={`${style.layer}`}>
-                              {product.quantity == 0 ? <div className={`${style.sold}`}>sold out</div> : ""}
-                              <span className={`${style.eye}`}>
-                                <i className={` fa-solid fa-eye`}></i>
-                                <small className={`${style.small}`}>
-                                  overveiw
-                                </small>
-                              </span>
-                              <div className={`${style.shopCart} pointer`}>
-                                <i className="fa-solid fa-cart-plus"></i>
-                              </div>
-                              <span className={style.title}>{product.desc} description</span>
-                            </div>
-                          </div>
-                          <div className={`${style.content}`}>
-                            <div className="left">
-                              <h6 className="small my-2">{product.name}</h6>
-                              <p className="small my-0">Material : {product.material}</p>
-                              <p className="small my-0">Size : {product.size}</p>
-                              <ul className="p-0 my-2">
-                                <i className="fa-solid fa-star text-warning"></i>
-                                <i className="fa-solid fa-star text-warning"></i>
-                                <i className="fa-solid fa-star text-warning"></i>
-                                <i className="fa-solid fa-star text-warning"></i>
-                                <i className="fa-solid fa-star"></i>
-                              </ul>
-                              <p className="small">
-                                {product.price} LE
-                              </p>
-                            </div>
-                            <div className={`${style.right}`}>
-                              <div
-                                className={`bg-danger ${style.circle}`}
-                              ></div>
-                              <div className={`bg-info ${style.circle}`}></div>
-                              <div
-                                className={`bg-success ${style.circle}`}
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  : ""}
-              </div>
-            </div>
-          </div>
-          <div
-            className="tab-pane fade"
-            id="coats"
-            role="tabpanel"
-            aria-labelledby="coats-tab"
-          >
-            <div className="container my-5">
-              <div className="row g-3">
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
                       <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
+                        <div className={`${style.sold}`}>{product.soldOut ? 'sold out' : ''}</div>
                         <span className={`${style.eye}`}>
                           <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
+                          <small className={`${style.small}`}>overview</small>
                         </span>
                         <div className={`${style.shopCart} pointer`}>
                           <i className="fa-solid fa-cart-plus"></i>
                         </div>
-                        <span className={style.title}>this is title</span>
+                        <span className={style.title}>{product.name}</span>
                       </div>
                     </div>
                     <div className={`${style.content}`}>
                       <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
+                        <h6 className="small my-2">{product.name}</h6>
                         <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <i
+                              key={index}
+                              className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
+                            ></i>
+                          ))}
                         </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
+                        <p className="small">{product.price} EGP</p>
                       </div>
                       <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
+                        {product.colors.map((color) => (
+                          <div key={color} className={`${style.circle}`} style={{ backgroundColor: color }}></div>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="tab-pane fade"
-            id="dresses"
-            role="tabpanel"
-            aria-labelledby="dresses-tab"
-          >
-            <div className="container my-5">
-              <div className="row g-3">
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className="tab-pane fade"
-            id="sets"
-            role="tabpanel"
-            aria-labelledby="sets-tab"
-          >
-            <div className="container my-5">
-              <div className="row g-3">
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="mycard rounded rounded-3 overflow-hidden">
-                    <div className={`${style.myimg}`}>
-                      <img src={img} className="w-100" alt="img" />
-                      <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>sold out</div>
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
-                          <small className={`${style.small}`}>overveiw</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                        <span className={style.title}>this is title</span>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">trench coat</h6>
-                        <ul className="p-0 my-2">
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star text-warning"></i>
-                          <i className="fa-solid fa-star"></i>
-                        </ul>
-                        <p className="small">1.400,00 EGP – 1.700,00 EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        <div className={`bg-danger ${style.circle}`}></div>
-                        <div className={`bg-info ${style.circle}`}></div>
-                        <div className={`bg-success ${style.circle}`}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
+        
+        {categories.map((category) => (
+          <div
+            key={category.id}
+            className={`tab-pane fade ${Id === category.id ? 'show active' : ''}`}
+            id={category.name}
+            role="tabpanel"
+            aria-labelledby={`${category.name}-tab`}
+          >
+            <div className="container my-5">
+              <div className="row g-3">
+                {specificProducts.map((product) => (
+                  <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+                    <div className="mycard rounded rounded-3 overflow-hidden pointer"
+                  onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)} 
+                        onClick={()=>handleProductClick(product.id)}>
+
+
+                    <div className={`${style.myimg}`}>
+                    <Slider  ref={sliderRef} {...settings}>
+                            {product.images?.map((image, index) => (
+                                    <div key={index}>
+                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
+                                    </div>
+                                  ))}
+                              </Slider>
+                        <div className={`${style.layer}`}>
+                          <div className={`${style.sold}`}>{product.soldOut ? 'sold out' : ''}</div>
+                          <span className={`${style.eye}`}>
+                            <i className={` fa-solid fa-eye`}></i>
+                            <small className={`${style.small}`}>overview</small>
+                          </span>
+                          <div className={`${style.shopCart} pointer`}>
+                            <i className="fa-solid fa-cart-plus"></i>
+                          </div>
+                          <span className={style.title}>{product.name}</span>
+                        </div>
+                      </div>
+                      <div className={`${style.content}`}>
+                        <div className="left">
+                          <h6 className="small my-2">{product.name}</h6>
+                          <ul className="p-0 my-2">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <i
+                                key={index}
+                                className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
+                              ></i>
+                            ))}
+                          </ul>
+                          <p className="small">{product.price} EGP</p>
+                        </div>
+                        <div className={`${style.right}`}>
+                          {product.colors.map((color) => (
+                            <div key={color} className={`${style.circle}`} style={{ backgroundColor: color }}></div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+    </div>
+
+
+  
     </>
   );
 }

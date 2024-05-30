@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Checkout() {
 
@@ -65,9 +66,21 @@ const [cityId, setCityId]= useState("")
             Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
           },
         });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: data.message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
         console.log(data);
       } catch (error) {
         console.error('Error:', error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     };
 

@@ -1,24 +1,27 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "./SearchInput.module.css";
 import "animate.css";
 import axios from "axios";
 import SearchedProducts from "../SearchedProducts/SearchedProducts";
 import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../../SearchContext/SearchContext";
 
 export default function SearchInput({ searchOpen, setSearchOpen }) {
-  const[input, setInput] =useState("")
-    const [products, setProducts] = useState([]);
-    const [showResults, setShowResults] = useState(false);
-    const searchBoxRef = useRef(null);
-    const [loading, setLoading] = useState(false);
-  const navigate= useNavigate()
+  const {
+    input, setInput,
+    products, setProducts,
+    showResults, setShowResults,
+    loading, setLoading
+  } = useContext(SearchContext);
+  
+  const searchBoxRef = useRef(null);
+  const navigate = useNavigate();
 
   function remove(e) {
     if (e.target.classList.contains("search")) {
       setSearchOpen(false);
     }
   }
-
   const debounce = (func, delay) => {
     let timer;
     const debouncedFunction = (...args) => {
@@ -43,34 +46,28 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate("/searchedproducts")
+    navigate("/searchedproducts");
     setShowResults(false);
     Search();
   };
 
-  async function Search(){
+  const Search = async () => {
     setLoading(true);
-    try{
-      const {data}= await axios.get(`https://zahaback.com/api/userproduct/search?search=`,
-      {
-        params: {
-          search: input,
-        },
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-        )  
-        setProducts(data.products);
-        setShowResults(data.products.length > 0); 
-        console.log(data.products);
-    }catch(error){
+    try {
+      const { data } = await axios.get(`https://zahaback.com/api/userproduct/search?search=`, {
+        params: { search: input },
+        headers: { Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97` },
+      });
+      setProducts(data.products);
+      setShowResults(data.products.length > 0);
+      console.log(data.products);
+    } catch (error) {
       setShowResults(false);
-    console.error(error)
-    }finally {
+      console.error(error);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleSearchDebounced = debounce(Search, 2000);
 
@@ -80,19 +77,13 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     }
   };
 
-  // if (products && products.length > 0) 
-  // {navigate("/searchedProducts")}
-   
-
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      handleSearchDebounced.cancel(); 
+      handleSearchDebounced.cancel();
     };
-    
   }, []);
-
 
   return (
     <>

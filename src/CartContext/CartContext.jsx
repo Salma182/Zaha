@@ -5,6 +5,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [guestToken, setGuestToken] = useState(localStorage.getItem('guestToken') || '');
+
 console.log("cartcontext",cart)
 
   return (

@@ -30,6 +30,7 @@ import CallbacksForDashboard from "./Components/Admin/CallbacksForDashboard/Call
 import Checkout from "./Components/Checkout/Checkout.jsx";
 import SearchedProducts from "./Components/SearchedProducts/SearchedProducts.jsx";
 import { CartProvider } from './CartContext/CartContext.jsx';
+import { SearchProvider } from "./SearchContext/SearchContext.jsx";
 
 let routers = createBrowserRouter([
   {
@@ -75,6 +76,7 @@ let routers = createBrowserRouter([
 
 export default function App() {
 
-  return <RouterProvider router={routers}></RouterProvider>
-
+  return <SearchProvider> <CartProvider> <RouterProvider router={routers}></RouterProvider> </CartProvider> 
+  </SearchProvider> 
+        
 }

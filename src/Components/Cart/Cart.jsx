@@ -9,7 +9,7 @@ import CartContext from "../../CartContext/CartContext";
 export default function Cart({ cartOpen, setCartOpen, response}) {
 
   const { cart, setCart } = useContext(CartContext);
-
+  // const[cartData,setCartData] =useState([])
   const navigate = useNavigate()
   function remove(e) {
     if (e.target.classList.contains("cart")) {
@@ -65,21 +65,35 @@ console.log("cart", data.cart)
         >
           <h4 className="text-center fw-bold my-4">My Cart</h4>
          
-
-          
                     
           {cart && cart.length > 0 ? (
         cart?.map((item, index) => (
           <div key={index}>
-            {/* <p>{item.product.name}</p>
-            <p>{item.product.desc}</p>
-            <p>{item.product.price}</p>
-            <p>{item.product.size}</p> */}
+           <div className="row g-2 my-3">
+            <div className="col-md-3">
+              <div className="img">
+                <img className="w-100" src={item.product?.images[0]} alt="img" />
+              </div>
+            </div>
+            <div className="col-md-7">
+              <div className="desc">
+                <p className="mt-0 mb-1 fw-bold small">
+                  {item.product?.name}
+                </p>
+                <p className="my-1 small">{item.product?.price} EGP</p>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="close">
+                <i className="fa-solid fa-xmark pointer"></i>
+              </div>
+            </div>
+          </div>
 
-            <button onClick={()=> handlecheckout()}>Checkout</button>
 
           </div>
         ))
+
       ) : (
         <div className="cont text-center">
             <i className="fa-solid fa-bag-shopping text-secondary d-block  fs-1 my-5"></i>
@@ -93,6 +107,7 @@ console.log("cart", data.cart)
           </div>
       )}
 
+      <button onClick={()=> handlecheckout()}>Checkout</button>
 
         {/* {cartOpen && cartData ?
           cartData.map((cart)=>{
