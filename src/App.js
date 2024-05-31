@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Route, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import "./App.css";
 import Home from "./Components/Home/Home";
 import Cart from "./Components/Cart/Cart";
@@ -31,7 +31,7 @@ import Checkout from "./Components/Checkout/Checkout.jsx";
 import SearchedProducts from "./Components/SearchedProducts/SearchedProducts.jsx";
 import { CartProvider } from './CartContext/CartContext.jsx';
 import { SearchProvider } from "./SearchContext/SearchContext.jsx";
-import PrivateRoute from "./Components/PrivateRoute/PrivateRoute.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.jsx";
 import { AuthProvider } from "./AuthContext/AuthContext.jsx";
 import { CategoriesProvider } from "./CategoriesContext/CategoriesContext.jsx";
 import ChosenCategory from "./Components/ChosenCategory/ChosenCategory.jsx";
@@ -118,3 +118,46 @@ export default function App() {
     </CategoriesProvider>
         
 }
+
+
+
+
+
+// const routers = createBrowserRouter(
+
+//   <Routes>
+//   <Route path="/" element={<Layout />}>
+//     <Route index element={<LazyComponent Component={Home} />} />
+//     <Route path="cart" element={<LazyComponent Component={Cart} />} />
+//     <Route path="sets" element={<LazyComponent Component={Sets} />} />
+//     <Route path="shop" element={<LazyComponent Component={Shop} />} />
+//     <Route path="coats" element={<LazyComponent Component={Coats} />} />
+//     <Route path="login" element={<LazyComponent Component={Login} />} />
+//     <Route path="dresses" element={<LazyComponent Component={Dresses} />} />
+//     <Route path="wishlist" element={<LazyComponent Component={Wishlist} />} />
+//     <Route path="register" element={<LazyComponent Component={Register} />} />
+//     <Route path="productdetails/:productId" element={<LazyComponent Component={ProductDetails} />} />
+//     <Route path="checkout" element={<LazyComponent Component={Checkout} />} />
+//     <Route path="searchedproducts" element={<LazyComponent Component={SearchedProducts} />} />
+//     <Route path="category/:categoryName" element={<LazyComponent Component={ChosenCategory} />} />
+//     <Route path="*" element={<LazyComponent Component={Notfound} />} />
+
+//     {/* Dashboard Routes */}
+//     <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} adminOnly />}>
+//       <Route index element={<ProtectedRoute element={<Orders />} adminOnly />} />
+//       <Route path="reviews" element={<ProtectedRoute element={<Reviews />} adminOnly />} />
+//       <Route path="slider" element={<ProtectedRoute element={<Slider />} adminOnly />} />
+//       <Route path="area" element={<ProtectedRoute element={<EsimateArea />} adminOnly />} />
+//       <Route path="products" element={<ProtectedRoute element={<ProductsForDashboard />} adminOnly />} />
+//       <Route path="questions" element={<ProtectedRoute element={<Questions />} adminOnly />} />
+//       <Route path="categories" element={<ProtectedRoute element={<Categories />} adminOnly />} />
+//       <Route path="callbacks" element={<ProtectedRoute element={<CallbacksForDashboard />} adminOnly />} />
+//       <Route path="subcategory" element={<ProtectedRoute element={<SubCategory />} adminOnly />} />
+//       <Route path="coupon" element={<ProtectedRoute element={<Coupon />} adminOnly />} />
+//       <Route path="sociallinks" element={<ProtectedRoute element={<SocialLinks />} adminOnly />} />
+//       <Route path="imageforinsta" element={<ProtectedRoute element={<ImgForDashboard />} adminOnly />} />
+//     </Route>
+//   </Route>
+// </Routes>
+  
+// );

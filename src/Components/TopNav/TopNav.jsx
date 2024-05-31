@@ -28,7 +28,7 @@ async function specifiCategory(categoryName){
   }
   )
   setProducts(data.products)
-  setIsOpen(false)
+  // setIsOpen(false)
 }
 
   async function Categories(){
