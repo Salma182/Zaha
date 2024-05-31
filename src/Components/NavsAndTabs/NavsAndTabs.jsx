@@ -18,19 +18,19 @@ export default function NavsAndTabs() {
   const navigate = useNavigate()
    const[Id, setId] = useState(null)
   
-  useEffect(() => {
-    let interval;
-    if (isHovering) {
-      interval = setInterval(() => {
-        if (sliderRef.current) {
-          sliderRef.current.slickNext();
-        }
-      }, 1000); // Adjust the interval as needed
-    }
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isHovering]);
+  // useEffect(() => {
+  //   let interval;
+  //   if (isHovering) {
+  //     interval = setInterval(() => {
+  //       if (sliderRef.current) {
+  //         sliderRef.current.slickNext();
+  //       }
+  //     }, 1000); // Adjust the interval as needed
+  //   }
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, [isHovering]);
 
 const settings = {
   dots: true,
@@ -66,7 +66,7 @@ console.log("navs",data.category)
     );
     setProduct(data.products);
     setSpecificProducts(data.products);
-    console.log(data.products);
+    console.log("products",data.products);
 
   }
 
@@ -99,29 +99,33 @@ console.log("navs",data.category)
     navigate(`/productdetails/${productId}`);
   };
 
-
   const handleTabClick = (categoryId) => {
     setId(categoryId);
   };
 
+  console.log(Id)
   useEffect(() => {
+    getAllProducts();
     getCategories();
     Navs()
-    getAllProducts();
   }, []);
 
-  useEffect(() => {
-    if (Id !== null) {
-      getSpecificProducts(Id);
-    } else {
-      setSpecificProducts(product); // Show all products when no category is selected
-    }
-  }, [Id, product]);
+  // useEffect(() => {
+  //   if (Id === null || Id === undefined) {
+  //     getSpecificProducts(Id);
+  //   } else {
+  //     getSpecificProducts(Id); 
+  //   }
+  // }, [Id, product]);
 
   return (
     <>
 
 <div className="mt-5">
+  <div className="container w-100">
+  <h3 className={style.newcollection}>New Collection</h3>
+
+  </div>
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button
@@ -159,7 +163,7 @@ console.log("navs",data.category)
 
       <div className="tab-content" id="myTabContent">
         <div
-          className={`tab-pane fade ${Id === null ? 'show active' : ''}`}
+          className={`tab-pane fade ${Id === null || undefined ? 'show active' : ''}`}
           id="all"
           role="tabpanel"
           aria-labelledby="all-tab"
@@ -173,7 +177,6 @@ console.log("navs",data.category)
                         onMouseLeave={() => setIsHovering(false)} 
                         onClick={()=>handleProductClick(product.id)}>
 
-
                     <div className={`${style.myimg}`}>
                     <Slider  ref={sliderRef} {...settings}>
                             {product.images?.map((image, index) => (
@@ -184,7 +187,7 @@ console.log("navs",data.category)
                               </Slider>
 
                       <div className={`${style.layer}`}>
-                        <div className={`${style.sold}`}>{product.soldOut ? 'sold out' : ''}</div>
+                      {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
                         <span className={`${style.eye}`}>
                           <i className={` fa-solid fa-eye`}></i>
                           <small className={`${style.small}`}>overview</small>
@@ -248,7 +251,7 @@ console.log("navs",data.category)
                                   ))}
                               </Slider>
                         <div className={`${style.layer}`}>
-                          <div className={`${style.sold}`}>{product.soldOut ? 'sold out' : ''}</div>
+                        {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
                           <span className={`${style.eye}`}>
                             <i className={` fa-solid fa-eye`}></i>
                             <small className={`${style.small}`}>overview</small>

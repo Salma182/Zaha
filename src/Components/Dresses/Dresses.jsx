@@ -1,10 +1,10 @@
-import React from "react";
-import style from "./Dresses.module.css";
+// import React from "react";
+// import style from "./Dresses.module.css";
 
-export default function Dresses() {
-  return (
-    <>
-      <h1>Dresses</h1>
-    </>
-  );
-}
+// export default function Dresses() {
+//   return (
+//     <>
+//       <h1>Dresses</h1>
+//     </>
+//   );
+// }

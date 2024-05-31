@@ -3,6 +3,7 @@
   --bg-color: #ffcbd3;
   --dark-color: #333;
   scroll-behavior: smooth !important;
+  --bg-gold:#956911;
 }
 
 body {

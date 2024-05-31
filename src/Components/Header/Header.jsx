@@ -18,7 +18,7 @@ export default function Header() {
       <nav
         className={`bg-color p-3 text-capitalize fixed-top dark-color shadowx`}
       >
-        <div className="container d-flex justify-content-between align-items-center ">
+        <div className="container d-flex justify-content-center align-items-center ">
           <div className="bar small sidebar" onClick={() => setIsOpen(true)}>
             <i className="fa-solid fa-bars fs-5 pointer small"></i>
           </div>
@@ -30,16 +30,16 @@ export default function Header() {
 
           <SearchInput searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
-          <div className="icons">
-            <Link className="text-decoration-none text-dark mx-2" to="login">Login</Link>
-            <Link className="text-decoration-none text-dark mx-2" to="register">Register</Link>
+          <div className="icons d-flex">
+            <Link className="text-decoration-none text-dark fw-bold me-2" to="login">Login</Link>
+            <Link className="text-decoration-none text-dark fw-bold me-2" to="register">Register</Link>
             <i
               onClick={() => setSearchOpen(true)}
-              className="fa-solid fa-magnifying-glass me-3 pointer search-icon"
+              className="fa-solid fa-magnifying-glass fs-5 me-3 mt-1 pointer search-icon"
             ></i>
             <i
               onClick={() => setCartOpen((cart) => !cart)}
-              className="fa-solid fa-cart-arrow-down small pointer"
+              className="fa-solid fa-cart-arrow-down fs-5 mt-1 small pointer"
             ></i>
           </div>
         </div>

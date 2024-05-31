@@ -172,7 +172,7 @@ export default function SubCategory() {
 console.log(products)
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         SubCategory
       </h1>
       <div className="container">

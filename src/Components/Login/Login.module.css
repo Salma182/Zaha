@@ -1,1 +1,7 @@
-.Login {}
+.registerLink{
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    margin-left: 1%;
+    padding-top: 1%;
+}

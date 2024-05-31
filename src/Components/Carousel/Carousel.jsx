@@ -4,6 +4,7 @@ import "owl.carousel/dist/assets/owl.carousel.min.css";
 import "owl.carousel/dist/assets/owl.theme.default.min.css";
 import style from "./Carousel.module.css";
 import axios from "axios";
+import Loading from "../Loading/Loading";
 
 export default function Carousel() {
   const [products, setProducts] = useState([]);
@@ -62,23 +63,23 @@ export default function Carousel() {
     margin: 20,
     responsiveClass: true,
     loop: true,
-    autoplay: false,
-    smartSpeed: 1000,
+    autoplay: true,
+    smartSpeed: 500,
     responsive: {
       0: { items: 1 },
       400: { items: 1 },
-      550: { items: 2 },
-      750: { items: 3 },
-      1000: { items: 4 },
-      1200: { items: 5 },
+      550: { items:1 },
+      750: { items: 1 },
+      1000: { items: 1 },
+      1200: { items: 1 },
     },
   };
 
   return (
-    <div className="container">
+    <div className="slider">
       <div className="mt-5"></div>
       {isLoading ? (
-        <p>Loading...</p>
+    <Loading />
       ) : (
         <OwlCarousel {...options}>
           {products.map((product) => (
@@ -89,10 +90,10 @@ export default function Carousel() {
               <img
                 className="object-fit-cover w-100"
                 src={product.path}
-                height={300}
+                height={700}
                 alt="img"
               />
-              <div
+              {/* <div
                 className={`${style.layer} border-0 d-flex justify-content-center align-items-center`}
               >
                 <div
@@ -100,7 +101,7 @@ export default function Carousel() {
                 >
                   View More
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </OwlCarousel>

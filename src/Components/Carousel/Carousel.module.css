@@ -10,11 +10,22 @@
   -o-transition: all 0.3s;
   background-color: rgba(0, 0, 0, 0.4);
 }
-
+.item{
+  width: 100%;
+}
 .item:hover .layer {
   top: 0;
 }
-
+.slider{
+  margin-top: 3%;
+}
 .btn {
   background-color: #f493a6 !important;
+}
+
+
+@media (max-width: 768px) {
+  .slider{
+    margin-top: -3%;
+  }
 }

@@ -35,9 +35,8 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setInput(value);
-    setShowResults(true);
   
-    if (value === "") {
+    if (value === "" || value === " ") {
       setShowResults(false);
     } else {
       handleSearchDebounced(value);
@@ -46,10 +45,15 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate("/searchedproducts");
-    setShowResults(false);
-    Search();
-  };
+    if (input.trim() === "") {
+      setShowResults(false);
+      setSearchOpen(false);
+    } else {
+      setShowResults(false); 
+       setSearchOpen(false);
+      navigate("/searchedproducts");
+    }
+  }
 
   const Search = async () => {
     setLoading(true);
@@ -59,7 +63,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
         headers: { Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97` },
       });
       setProducts(data.products);
-      setShowResults(data.products.length > 0);
+      setShowResults(data.products.length > 0 ? true : false);
       console.log(data.products);
     } catch (error) {
       setShowResults(false);
@@ -69,7 +73,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     }
   };
 
-  const handleSearchDebounced = debounce(Search, 2000);
+  const handleSearchDebounced = debounce(Search, 3000);
 
   const handleClickOutside = (event) => {
     if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
@@ -95,6 +99,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
         className={style.search_input}
         placeholder="I'm shopping for ..."
         onChange={(e)=>handleSearchChange(e)}
+        onKeyDown={handleSearchDebounced}
       />
   </form>
   <button className={style.search_button}>
@@ -122,11 +127,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
         </div>
       )}
 
-      {/* {products ? <SearchedProducts products={products} /> : ""} */}
-
 </div>
-
-
 
       <div
         onClick={(e) => remove(e)}
@@ -137,12 +138,14 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     <div className={`${style.links} p-3 animate__animated`}>  
           <div className="container">
             <div className="d-flex align-items-center justify-content-center">
+            <form onSubmit={handleSearchSubmit} className="w-100">
               <input
                 type="search"
                 className={style.search_input}
                 placeholder="I'm shopping for ..."
                 onChange={(e)=>handleSearchChange(e)}
               />
+              </form>
               <i
                 // onClick={() => setSearchOpen(false)}  
                 onClick={() => setShowResults(false)}

@@ -31,6 +31,7 @@ export default function Categories() {
         ...category,
         is_home: category.is_home === "true",
       }));
+      
       setCategories(updatedCategories);
       setCurrentPage(data.category.current_page);
       setLastPage(data.category.last_page);
@@ -138,7 +139,7 @@ export default function Categories() {
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         All Categories
       </h1>
 
@@ -181,15 +182,6 @@ export default function Categories() {
                     Edit
                   </button>
                     </div>
-
-                 <label>
-            <input
-              type="checkbox"
-              checked={category.is_home}
-              onChange={e => handleCheckboxChange(category.id, e.target.checked)}
-            />
-            {" in home ?"}
-          </label>
 
                 </div>
               </div>
@@ -252,15 +244,28 @@ export default function Categories() {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
+
+            
+            {/* <label>
+            <input
+              type="checkbox"
+              checked={category.is_home}
+              onChange={e => handleCheckboxChange(category.id, e.target.checked)}
+            />
+            {" in home ?"}
+          </label> */}
+
+
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
             Close
-          </button>
-          <button variant="primary" onClick={updateCategory}>
+          </Button>
+          <Button variant="primary" onClick={updateCategory}>
             Update Category
-          </button>
+          </Button>
         </Modal.Footer>
       </Modal>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./Components/Home/Home";
@@ -31,52 +31,90 @@ import Checkout from "./Components/Checkout/Checkout.jsx";
 import SearchedProducts from "./Components/SearchedProducts/SearchedProducts.jsx";
 import { CartProvider } from './CartContext/CartContext.jsx';
 import { SearchProvider } from "./SearchContext/SearchContext.jsx";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute.jsx";
+import { AuthProvider } from "./AuthContext/AuthContext.jsx";
+import { CategoriesProvider } from "./CategoriesContext/CategoriesContext.jsx";
+import ChosenCategory from "./Components/ChosenCategory/ChosenCategory.jsx";
+import Loading from "./Components/Loading/Loading.jsx";
 
-let routers = createBrowserRouter([
+
+const LazyComponent = ({ Component }) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+);
+
+const routers = createBrowserRouter([
   {
     path: "",
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "cart", element: <Cart /> },
-      { path: "sets", element: <Sets /> },
-      { path: "shop", element: <Shop /> },
-      { path: "coats", element: <Coats /> },
-      { path: "login", element: <Login /> },
-      { path: "dresses", element: <Dresses /> },
-      { path: "wishlist", element: <Wishlist /> },
-      { path: "register", element: <Register /> },
-      { path: "recentlyviewd", element: <RecentlyViewd /> },
-      { path: `productdetails/:productId`, element: <ProductDetails /> },
-      { path: `checkout`, element: <Checkout /> },
-      { path: `searchedproducts`, element: <SearchedProducts /> },
-
-      { path: "*", element: <Notfound /> },
+      { index: true, element: <LazyComponent Component={Home} /> },
+      { path: "cart", element: <LazyComponent Component={Cart} /> },
+      { path: "sets", element: <LazyComponent Component={Sets} /> },
+      { path: "shop", element: <LazyComponent Component={Shop} /> },
+      { path: "coats", element: <LazyComponent Component={Coats} /> },
+      { path: "login", element: <LazyComponent Component={Login} /> },
+      { path: "dresses", element: <LazyComponent Component={Dresses} /> },
+      { path: "wishlist", element: <LazyComponent Component={Wishlist} /> },
+      { path: "register", element: <LazyComponent Component={Register} /> },
+      // { path: "recentlyviewd", element: <LazyComponent Component={RecentlyViewed} /> },
+      { path: "productdetails/:productId", element: <LazyComponent Component={ProductDetails} /> },
+      { path: "checkout", element: <LazyComponent Component={Checkout} /> },
+      { path: "searchedproducts", element: <LazyComponent Component={SearchedProducts} /> },
+      { path: "category/:categoryName", element: <LazyComponent Component={ChosenCategory} /> },
+      // { path: "*", element: <LazyComponent Component={NotFound} /> },
     ],
   },
   {
     path: "dashboard",
     element: <Dashboard />,
     children: [
-      { index: true, element: <Orders /> },
-      { path: "reviews", element: <Reviews /> },
-      { path: "slider", element: <Slider /> },
-      { path: "area", element: <EsimateArea /> },
-      { path: "products", element: <ProductsForDashboard /> },
-      { path: "questions", element: <Questions /> },
-      { path: "categories", element: <Categories /> },
-      { path: "callbacks", element: <CallbacksForDashboard /> },
-      { path: "subcategory", element: <SubCategory /> },
-      { path: "coupon", element: <Coupon /> },
-      { path: "sociallinks", element: <SocialLinks /> },
-      { path: "imageforinsta", element: <ImgForDashboard /> },
+      { index: true, element: <LazyComponent Component={Orders} /> },
+      { path: "reviews", element: <LazyComponent Component={Reviews} /> },
+      { path: "slider", element: <LazyComponent Component={Slider} /> },
+      { path: "area", element: <LazyComponent Component={EsimateArea} /> },
+      { path: "products", element: <LazyComponent Component={ProductsForDashboard} /> },
+      { path: "questions", element: <LazyComponent Component={Questions} /> },
+      { path: "categories", element: <LazyComponent Component={Categories} /> },
+      { path: "callbacks", element: <LazyComponent Component={CallbacksForDashboard} /> },
+      { path: "subcategory", element: <LazyComponent Component={SubCategory} /> },
+      { path: "coupon", element: <LazyComponent Component={Coupon} /> },
+      { path: "sociallinks", element: <LazyComponent Component={SocialLinks} /> },
+      { path: "imageforinsta", element: <LazyComponent Component={ImgForDashboard} /> },
     ],
   },
 ]);
+//   <PrivateRoute path="/dashboard" element={<Dashboard />}>
+//   <PrivateRoute index element={<Orders />} />
+//   <PrivateRoute path="reviews" element={<Reviews />} />
+//   <PrivateRoute path="slider" element={<Slider />} />
+//   <PrivateRoute path="area" element={<EsimateArea />} />
+//   <PrivateRoute path="products" element={<ProductsForDashboard />} />
+//   <PrivateRoute path="questions" element={<Questions />} />
+//   <PrivateRoute path="categories" element={<Categories />} />
+//   <PrivateRoute path="callbacks" element={<CallbacksForDashboard />} />
+//   <PrivateRoute path="subcategory" element={<SubCategory />} />
+//   <PrivateRoute path="coupon" element={<Coupon />} />
+//   <PrivateRoute path="sociallinks" element={<SocialLinks />} />
+//   <PrivateRoute path="imageforinsta" element={<ImgForDashboard />} />
+// </PrivateRoute>
+
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  return <SearchProvider> <CartProvider> <RouterProvider router={routers}></RouterProvider> </CartProvider> 
-  </SearchProvider> 
+  const authContextValue = { isAuthenticated, isAdmin };
+
+  return <CategoriesProvider>
+    <AuthProvider value={authContextValue}>
+     <SearchProvider>
+        <CartProvider> 
+             <RouterProvider router={routers}></RouterProvider>
+         </CartProvider> 
+        </SearchProvider> 
+      </AuthProvider> 
+    </CategoriesProvider>
         
 }

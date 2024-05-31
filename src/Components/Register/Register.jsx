@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import style from "./Register.module.css";
+import style from "../Login/Login.module.css";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 
 export default function Register() {
 
@@ -63,7 +63,7 @@ const user = {
       console.log("data", data);
       localStorage.setItem('token',data.token)  
       setUserToken(localStorage.getItem('token'))
-      navigate('./')
+      navigate('/')
 
     } catch (error) {
       if (error.response) {
@@ -81,9 +81,9 @@ const user = {
   
   return (
     <>
-      <div className="container">
+      <div className="container mt-5">
         <div className="py-5"></div>
-        <h1 className="text-center fw-bold mb-3">Register Form</h1>
+        <h1 className="text-center fw-bold mb-3">Register</h1>
         <form onSubmit={formik.handleSubmit} className="bg-color p-3 rounded-3 w-50 m-auto">
         {errors ? (
             <div className="bg-white" style={{ color: "red" }}>
@@ -191,6 +191,11 @@ const user = {
           </div>
 
           <button onSubmit={()=>submitForm()} type='submit' className="btn btn-dark w-100 mt-3">Register</button>
+          <div className="d-flex justify-content-center align-center m-auto my-3 ">
+          <h6 className="mt-2">Do you Have Account ? </h6>
+          <Link to="/login" className={style.registerLink}>Login</Link>
+         </div>
+
         </form>
       </div>
     </>

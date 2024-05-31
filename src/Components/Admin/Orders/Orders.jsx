@@ -1,57 +1,97 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Orders.module.css";
 import Table from "react-bootstrap/Table";
+import axios from "axios";
+import { Pagination } from "react-bootstrap";
 
 export default function Orders() {
+const [orders, setOrders]= useState([])
+const [currentPage, setCurrentPage] = useState(1);
+const [lastPage, setLastPage] = useState(1); 
+
+async function getOrders(page = 1) {
+  const {data}= await axios(`https://zahaback.com/api/orders/allOrders?page=${page}`,
+  {
+    headers: {
+      Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+    },
+  }
+  )
+  setOrders(data.allOrders.data)
+  console.log(data.allOrders.data)
+}
+
+useEffect(() => {
+  getOrders();
+}, []); 
+
+let items = [];
+for (let number = 1; number <= lastPage; number++) {
+  items.push(
+    <Pagination.Item
+      key={number}
+      active={number === currentPage}
+      onClick={() => getOrders(number)}
+    >
+      {number}
+    </Pagination.Item>
+  );
+}
+const paginationBasic = (
+  <div>
+    <Pagination size="sm">{items}</Pagination>
+  </div>
+);
+
   return (
     <>
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Orders
       </h1>
+
       <Table striped bordered>
         <thead>
           <tr>
-            <th>Code</th>
-            <th>Order Name</th>
-            <th>date</th>
-            <th>Description</th>
-            <th>type</th>
-            <th>Actions</th>
+            <th>index</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>product-id</th>
+            <th>quantity</th>
+            <th>city</th>
+            <th>phone</th>
+          
+            <th>price</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Dress</td>
-            <td>10-3-2024</td>
-            <td width={300}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro,
-              repellat?
-            </td>
-            <td>Lorem ipsum dolor sit.</td>
-            <td>
-              <div className="d-flex justify-content-evenly align-items-center">
-                <div className="btn btn-success">Accept </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Dress</td>
-            <td>10-3-2024</td>
-            <td width={300}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro,
-              repellat?
-            </td>
-            <td>Lorem ipsum dolor sit.</td>
-            <td>
-              <div className="d-flex justify-content-evenly align-items-center">
-                <div className="btn btn-success">Accept </div>
-              </div>
-            </td>
-          </tr>
+     
+          {orders && orders.length > 0 && 
+            orders.map((order,index) => 
+              <tr>
+              <td>{index} </td>
+              <td>{order.first_name}</td>
+              <td width={300}>
+               {order.email}
+              </td>
+                <td>{order.product_id.map((p)=>p).join(",")}</td>
+              <td>{order.quantity.map((q)=>q).join(",")}</td>
+              <td>{order.city}</td>
+              <td>{order.phone}</td>
+              <td>{order.total_price}</td>
+
+            </tr>
+            
+          ) }
+        
+
         </tbody>
       </Table>
+
+      <div className="my-2 d-flex justify-content-center">
+        {paginationBasic}
+      </div>
+
     </>
   );
 }

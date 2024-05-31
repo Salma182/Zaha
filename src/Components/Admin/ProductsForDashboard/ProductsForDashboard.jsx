@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
+import Pagination from "react-bootstrap/Pagination";
 
 export default function ProductsForDashboard() {
 
@@ -11,6 +12,7 @@ export default function ProductsForDashboard() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [size, setSize] = useState("");
+  const[sizes,setSizes]=useState([])
   const [material, setMaterial] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
@@ -22,7 +24,9 @@ export default function ProductsForDashboard() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  
   async function getProducts() {
     try {
       const { data } = await axios.get(
@@ -61,7 +65,7 @@ export default function ProductsForDashboard() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("desc", desc);
-      formData.append("size", size);
+      formData.append("sizes", sizes);
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
@@ -72,7 +76,7 @@ export default function ProductsForDashboard() {
       console.log({
         name,
         desc,
-        size,
+        sizes,
         material,
         price,
         images,
@@ -146,7 +150,6 @@ export default function ProductsForDashboard() {
       });
     }
   }
-
   async function deleteProduct(productId) {
     // Show confirmation dialog before deleting
     const result = await Swal.fire({
@@ -186,81 +189,99 @@ export default function ProductsForDashboard() {
   }
 
   useEffect(() => {
+    console.log("subcategoryid", selectedSubcategory)
+
     getProducts();
     fetchSubcategories();
   }, []);
 
+  const paginationItems = [];
+  for (let i = 1; i <= lastPage; i++) {
+    paginationItems.push(
+      <Pagination.Item
+        key={i}
+        active={i === currentPage}
+        onClick={() => getProducts(i)}
+      >
+        {i}
+      </Pagination.Item>
+    );
+  }
+
   return <>
+     <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+        Products
+      </h1>
+
       {products.length > 0 ? (
         <div className="container">
           <div className="row g-3">
             {products?.map((product) => (
-              <div key={product.id} className="col-md-3">
-                <div className="card p-2">
-                  <img
-                    src={product.images[0]}
-                    className="w-100 object-fit-cover"
-                    alt="Product"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <span>Name: </span> {product.name}
-                    </h5>
-                    <p className="card-text">
-                      <span className="fw-bold">Desc:</span>{" "}
-                      {product.desc}
-                    </p>
-                    <p className="card-text">
-                      <span className="fw-bold">Price:</span>{" "}
-                      {product.price}
-                    </p>
-                    <p className="card-text">
-                      <span className="fw-bold">Size:</span> {product.size}
-                    </p>
-                    <p className="card-text">
-                      <span className="fw-bold">Material:</span>{" "}
-                      {product.material}
-                    </p>
-                    <p className="card-text">
-                      <span className="fw-bold">quantity:</span>{" "}
-                      {product.quantity}
-                    </p>
-                    <p className="card-text">
-                      <span className="fw-bold">SubCategory</span>:{" "}
-                      {product.subcategory_id}
-                    </p>
-                    
-                    <p className="fw-bold mb-1">
-                    Colors:{" "}
-                    {product.colors.map((color, index) => (
-                      <span key={index}>
-                        {color}
-                        {index < product.colors.length - 1 && " , "}
-                      </span>
-                    ))}
-                </p>
-                   <div className="buttons">
+             <div key={product.id} className="col-sm-6 col-md-4 col-lg-3">
+             <div className="card product-card">
+               <img
+                 src={product.images[0]}
+                 className="object-fit-cover"
+                 height={400}
+                 alt="Product"
+               />
+               <div className="card-body d-flex flex-column">
+                 <h5 className="card-title">
+                   <span>Name: </span> {product.name}
+                 </h5>
+                 <p className="card-text">
+                   <span className="fw-bold">Desc:</span>{" "}
+                   {product.desc}
+                 </p>
+                 <p className="card-text">
+                   <span className="fw-bold">Price:</span>{" "}
+                   {product.price}
+                 </p>
+                 <p className="card-text">
+                   <span className="fw-bold">Size:</span> {product.size}
+                 </p>
+                 <p className="card-text">
+                   <span className="fw-bold">Material:</span>{" "}
+                   {product.material}
+                 </p>
+                 <p className="card-text">
+                   <span className="fw-bold">Quantity:</span>{" "}
+                   {product.quantity}
+                 </p>
+                 <p className="card-text">
+                   <span className="fw-bold">SubCategory:</span>{" "}
+                   {product.subcategory_id}
+                 </p>
+                 <p className="fw-bold mb-1">
+                   Colors:{" "}
+                   {product.colors.map((color, index) => (
+                     <span key={index}>
+                       {color}
+                       {index < product.colors.length - 1 && " , "}
+                     </span>
+                   ))}
+                 </p>
+                 <div className="mt-auto buttons">
                    <button
-                      className="editBtn"
-                      onClick={() => {
-                        setSelectedProductId(product.id);
-                        setShowUpdateModal(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="deleteBtn"
-                      onClick={() => deleteProduct(product.id)}
-                    >
-                      Delete
-                    </button>
-
-                    </div>
-                   
-                  </div>
-                </div>
-              </div>
+                     className="editBtn"
+                     onClick={() => {
+                       setSelectedProductId(product.id);
+                       setShowUpdateModal(true);
+                     }}
+                   >
+                     Edit
+                   </button>
+                   <button
+                     className="deleteBtn"
+                     onClick={() => deleteProduct(product.id)}
+                   >
+                     Delete
+                   </button>
+                 </div>
+               </div>
+             </div>
+           </div>
+           
             ))}
           </div>
         </div>
@@ -309,8 +330,8 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="text"
                 placeholder="Enter product size"
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
+                value={sizes}
+                onChange={(e) => setSizes(e.target.value)}
               />
             </Form.Group>
             <Form.Group controlId="productMaterial">
@@ -489,6 +510,11 @@ export default function ProductsForDashboard() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <div className="my-2 d-flex justify-content-center">
+        <Pagination>{paginationItems}</Pagination>
+      </div>
+
     </>
   
 }
