@@ -11,7 +11,7 @@ export default function Contacts() {
               Contact <span className={`${style.color} fw-bold`}>Zaha</span> On:
             </h4>
             <p className="small my-1">(+20) 521 - 249 - 976</p>
-            <p className="small my-1">contact@bynusayba.com</p>
+            <p className="small my-1">info@zahacarves.com</p>
             <span className="smal">Zaha.com</span>
           </div>
           <div className="col-lg-9 col-md-8 space-bottom bg-light p-3 shadow shadow-md">
@@ -22,8 +22,8 @@ export default function Contacts() {
             <i className="fa-brands fs-4 pointer mx-2 text-warning fa-tiktok"></i>
             <i className="fa-brands fs-4 pointer mx-2 text-success fa-whatsapp"></i>
             <p className="mt-3 ">
-              <span>Visa Payment is avilable</span>
-              <i className="fa-brands pointer mx-3 text-primary fa-cc-visa"></i>
+              {/* <span>Visa Payment is avilable</span> */}
+              {/* <i className="fa-brands pointer mx-3 text-primary fa-cc-visa"></i> */}
             </p>
           </div>
         </div>
