@@ -89,6 +89,11 @@ export default function ProductsForDashboard() {
   //   });
   // }
 
+  const handleImageChange = (e) => {
+    setImages(Array.from(e.target.files));
+  };
+  
+
   async function addProduct() {
 
     try {
@@ -98,7 +103,9 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-      formData.append(`images`, images);
+      images.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+      });
       formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", categoryId);
@@ -142,9 +149,6 @@ export default function ProductsForDashboard() {
     }
   }
 
-  const handleImageChange = (e) => {
-    setImages(Array.from(e.target.files));
-  };
   
   // const handleSubcategoryChange = (e) => {
   //   const selectedName = selectedSubcategory;
@@ -168,7 +172,6 @@ export default function ProductsForDashboard() {
 
     console.log("selectedId",selectedId)
 
-
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -176,8 +179,10 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-       formData.append(`images`, images);
-       formData.append("colors", colors);
+      images.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+      });
+     formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", selectedId);
 
