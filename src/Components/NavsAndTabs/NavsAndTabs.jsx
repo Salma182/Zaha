@@ -109,6 +109,7 @@ console.log("navs",data.category)
     getAllProducts();
     getCategories();
     Navs()
+    getSpecificProducts(undefined)
   }, []);
 
   return (
@@ -122,7 +123,7 @@ console.log("navs",data.category)
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button
-            className={`nav-link tabLink ${style.link} ${Id === null || undefined ? 'active' : ''}`}
+            className={`nav-link tabLink ${style.link} ${Id === null || undefined ? ' show active' : ''}`}
             id="all-tab"
             data-bs-toggle="tab"
             data-bs-target="#all"

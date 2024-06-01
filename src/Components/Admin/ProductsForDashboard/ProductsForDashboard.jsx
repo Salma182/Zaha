@@ -132,7 +132,7 @@ export default function ProductsForDashboard() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("desc", desc);
-      formData.append("sizes", size);
+      formData.append("sizes", sizes);
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
