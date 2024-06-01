@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "./NavsAndTabs.module.css";
 import img from "../../Images/fff.jpg";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import WishlistContext from "../../WishlistContext/WishlistContext";
 
 export default function NavsAndTabs() {
   const [product, setProduct] = useState([]);
@@ -17,7 +18,17 @@ export default function NavsAndTabs() {
   const[categories, setCategories] = useState([])
   const navigate = useNavigate()
    const[Id, setId] = useState(null)
-  
+   const[productID, setproductID] = useState("")
+   const { AddtoWishlist, setproductId, productId , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
+
+
+const handleAddtoWishlist=(id) =>{
+    AddtoWishlist(id);
+    setSelectedwishlist((prev) => [...prev, id]);
+    console.log("wishlist",id)
+    console.log(selectedwishlist)
+}  
+
   // useEffect(() => {
   //   let interval;
   //   if (isHovering) {
@@ -67,7 +78,6 @@ console.log("navs",data.category)
     setProduct(data.products);
     setSpecificProducts(data.products);
     console.log("products",data.products);
-
   }
 
   async function getCategories(){
@@ -96,6 +106,7 @@ console.log("navs",data.category)
     console.log("productCategory",data.products)
   }
   const handleProductClick = (productId) => {
+    setproductID(productId)
     navigate(`/productdetails/${productId}`);
   };
 
@@ -165,31 +176,34 @@ console.log("navs",data.category)
           <div className="container my-5">
             <div className="row g-3">
               {product.map((product) => (
-                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} 
+           onClick={()=>handleProductClick(product.id)} >
                   <div className="mycard rounded rounded-3 overflow-hidden pointer"
                   onMouseEnter={() => setIsHovering(true)}
-                        onMouseLeave={() => setIsHovering(false)} 
-                        onClick={()=>handleProductClick(product.id)}>
-
+                        onMouseLeave={() => setIsHovering(false)}
+                       onClick={()=>handleProductClick(product.id)} >
                     <div className={`${style.myimg}`}>
                     <Slider  ref={sliderRef} {...settings}>
                             {product.images?.map((image, index) => (
                                     <div key={index}>
-                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
+                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover pointer"/>
                                     </div>
                                   ))}
                               </Slider>
 
+                              <div onClick={() => handleAddtoWishlist(product.id)} className={style.hearticon}>
+                        <i className={` fa-heart gold ${selectedwishlist.includes(product.id) ? `fa-solid` : `fa-regular ` } text-red  pointer fs-3`}></i>
+                     </div>
+
                       <div className={`${style.layer}`}>
                       {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
                         <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye`}></i>
+                          <i className={` fa-solid fa-eye fs-5`}></i>
                           <small className={`${style.small}`}>overview</small>
                         </span>
                         <div className={`${style.shopCart} pointer`}>
                           <i className="fa-solid fa-cart-plus"></i>
                         </div>
-                        <span className={style.title}>{product.name}</span>
                       </div>
                     </div>
                     <div className={`${style.content}`}>
@@ -229,11 +243,14 @@ console.log("navs",data.category)
             <div className="container my-5">
               <div className="row g-3">
                 {specificProducts.map((product) => (
-                  <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+                  <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} 
+                  onClick={() => handleProductClick(product.id)}
+                  >
                     <div className="mycard rounded rounded-3 overflow-hidden pointer"
                   onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)} 
-                        onClick={()=>handleProductClick(product.id)}>
+                        onClick={()=>handleProductClick(product.id)}
+                        >
 
 
                     <div className={`${style.myimg}`}>
@@ -244,6 +261,10 @@ console.log("navs",data.category)
                                     </div>
                                   ))}
                               </Slider>
+                              <div onClick={() => handleAddtoWishlist(product.id)} className={style.hearticon}>
+                        <i className={` fa-heart gold ${selectedwishlist.includes(product.id) ? `fa-solid` : `fa-regular ` } text-red  pointer fs-3`}></i>
+                     </div>
+
                         <div className={`${style.layer}`}>
                         {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
                           <span className={`${style.eye}`}>

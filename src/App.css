@@ -1,28 +1,9 @@
-/* 
-.fraunces-bold {
-    font-family: "Fraunces", serif;
-    font-optical-sizing: auto;
-    font-weight: 700; 
-    font-style: normal;
-    font-variation-settings:
-      "SOFT" 0,
-      "WONK" 0;
-  } */
-
-*{
+* {
     font-family: "Fraunces",serif;
   }
-/* @font-face {
-    font-family: 'Walterosse';
-    src: url('/fonts/Walterosse-Regular.woff2') format('woff2'),
-         url('/fonts/Walterosse-Regular.woff') format('woff'),
-         url('/fonts/Walterosse-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  body{
-    font-family: 'Walterosse';
-  } */
+
+  
+
   .gold{
     color: #956911;
   }

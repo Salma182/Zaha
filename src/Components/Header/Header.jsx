@@ -6,15 +6,18 @@ import style from "./Header.module.css";
 import { Link } from "react-router-dom";
 import TopNav from "../TopNav/TopNav";
 import logo from '../../Images/Logo PNG.png'
+import Wishlist from "../Wishlist/Wishlist";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
 
   return (
     <>
       <Cart cartOpen={cartOpen} setCartOpen={setCartOpen} />
-      
+      <Wishlist wishlistOpen={wishlistOpen} setWishlistOpen={setWishlistOpen} />
+
       <nav
         className={`bg-color p-3 text-capitalize fixed-top dark-color shadowx`}
       >
@@ -39,8 +42,13 @@ export default function Header() {
             ></i>
             <i
               onClick={() => setCartOpen((cart) => !cart)}
-              className="fa-solid fa-cart-arrow-down fs-5 mt-1 small pointer"
+              className="fa-solid fa-cart-arrow-down fs-5 mt-1  me-3 small pointer"
             ></i>
+
+
+        <i onClick={() => setWishlistOpen((wishlist) => !wishlist)}
+        className="fa-regular fa-heart fs-5 mt-1 small pointer">
+          </i>
           </div>
         </div>
         <TopNav />

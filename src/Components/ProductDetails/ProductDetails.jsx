@@ -231,8 +231,8 @@ const handleColorChange = (color, image) => {
         </div>
   
         <div className="container my-5">
-          {/* <hr className={style.hr} /> */}
-          {/* <div className="desc my-5">
+          <hr className={style.hr} />
+          <div className="desc my-5">
             <h2>Description</h2>
             <div className="small my-3">
               <p className="my-1">
@@ -268,8 +268,7 @@ const handleColorChange = (color, image) => {
               <span className="fw-bolder me-2">Size</span>
               S/M, L/XL
             </p>
-          </div> */}
-
+          </div>
           <hr className={`${style.hr} my-4`} />
           <div className="small my-3">
             <h3>Reviews (3)</h3>
@@ -377,10 +376,8 @@ const handleColorChange = (color, image) => {
                   </div>
                 </div>
               </div>
-
               <hr className={`${style.hr} my-4`} />
-
-              {/* <div className="allrev my-5">
+              <div className="allrev my-5">
                 <h2 className="text-uppercase text-center fw-bold">
                   no reviews yet
                 </h2>
@@ -419,7 +416,7 @@ const handleColorChange = (color, image) => {
                   </div>
                   <hr className={style.hr} />
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

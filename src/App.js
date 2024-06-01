@@ -36,6 +36,7 @@ import { AuthProvider } from "./AuthContext/AuthContext.jsx";
 import { CategoriesProvider } from "./CategoriesContext/CategoriesContext.jsx";
 import ChosenCategory from "./Components/ChosenCategory/ChosenCategory.jsx";
 import Loading from "./Components/Loading/Loading.jsx";
+import { WishlistProvider } from "./WishlistContext/WishlistContext.jsx";
 
 
 const LazyComponent = ({ Component }) => (
@@ -107,7 +108,8 @@ export default function App() {
 
   const authContextValue = { isAuthenticated, isAdmin };
 
-  return <CategoriesProvider>
+  return <WishlistProvider>
+<CategoriesProvider>
     <AuthProvider value={authContextValue}>
      <SearchProvider>
         <CartProvider> 
@@ -116,7 +118,7 @@ export default function App() {
         </SearchProvider> 
       </AuthProvider> 
     </CategoriesProvider>
-        
+  </WishlistProvider> 
 }
 
 

@@ -10,8 +10,8 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
 
   const { cart, setCart } = useContext(CartContext);
   const[id, setId]=useState('')
-  // const[cartData,setCartData] =useState([])
   const navigate = useNavigate()
+  
   function remove(e) {
     if (e.target.classList.contains("cart")) {
       setCartOpen(false);

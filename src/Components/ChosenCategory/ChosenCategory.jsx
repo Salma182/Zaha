@@ -6,6 +6,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Loading from "../Loading/Loading";
+import WishlistContext, { WishlistProvider } from "../../WishlistContext/WishlistContext";
 
 export default function  ChosenCategory(){
     const {categoryName, setCategoryName, products, setProducts } = useContext(CategoriesContext);
@@ -13,7 +14,8 @@ export default function  ChosenCategory(){
     const sliderRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
-    
+    const {selectedwishlist , AddtoWishlist ,setSelectedwishlist} = useContext(WishlistContext)
+
     useEffect(() => {
       let interval;
       if (isHovering) {
@@ -28,6 +30,7 @@ export default function  ChosenCategory(){
       };
     }, [isHovering]);
   
+
   const settings = {
     dots: true,
       infinite: true,
@@ -37,7 +40,13 @@ export default function  ChosenCategory(){
       slidesToScroll: 1,
       swipeToSlide: true,
   };
-// console.log("chosenproducts", products)
+
+const handleAddtoWishlist=(id) =>{
+  AddtoWishlist(id);
+  setSelectedwishlist((prev) => [...prev, id]);
+  console.log("wishlist",id)
+  console.log(selectedwishlist)
+}  
 
 const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);
@@ -61,6 +70,10 @@ return <>
                                     </div>
                                   ))}
                               </Slider>
+
+                              <div onClick={() => handleAddtoWishlist(product.id)} className={style.hearticon}>
+                        <i className={` fa-heart gold ${selectedwishlist.includes(product.id) ? `fa-solid` : `fa-regular ` } text-red  pointer fs-3`}></i>
+                     </div>
 
                       <div className={`${style.layer}`}>
                       {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
