@@ -80,7 +80,12 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-      formData.append("images", images);
+     
+    if (images.length > 0) {
+      images.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+      });
+    }
       formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", categoryId);
@@ -125,10 +130,9 @@ export default function ProductsForDashboard() {
   }
 
   const handleImageChange = (e) => {
-    setImages(e.target.files[0]);
+    setImages(Array.from(e.target.files));
   };
-
-
+  
   // const handleSubcategoryChange = (e) => {
   //   const selectedName = e.target.value;
   //   const selectedId = subcategories.find(subcategory => subcategory.name === selectedName)?.id;
@@ -147,8 +151,12 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-       formData.append("images", images);      
-      formData.append("colors", colors);
+      if (images.length > 0) {
+        images.forEach((image, index) => {
+          formData.append(`images[${index}]`, image);
+        });
+      }
+       formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", selectedSubcategory);
 
@@ -423,7 +431,7 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="file"
                 multiple
-                onChange={handleImageChange}
+                onChange={(e) => handleImageChange(e)}
               />
             </Form.Group>
           </Form>
