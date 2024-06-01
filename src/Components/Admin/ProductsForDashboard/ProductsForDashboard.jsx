@@ -93,6 +93,13 @@ export default function ProductsForDashboard() {
     setImages(Array.from(e.target.files));
   };
   
+  const handleColorsChange = (e) => {
+    setColors(e.target.value.split(','));
+  };
+
+  const handleSizesChange = (e) => {
+    setSizes(e.target.value.split(','));
+  };
 
   async function addProduct() {
 
@@ -106,8 +113,14 @@ export default function ProductsForDashboard() {
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
       });
-      formData.append("colors", colors);
-      formData.append("sizes", sizes);
+      colors.forEach((color, index) => {
+        formData.append(`colors[${index}]`, color);
+      });
+
+      sizes.forEach((size, index) => {
+        formData.append(`sizes[${index}]`, size);
+      });
+
       formData.append("subcategory_id", categoryId);
 
       console.log({
@@ -182,8 +195,15 @@ export default function ProductsForDashboard() {
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
       });
-     formData.append("colors", colors);
-      formData.append("sizes", sizes);
+
+    colors.forEach((color, index) => {
+        formData.append(`colors[${index}]`, color);
+      });
+
+      sizes.forEach((size, index) => {
+        formData.append(`sizes[${index}]`, size);
+      });
+
       formData.append("subcategory_id", selectedId);
 
       await axios.post(
@@ -402,7 +422,7 @@ export default function ProductsForDashboard() {
                 type="text"
                 placeholder="Enter product size"
                 value={sizes}
-                onChange={(e) => setSizes(e.target.value.split(","))}
+                onChange={(e) => handleSizesChange(e)}
               />
             </Form.Group>
             <Form.Group controlId="productMaterial">
@@ -453,7 +473,7 @@ export default function ProductsForDashboard() {
                 type="text"
                 placeholder="Enter product colors (separated by comma)"
                 value={colors}
-                onChange={(e) => setColors(e.target.value.split(","))}
+                onChange={(e)=> handleColorsChange(e)}
               />
             </Form.Group>
             <Form.Group controlId="productImages">
@@ -551,7 +571,7 @@ export default function ProductsForDashboard() {
                 placeholder="Enter product colors (separated by comma)"
                 value={colors}
                 multiple
-                onChange={(e) => setColors(e.target.value.split(","))}
+                onChange={handleColorsChange}
               />
             </Form.Group>
              <Form.Group controlId="productSize">
@@ -561,7 +581,7 @@ export default function ProductsForDashboard() {
                 placeholder="Enter product size"
                 value={sizes}
                 multiple
-                onChange={(e) => setSizes(e.target.value.split(","))}
+                onChange={handleSizesChange}
               />
             </Form.Group>
             <Form.Group controlId="productImages">
