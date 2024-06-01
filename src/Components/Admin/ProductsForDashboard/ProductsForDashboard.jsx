@@ -12,13 +12,13 @@ export default function ProductsForDashboard() {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [size, setSize] = useState("");
-  const[sizes,setSizes]=useState([])
+  // const [size, setSize] = useState("");
   const [material, setMaterial] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState([]);
   const [colors, setColors] = useState([]);
+  const[sizes,setSizes]=useState([])
   const [categoryId, setCategoryId] = useState("");
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
@@ -28,7 +28,9 @@ export default function ProductsForDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
+  const [originalSubcategory, setOriginalSubcategory] = useState('');
 
+  
   async function getProducts() {
     setLoading(true)
     try {
@@ -75,23 +77,23 @@ export default function ProductsForDashboard() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("desc", desc);
-      formData.append("sizes", sizes);
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
       formData.append("images", images);
       formData.append("colors", colors);
+      formData.append("sizes", sizes);
       formData.append("subcategory_id", categoryId);
 
       console.log({
         name,
         desc,
-        sizes,
         material,
         price,
-        images,
         quantity,
+        images,
         colors,
+        sizes,
         subcategory_id: categoryId,
       });
 
@@ -127,17 +129,16 @@ export default function ProductsForDashboard() {
   };
 
   async function updateProduct() {
-    console.log(images.File);
     try {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("desc", desc);
-      formData.append("sizes", sizes);
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
        formData.append("images", images);      
       formData.append("colors", colors);
+      formData.append("sizes", sizes);
       formData.append("subcategory_id", selectedSubcategory);
 
       await axios.post(
@@ -205,11 +206,14 @@ export default function ProductsForDashboard() {
   }
 
   useEffect(() => {
-    console.log("subcategoryid", selectedSubcategory)
 
     getProducts();
-    fetchSubcategories();
   }, []);
+
+  useEffect(() => {
+    fetchSubcategories();
+  }, [categoryId]);
+
 
   const paginationItems = [];
   for (let i = 1; i <= lastPage; i++) {
@@ -254,9 +258,6 @@ export default function ProductsForDashboard() {
                      {product.price}
                    </p>
                    <p className="card-text">
-                     <span className="fw-bold">Size:</span> {product.size}
-                   </p>
-                   <p className="card-text">
                      <span className="fw-bold">Material:</span>{" "}
                      {product.material}
                    </p>
@@ -270,18 +271,34 @@ export default function ProductsForDashboard() {
                    </p>
                    <p className="fw-bold mb-1">
                      Colors:{" "}
-                     {product.colors.map((color, index) => (
+                     {product.colors?.map((color, index) => (
                        <span key={index}>
                          {color}
                          {index < product.colors.length - 1 && " , "}
                        </span>
                      ))}
                    </p>
+
+                   <p className="card-text">
+                     <span className="fw-bold">Size:</span> {product.size}
+                   </p>
+
+                   {/* <p className="fw-bold mb-1">
+                     Sizes:{" "}
+                     {product.sizes?.map((size, index) => (
+                       <span key={index}>
+                         {size}
+                         {index < product.sizes.length - 1 && " , "}
+                       </span>
+                     ))}
+                   </p> */}
+                   
                    <div className="mt-auto buttons">
                      <button
                        className="editBtn"
                        onClick={() => {
                          setSelectedProductId(product.id);
+                         setSelectedSubcategory(product.subcategory_id)
                          setShowUpdateModal(true);
                        }}
                      >
@@ -446,15 +463,6 @@ export default function ProductsForDashboard() {
                 onChange={(e) => setDesc(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="productSize">
-              <Form.Label>Size</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter product size"
-                value={sizes}
-                onChange={(e) => setSizes(e.target.value.split(","))}
-              />
-            </Form.Group>
             <Form.Group controlId="productMaterial">
               <Form.Label>Material</Form.Label>
               <Form.Control
@@ -503,7 +511,18 @@ export default function ProductsForDashboard() {
                 type="text"
                 placeholder="Enter product colors (separated by comma)"
                 value={colors}
+                multiple
                 onChange={(e) => setColors(e.target.value.split(","))}
+              />
+            </Form.Group>
+             <Form.Group controlId="productSize">
+              <Form.Label>Size</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter product size"
+                value={sizes}
+                multiple
+                onChange={(e) => setSizes(e.target.value.split(","))}
               />
             </Form.Group>
             <Form.Group controlId="productImages">
