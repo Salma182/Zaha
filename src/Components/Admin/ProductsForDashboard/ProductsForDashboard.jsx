@@ -6,6 +6,9 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
 import Loading from "../../Loading/Loading";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductsForDashboard() {
 
@@ -22,7 +25,7 @@ export default function ProductsForDashboard() {
   const [categoryId, setCategoryId] = useState("");
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
+  const [selectedId, setSelectedId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
@@ -30,6 +33,16 @@ export default function ProductsForDashboard() {
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
 
+  const settings = {
+    dots: false,
+      infinite: true,
+      autoplay: false, // Disable autoplay to handle manually
+      speed: 300,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      swipeToSlide: true,
+  };
+  
   async function getProducts() {
     setLoading(true)
     try {
@@ -134,16 +147,28 @@ export default function ProductsForDashboard() {
   };
   
   // const handleSubcategoryChange = (e) => {
-  //   const selectedName = e.target.value;
-  //   const selectedId = subcategories.find(subcategory => subcategory.name === selectedName)?.id;
+  //   const selectedName = selectedSubcategory;
+  //   const selectedId = subcategories?.find(subcategory => subcategory.name === selectedName)?.id;
   //   setSelectedSubcategoryId(selectedId);
-  //   setSelectedSubcategory(selectedName);
   //   console.log("subcategoryid", selectedId);
   // };
   
-  console.log(selectedSubcategoryId)
 
   async function updateProduct() {
+    
+    const selectedId = subcategories.find(subcategory => subcategory.name === selectedSubcategory)?.id;
+    if (!selectedId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Invalid subcategory selected',
+      });
+      return;
+    }
+
+    console.log("selectedId",selectedId)
+
+
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -154,7 +179,7 @@ export default function ProductsForDashboard() {
        formData.append(`images`, images);
        formData.append("colors", colors);
       formData.append("sizes", sizes);
-      formData.append("subcategory_id", selectedSubcategory);
+      formData.append("subcategory_id", selectedId);
 
       await axios.post(
         `https://zahaback.com/api/product/update/${selectedProductId}`,
@@ -253,12 +278,16 @@ export default function ProductsForDashboard() {
               {products?.map((product) => (
                <div key={product.id} className="col-sm-6 col-md-4 col-lg-3">
                <div className="card product-card">
-                 <img
-                   src={product.images[0]}
-                   className="object-fit-cover"
-                   height={400}
-                   alt="Product"
-                 />
+
+               <Slider {...settings}>
+                            {product.images?.map((image, index) => (
+                                    <div key={index}>
+                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
+                                    </div>
+                                  ))}
+                              </Slider>
+
+              
                  <div className="card-body d-flex flex-column">
                    <h5 className="card-title">
                      <span>Name: </span> {product.name}
