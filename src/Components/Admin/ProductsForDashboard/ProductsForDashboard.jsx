@@ -22,15 +22,14 @@ export default function ProductsForDashboard() {
   const [categoryId, setCategoryId] = useState("");
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
-  const [originalSubcategory, setOriginalSubcategory] = useState('');
 
-  
   async function getProducts() {
     setLoading(true)
     try {
@@ -64,8 +63,9 @@ export default function ProductsForDashboard() {
           },
         }
       );
-      setLoading(false)
+     setLoading(false)
       setSubcategories(data.SubCategory.data);
+      console.log("subcategory",data.SubCategory.data)
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
@@ -127,6 +127,17 @@ export default function ProductsForDashboard() {
   const handleImageChange = (e) => {
     setImages(e.target.files[0]);
   };
+
+
+  // const handleSubcategoryChange = (e) => {
+  //   const selectedName = e.target.value;
+  //   const selectedId = subcategories.find(subcategory => subcategory.name === selectedName)?.id;
+  //   setSelectedSubcategoryId(selectedId);
+  //   setSelectedSubcategory(selectedName);
+  //   console.log("subcategoryid", selectedId);
+  // };
+  
+  console.log(selectedSubcategoryId)
 
   async function updateProduct() {
     try {
@@ -206,7 +217,6 @@ export default function ProductsForDashboard() {
   }
 
   useEffect(() => {
-
     getProducts();
   }, []);
 
@@ -280,25 +290,16 @@ export default function ProductsForDashboard() {
                    </p>
 
                    <p className="card-text">
-                     <span className="fw-bold">Size:</span> {product.size}
+                     <span className="fw-bold">Sizes:</span> {product.sizes?.map((size) => size.size).join(",")}
                    </p>
 
-                   {/* <p className="fw-bold mb-1">
-                     Sizes:{" "}
-                     {product.sizes?.map((size, index) => (
-                       <span key={index}>
-                         {size}
-                         {index < product.sizes.length - 1 && " , "}
-                       </span>
-                     ))}
-                   </p> */}
                    
                    <div className="mt-auto buttons">
                      <button
                        className="editBtn"
                        onClick={() => {
                          setSelectedProductId(product.id);
-                         setSelectedSubcategory(product.subcategory_id)
+                         setSelectedSubcategory(product.subcategory_id);
                          setShowUpdateModal(true);
                        }}
                      >
@@ -495,7 +496,7 @@ export default function ProductsForDashboard() {
               <Form.Control
                 as="select"
                 value={selectedSubcategory}
-                onChange={(e) => setSelectedSubcategory(e.target.value)}
+                onChange={(e)=>setSelectedSubcategory(e)}
               >
                 <option value="">Select Subcategory</option>
                 {subcategories?.map((subcategory) => (
