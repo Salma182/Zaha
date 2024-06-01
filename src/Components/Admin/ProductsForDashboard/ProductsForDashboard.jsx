@@ -11,7 +11,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductsForDashboard() {
-
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -43,11 +42,11 @@ export default function ProductsForDashboard() {
       swipeToSlide: true,
   };
   
-  async function getProducts() {
+  async function getProducts(pageNumber = 1) {
     setLoading(true)
     try {
       const { data } = await axios.get(
-        `https://zahaback.com/api/product/all`,
+        `https://zahaback.com/api/product/all?page=${pageNumber}`,
         {
           headers: {
             Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -56,7 +55,10 @@ export default function ProductsForDashboard() {
       );
       console.log(data.products);
       setProducts(data.products);
+      setCurrentPage(data.pagination.current_page);
+      setLastPage(data.pagination.total_pages);
       setLoading(false)
+      console.log(data);
 
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -81,13 +83,6 @@ export default function ProductsForDashboard() {
       console.error("Error fetching subcategories:", error);
     }
   }
-
-
-  // if (images.length > 0) {
-  //   images.forEach((image, index) => {
-  //     formData.append(`images[${index}]`, image);
-  //   });
-  // }
 
   const handleImageChange = (e) => {
     setImages(Array.from(e.target.files));
@@ -160,16 +155,7 @@ export default function ProductsForDashboard() {
         text: "Failed to add product",
       });
     }
-  }
-
-  
-  // const handleSubcategoryChange = (e) => {
-  //   const selectedName = selectedSubcategory;
-  //   const selectedId = subcategories?.find(subcategory => subcategory.name === selectedName)?.id;
-  //   setSelectedSubcategoryId(selectedId);
-  //   console.log("subcategoryid", selectedId);
-  // };
-  
+  }  
 
   async function updateProduct() {
     
@@ -291,7 +277,6 @@ export default function ProductsForDashboard() {
       </Pagination.Item>
     );
   }
-
   return <>
      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Products
