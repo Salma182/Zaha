@@ -52,7 +52,6 @@ export default function ProductsForDashboard() {
 
 
   async function fetchSubcategories() {
-    setLoading(true)
 
     try {
       const { data } = await axios.get(
@@ -63,13 +62,19 @@ export default function ProductsForDashboard() {
           },
         }
       );
-     setLoading(false)
       setSubcategories(data.SubCategory.data);
       console.log("subcategory",data.SubCategory.data)
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
   }
+
+
+  // if (images.length > 0) {
+  //   images.forEach((image, index) => {
+  //     formData.append(`images[${index}]`, image);
+  //   });
+  // }
 
   async function addProduct() {
 
@@ -80,12 +85,7 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-     
-    if (images.length > 0) {
-      images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
-      });
-    }
+      formData.append(`images`, images);
       formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", categoryId);
@@ -151,11 +151,7 @@ export default function ProductsForDashboard() {
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-      if (images.length > 0) {
-        images.forEach((image, index) => {
-          formData.append(`images[${index}]`, image);
-        });
-      }
+       formData.append(`images`, images);
        formData.append("colors", colors);
       formData.append("sizes", sizes);
       formData.append("subcategory_id", selectedSubcategory);
