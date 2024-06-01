@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
+import Loading from "../../Loading/Loading";
 
 export default function Slider() {
   const [Images, setImages] = useState([]);
@@ -17,6 +18,7 @@ export default function Slider() {
   const [editingSlide, setEditingSlide] = useState(null);
   const [editingImage, setEditingImage] = useState(null);
   const [updatedSlideName, setUpdatedSlideName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // setEditingSlide(slide);
   // setUpdatedSlideName(slide.name);
@@ -40,24 +42,32 @@ export default function Slider() {
   const handleShowUpdateModal = () => setShowUpdateModal(true);
 
   async function getSliderImages(page = 1) {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/slider/all?page=${page}`,
-      {
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-    );
-    console.log(data)
-    setImages(data.slider.data);
-    setCurrentPage(data.slider.current_page);
-    setLastPage(data.slider.last_page);
-  }
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/slider/all?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        }
+      );
+      console.log(data)
+      setImages(data.slider.data);
+      setCurrentPage(data.slider.current_page);
+      setLastPage(data.slider.last_page);
+      setLoading(false)
 
+    }catch(e){
+      console.log(e)
+   
+  }
+  }
+  
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
-
+  
   
   const addSlide = async () => {
     const formData = new FormData();
@@ -209,7 +219,7 @@ export default function Slider() {
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Slider
       </h1>
-      <div className="container">
+      {loading ? <Loading /> :  <div className="container">
         <div className="row g-3">
           {Images.length > 0 ? (
             Images.map((img) => (
@@ -269,7 +279,8 @@ export default function Slider() {
             <p>No images found</p>
           )}
         </div>
-      </div>
+      </div> }
+     
 
       <div className="my-2 d-flex justify-content-center">
         {paginationBasic}

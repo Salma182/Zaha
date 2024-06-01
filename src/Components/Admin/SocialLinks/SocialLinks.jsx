@@ -3,6 +3,7 @@ import { Table, Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
+import Loading from "../../Loading/Loading";
 
 export default function SocialLinks() {
   const [links, setLinks] = useState([]);
@@ -16,8 +17,10 @@ export default function SocialLinks() {
   const [updatedSocial, setUpdatedSocial] = useState("");
   const [updatedLink, setUpdatedLink] = useState("");
   const [noData, setNoData] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function getSocial(page = 1) {
+    setLoading(true)
     try {
       const { data } = await axios.get(
         `https://zahaback.com/api/social/all?page=${page}`,
@@ -31,6 +34,8 @@ export default function SocialLinks() {
       setLinks(data.area.data);
       setCurrentPage(data.area.current_page);
       setLastPage(data.area.last_page);
+      setLoading(false)
+
       if (data.area.total === 0) {
         setNoData(true);
       } else {
@@ -153,11 +158,7 @@ export default function SocialLinks() {
         SocialLinks
       </h1>
 
-      {noData ? (
-        <p className="text-center text-light fw-bold bg-dark p-3">
-          No data to show
-        </p>
-      ) : (
+      {loading ? <Loading /> :
         <>
           <Table striped bordered>
             <thead>
@@ -229,7 +230,7 @@ export default function SocialLinks() {
           </Pagination>
           </div>
         </>
-      )}
+      }
 
       <Button
         className="w-100 my-3"

@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { date } from "yup";
+import Loading from "../../Loading/Loading";
 
 export default function EsimateArea() {
   const handleShowUpdate = (area) => {
@@ -27,6 +28,7 @@ export default function EsimateArea() {
   const [currentPage, setCurrentPage] = useState(1);
   const [Area, setArea] = useState([]);
   const [selectedArea, setSelectedArea] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
@@ -47,18 +49,25 @@ export default function EsimateArea() {
   );
 
   async function getArea(page = 1) {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/area/all?page=${page}`,
-      {
-        headers: {
-          Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
-        },
-      }
-    );
-    setArea(data.area.data);
-    setCurrentPage(data.area.current_page);
-    setLastPage(data.area.last_page);
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/area/all?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+          },
+        }
+      );
+      setArea(data.area.data);
+      setCurrentPage(data.area.current_page);
+      setLastPage(data.area.last_page);
+      setLoading(false)
+
+    }catch(e){ 
+   
   }
+}
 
   async function createArea() {
     const formData = new FormData();
@@ -171,7 +180,7 @@ export default function EsimateArea() {
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Estimate Area
       </h1>
-      <Table striped bordered>
+      {loading ? <Loading /> :  <Table striped bordered>
         <thead>
           <tr>
             <th>#</th>
@@ -221,7 +230,8 @@ export default function EsimateArea() {
         ) : (
           ""
         )}
-      </Table>
+      </Table> }
+     
       <Button className="w-100" variant="primary" onClick={handleShow}>
         Add Area
       </Button>

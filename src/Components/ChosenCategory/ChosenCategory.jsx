@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import Loading from "../Loading/Loading";
 
 export default function  ChosenCategory(){
-
     const {categoryName, setCategoryName, products, setProducts } = useContext(CategoriesContext);
     const [isHovering, setIsHovering] = useState(false);
     const sliderRef = useRef(null);
@@ -38,7 +37,7 @@ export default function  ChosenCategory(){
       slidesToScroll: 1,
       swipeToSlide: true,
   };
-console.log("chosenproducts", products)
+// console.log("chosenproducts", products)
 
 const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);

@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
+import Loading from "../../Loading/Loading";
 
 export default function ProductsForDashboard() {
 
@@ -26,8 +27,10 @@ export default function ProductsForDashboard() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  
+  const [loading,setLoading] = useState(false)
+
   async function getProducts() {
+    setLoading(true)
     try {
       const { data } = await axios.get(
         `https://zahaback.com/api/product/all`,
@@ -39,12 +42,17 @@ export default function ProductsForDashboard() {
       );
       console.log(data.products);
       setProducts(data.products);
+      setLoading(false)
+
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   }
 
+
   async function fetchSubcategories() {
+    setLoading(true)
+
     try {
       const { data } = await axios.get(
         `https://zahaback.com/api/subcategory/all`,
@@ -54,6 +62,7 @@ export default function ProductsForDashboard() {
           },
         }
       );
+      setLoading(false)
       setSubcategories(data.SubCategory.data);
     } catch (error) {
       console.error("Error fetching subcategories:", error);
@@ -61,6 +70,7 @@ export default function ProductsForDashboard() {
   }
 
   async function addProduct() {
+
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -95,6 +105,7 @@ export default function ProductsForDashboard() {
           },
         }
       );
+    
       setShowAddModal(false);
       getProducts();
       Swal.fire({
@@ -111,17 +122,21 @@ export default function ProductsForDashboard() {
     }
   }
 
+  const handleImageChange = (e) => {
+    setImages(e.target.files[0]);
+  };
+
   async function updateProduct() {
     console.log(images.File);
     try {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("desc", desc);
-      formData.append("size", size);
+      formData.append("sizes", size);
       formData.append("material", material);
       formData.append("quantity", quantity);
       formData.append("price", price);
-      formData.append("images", images);
+       formData.append("images", images);      
       formData.append("colors", colors);
       formData.append("subcategory_id", selectedSubcategory);
 
@@ -150,6 +165,7 @@ export default function ProductsForDashboard() {
       });
     }
   }
+
   async function deleteProduct(productId) {
     // Show confirmation dialog before deleting
     const result = await Swal.fire({
@@ -213,81 +229,80 @@ export default function ProductsForDashboard() {
         Products
       </h1>
 
-      {products.length > 0 ? (
-        <div className="container">
-          <div className="row g-3">
-            {products?.map((product) => (
-             <div key={product.id} className="col-sm-6 col-md-4 col-lg-3">
-             <div className="card product-card">
-               <img
-                 src={product.images[0]}
-                 className="object-fit-cover"
-                 height={400}
-                 alt="Product"
-               />
-               <div className="card-body d-flex flex-column">
-                 <h5 className="card-title">
-                   <span>Name: </span> {product.name}
-                 </h5>
-                 <p className="card-text">
-                   <span className="fw-bold">Desc:</span>{" "}
-                   {product.desc}
-                 </p>
-                 <p className="card-text">
-                   <span className="fw-bold">Price:</span>{" "}
-                   {product.price}
-                 </p>
-                 <p className="card-text">
-                   <span className="fw-bold">Size:</span> {product.size}
-                 </p>
-                 <p className="card-text">
-                   <span className="fw-bold">Material:</span>{" "}
-                   {product.material}
-                 </p>
-                 <p className="card-text">
-                   <span className="fw-bold">Quantity:</span>{" "}
-                   {product.quantity}
-                 </p>
-                 <p className="card-text">
-                   <span className="fw-bold">SubCategory:</span>{" "}
-                   {product.subcategory_id}
-                 </p>
-                 <p className="fw-bold mb-1">
-                   Colors:{" "}
-                   {product.colors.map((color, index) => (
-                     <span key={index}>
-                       {color}
-                       {index < product.colors.length - 1 && " , "}
-                     </span>
-                   ))}
-                 </p>
-                 <div className="mt-auto buttons">
-                   <button
-                     className="editBtn"
-                     onClick={() => {
-                       setSelectedProductId(product.id);
-                       setShowUpdateModal(true);
-                     }}
-                   >
-                     Edit
-                   </button>
-                   <button
-                     className="deleteBtn"
-                     onClick={() => deleteProduct(product.id)}
-                   >
-                     Delete
-                   </button>
+      {loading ? <Loading /> : 
+          <div className="container">
+            <div className="row g-3">
+              {products?.map((product) => (
+               <div key={product.id} className="col-sm-6 col-md-4 col-lg-3">
+               <div className="card product-card">
+                 <img
+                   src={product.images[0]}
+                   className="object-fit-cover"
+                   height={400}
+                   alt="Product"
+                 />
+                 <div className="card-body d-flex flex-column">
+                   <h5 className="card-title">
+                     <span>Name: </span> {product.name}
+                   </h5>
+                   <p className="card-text">
+                     <span className="fw-bold">Desc:</span>{" "}
+                     {product.desc}
+                   </p>
+                   <p className="card-text">
+                     <span className="fw-bold">Price:</span>{" "}
+                     {product.price}
+                   </p>
+                   <p className="card-text">
+                     <span className="fw-bold">Size:</span> {product.size}
+                   </p>
+                   <p className="card-text">
+                     <span className="fw-bold">Material:</span>{" "}
+                     {product.material}
+                   </p>
+                   <p className="card-text">
+                     <span className="fw-bold">Quantity:</span>{" "}
+                     {product.quantity}
+                   </p>
+                   <p className="card-text">
+                     <span className="fw-bold">SubCategory:</span>{" "}
+                     {product.subcategory_id}
+                   </p>
+                   <p className="fw-bold mb-1">
+                     Colors:{" "}
+                     {product.colors.map((color, index) => (
+                       <span key={index}>
+                         {color}
+                         {index < product.colors.length - 1 && " , "}
+                       </span>
+                     ))}
+                   </p>
+                   <div className="mt-auto buttons">
+                     <button
+                       className="editBtn"
+                       onClick={() => {
+                         setSelectedProductId(product.id);
+                         setShowUpdateModal(true);
+                       }}
+                     >
+                       Edit
+                     </button>
+                     <button
+                       className="deleteBtn"
+                       onClick={() => deleteProduct(product.id)}
+                     >
+                       Delete
+                     </button>
+                   </div>
                  </div>
                </div>
              </div>
-           </div>
-           
-            ))}
+             
+              ))}
+            </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        
+    }
 
       {/* Add Product Button */}
       <div className="Btn">
@@ -331,7 +346,7 @@ export default function ProductsForDashboard() {
                 type="text"
                 placeholder="Enter product size"
                 value={sizes}
-                onChange={(e) => setSizes(e.target.value)}
+                onChange={(e) => setSizes(e.target.value.split(","))}
               />
             </Form.Group>
             <Form.Group controlId="productMaterial">
@@ -390,7 +405,7 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="file"
                 multiple
-                onChange={(e) => setImages(e.target.files)}
+                onChange={handleImageChange}
               />
             </Form.Group>
           </Form>
@@ -436,8 +451,8 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="text"
                 placeholder="Enter product size"
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
+                value={sizes}
+                onChange={(e) => setSizes(e.target.value.split(","))}
               />
             </Form.Group>
             <Form.Group controlId="productMaterial">
@@ -496,7 +511,7 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="file"
                 multiple
-                onChange={(e) => setImages(e.target.files)}
+                onChange={(e) => handleImageChange(e)}
               />
             </Form.Group>
           </Form>

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Swal from "sweetalert2";
 import { Pagination } from 'react-bootstrap';
+import Loading from "../Loading/Loading";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -12,12 +13,13 @@ export default function Categories() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [name, setName] = useState("");
   const [categoryIdToUpdate, setCategoryIdToUpdate] = useState("");
-  
+  const [loading,setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1); 
   // const [isHome, setIsHome] = useState(false);
 
   async function getAllCategories(page = 1) {
+    setLoading(true)
     try {
       let { data } = await axios.get(
         `https://zahaback.com/api/category/all?page=${page}`,
@@ -35,6 +37,8 @@ export default function Categories() {
       setCategories(updatedCategories);
       setCurrentPage(data.category.current_page);
       setLastPage(data.category.last_page);
+      setLoading(false)
+
       // setIsHome(data.category.data.is_home === "true");
       console.log(data)
     } catch (error) {
@@ -142,8 +146,7 @@ export default function Categories() {
       <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         All Categories
       </h1>
-
-      <div className="container">
+{loading ? <Loading />:  <div className="container">
         <div className="row g-3">
           {categories.length > 0 ? (
             categories.map((category) => (
@@ -202,7 +205,8 @@ export default function Categories() {
     
         </div>
       </div>
-
+}
+     
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add Category</Modal.Title>

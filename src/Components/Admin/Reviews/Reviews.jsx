@@ -2,23 +2,32 @@ import React, { useEffect, useState } from "react";
 import style from "./Reviews.module.css";
 import { Table } from "react-bootstrap";
 import axios from "axios";
+import Loading from "../../Loading/Loading";
 
 export default function Reviews() {
   const [Reviews, setReviews] = useState([]);
-  async function getReviews() {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/customerlink/all`,
-      {
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-    );
-    console.log(111);
-    console.log(data.link.data);
-    setReviews(data.link.data);
-  }
+  const [loading, setLoading] = useState(false);
 
+  async function getReviews() {
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/customerlink/all`,
+        {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        }
+      );
+      console.log(111);
+      console.log(data.link.data);
+      setReviews(data.link.data);
+      setLoading(false)
+
+    }catch(e){
+ 
+    }
+  }
   useEffect(() => {
     getReviews();
   }, []);
@@ -27,7 +36,7 @@ export default function Reviews() {
       <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Reviews
       </h1>
-      <div className="container">
+      {loading ? <Loading /> :   <div className="container">
         <div className="row">
           {Reviews.length > 0
             ? Reviews.map((review) => (
@@ -40,7 +49,8 @@ export default function Reviews() {
               ))
             : ""}
         </div>
-      </div>
+      </div>}
+    
     </>
   );
 }

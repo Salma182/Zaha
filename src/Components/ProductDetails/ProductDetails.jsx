@@ -173,7 +173,7 @@ const handleColorChange = (color, image) => {
                   value={quantity}
                   onChange={handleQuantityChange}
                 />
-                <button type="submit" className="addBtn mx-2 ">
+                <button type="submit" className={`addBtn mx-2`}>
                   Add to cart
                 </button>
                 {/* <button className="btn btn-success px-4">Buy now</button> */}

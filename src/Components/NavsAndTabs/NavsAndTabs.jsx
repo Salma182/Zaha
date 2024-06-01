@@ -33,7 +33,7 @@ export default function NavsAndTabs() {
   // }, [isHovering]);
 
 const settings = {
-  dots: true,
+  dots: false,
     infinite: true,
     autoplay: false, // Disable autoplay to handle manually
     speed: 300,
@@ -100,6 +100,7 @@ console.log("navs",data.category)
   };
 
   const handleTabClick = (categoryId) => {
+    getSpecificProducts(categoryId)
     setId(categoryId);
   };
 
@@ -109,14 +110,6 @@ console.log("navs",data.category)
     getCategories();
     Navs()
   }, []);
-
-  // useEffect(() => {
-  //   if (Id === null || Id === undefined) {
-  //     getSpecificProducts(Id);
-  //   } else {
-  //     getSpecificProducts(Id); 
-  //   }
-  // }, [Id, product]);
 
   return (
     <>
@@ -129,7 +122,7 @@ console.log("navs",data.category)
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button
-            className={`nav-link tabLink ${style.link} ${Id === null ? 'active' : ''}`}
+            className={`nav-link tabLink ${style.link} ${Id === null || undefined ? 'active' : ''}`}
             id="all-tab"
             data-bs-toggle="tab"
             data-bs-target="#all"

@@ -62,9 +62,9 @@ useEffect(() => {
       )
       : ""}
 
-      {isAdmin && 
+      {isAdmin ?
             <NavLink to="dashboard" className={style.nav_link}>Dashboard</NavLink>
-          }
+         : "" }
  </div>
     </div>
 

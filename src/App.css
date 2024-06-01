@@ -1,3 +1,17 @@
+/* 
+.fraunces-bold {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 700; 
+    font-style: normal;
+    font-variation-settings:
+      "SOFT" 0,
+      "WONK" 0;
+  } */
+
+*{
+    font-family: "Fraunces",serif;
+  }
 /* @font-face {
     font-family: 'Walterosse';
     src: url('/fonts/Walterosse-Regular.woff2') format('woff2'),

@@ -2,21 +2,30 @@ import React, { useEffect, useState } from "react";
 import style from "./CallbacksForDashboard.module.css";
 import { Table } from "react-bootstrap";
 import axios from "axios";
+import Loading from "../../Loading/Loading";
 
 export default function CallbacksForDashboard() {
   const [CallBackes, setCallBackes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   async function getCallBackes() {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/userData/allCallbacks`,
-      {
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-    );
-    console.log(data.allCallbacks.data);
-    setCallBackes(data.allCallbacks.data);
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/userData/allCallbacks`,
+        {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        }
+      );
+      setLoading(false)
+      console.log(data.allCallbacks.data);
+      setCallBackes(data.allCallbacks.data);
+    }catch(e){
+  
   }
+}
 
   useEffect(() => {
     getCallBackes();
@@ -27,7 +36,7 @@ export default function CallbacksForDashboard() {
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Callbacks
       </h1>
-      <Table striped bordered>
+      {loading ? <Loading /> : <Table striped bordered>
         <thead>
           <tr>
             <th>#</th>
@@ -60,7 +69,8 @@ export default function CallbacksForDashboard() {
         ) : (
           ""
         )}
-      </Table>
+      </Table>}
+      
     </>
   );
 }

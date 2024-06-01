@@ -3,22 +3,31 @@ import style from "./Orders.module.css";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { Pagination } from "react-bootstrap";
+import Loading from "../../Loading/Loading";
 
 export default function Orders() {
 const [orders, setOrders]= useState([])
 const [currentPage, setCurrentPage] = useState(1);
 const [lastPage, setLastPage] = useState(1); 
+const [loading, setLoading] = useState(false);
 
 async function getOrders(page = 1) {
-  const {data}= await axios(`https://zahaback.com/api/orders/allOrders?page=${page}`,
-  {
-    headers: {
-      Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
-    },
+  setLoading(true)
+  try{
+    const {data}= await axios(`https://zahaback.com/api/orders/allOrders?page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+      },
+    }
+    )
+    setOrders(data.allOrders.data)
+    console.log(data.allOrders.data)
+    setLoading(false)
   }
-  )
-  setOrders(data.allOrders.data)
-  console.log(data.allOrders.data)
+  catch(error)
+  {console.log(error)
+  }
 }
 
 useEffect(() => {
@@ -49,7 +58,8 @@ const paginationBasic = (
         Orders
       </h1>
 
-      <Table striped bordered>
+{loading ? <Loading /> : 
+<Table striped bordered>
         <thead>
           <tr>
             <th>index</th>
@@ -86,7 +96,8 @@ const paginationBasic = (
         
 
         </tbody>
-      </Table>
+      </Table>}
+      
 
       <div className="my-2 d-flex justify-content-center">
         {paginationBasic}

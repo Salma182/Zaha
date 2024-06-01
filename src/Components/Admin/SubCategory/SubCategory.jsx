@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Pagination from "react-bootstrap/Pagination";
 import Swal from "sweetalert2";
+import Loading from "../../Loading/Loading";
 
 export default function SubCategory() {
   const [name, setName] = useState("");
@@ -20,8 +21,10 @@ export default function SubCategory() {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [loading,setLoading] = useState(false)
 
   async function getSubCategories(pageNumber = 1) {
+    setLoading(true)
     try {
       const { data } = await axios.get(
         `https://zahaback.com/api/subcategory/all?page=${pageNumber}`,
@@ -34,6 +37,8 @@ export default function SubCategory() {
       setProducts(data.SubCategory.data);
       setCurrentPage(data.SubCategory.current_page);
       setLastPage(data.SubCategory.last_page);
+      setLoading(false)
+
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
@@ -175,60 +180,63 @@ console.log(products)
       <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         SubCategory
       </h1>
-      <div className="container">
-        <div className="row g-3">
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div className="col-md-3" key={product.id}>
-                <div className="item bg-light border border-3 text-center p-2 rounded-3 bg-opacity-50 fw-bold ">
-                  <p className="my-1">Name: {product.name}</p>
-                  <p className="my-1">Status: {product.status}</p>
-                  <p className="my-1">ID: {product.id}</p>
 
-                  <div className="buttons">
-                  <button
-                    className="deleteBtn"
-                    onClick={() => {
-                      Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, cancel!",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          deleteSubCategory(product.id);
-                        }
-                      });
-                    }}
-                  >
-                  Delete
-                  </button>
-                  <button
-                    className="editBtn"
-                    onClick={() => {
-                      setSelectedSubcategoryId(product.id);
-                      setSelectedSubcategoryName(product.name);
-                      setSelectedSubcategoryStatus(product.status);
-                      setShowUpdateModal(true);
-                    }}
-                  >
-                    Edit
-                  </button>
-                  
-                    </div>
-                 
-                </div>
+      {loading ? <Loading /> :
+      <div className="container">
+      <div className="row g-3">
+        {products.length > 0 ? (
+          products.map((product) => (
+            <div className="col-md-3" key={product.id}>
+              <div className="item bg-light border border-3 text-center p-2 rounded-3 bg-opacity-50 fw-bold ">
+                <p className="my-1">Name: {product.name}</p>
+                <p className="my-1">Status: {product.status}</p>
+                <p className="my-1">ID: {product.id}</p>
+
+                <div className="buttons">
+                <button
+                  className="deleteBtn"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes, delete it!",
+                      cancelButtonText: "No, cancel!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        deleteSubCategory(product.id);
+                      }
+                    });
+                  }}
+                >
+                Delete
+                </button>
+                <button
+                  className="editBtn"
+                  onClick={() => {
+                    setSelectedSubcategoryId(product.id);
+                    setSelectedSubcategoryName(product.name);
+                    setSelectedSubcategoryStatus(product.status);
+                    setShowUpdateModal(true);
+                  }}
+                >
+                  Edit
+                </button>
+                
+                  </div>
+               
               </div>
-            ))
-          ) : (
-            <p className="h2 text-center p-2 bg-dark text-white">
-              No Subcategories yet
-            </p>
-          )}
-        </div>
+            </div>
+          ))
+        ) : (
+          <p className="h2 text-center p-2 bg-dark text-white">
+            No Subcategories yet
+          </p>
+        )}
       </div>
+    </div>}
+      
 
       <div className="Btn">
       <button

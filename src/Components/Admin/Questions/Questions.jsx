@@ -2,21 +2,30 @@ import React, { useEffect, useState } from "react";
 import style from "./Questions.module.css";
 import { Table } from "react-bootstrap";
 import axios from "axios";
+import Loading from "../../Loading/Loading";
 
 export default function Questions() {
   const [Questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   async function getQuestions() {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/userData/allQuestions`,
-      {
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-    );
-    console.log(data.allQuestions.data);
-    setQuestions(data.allQuestions.data);
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/userData/allQuestions`,
+        {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        }
+      );
+      console.log(data.allQuestions.data);
+      setQuestions(data.allQuestions.data);
+      setLoading(false)
+    }catch(e){
+    
   }
+}
 
   useEffect(() => {
     getQuestions();
@@ -26,7 +35,7 @@ export default function Questions() {
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Questions
       </h1>
-      <Table striped bordered>
+      {loading ? <Loading /> :  <Table striped bordered>
         <thead>
           <tr>
             <th>#</th>
@@ -53,7 +62,8 @@ export default function Questions() {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </Table>}
+     
     </>
   );
 }

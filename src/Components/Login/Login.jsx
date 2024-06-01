@@ -15,7 +15,6 @@ export default function Login() {
   
   const { isAuthenticated, isAdmin , setIsAuthenticated , setIsAdmin } = useAuth();
 
-
   
   async function Allusers(){
     const{data}= await axios.get(`https://zahaback.com/api/allusers`,
@@ -30,7 +29,6 @@ export default function Login() {
     })
     
     console.log(data.allusers)
-    
       }
 
   const validationSchema = Yup.object({

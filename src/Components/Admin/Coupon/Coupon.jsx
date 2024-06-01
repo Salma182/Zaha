@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
+import Loading from "../../Loading/Loading";
 
 export default function Coupon() {
   const [show, setShow] = useState(false);
@@ -20,6 +21,7 @@ export default function Coupon() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
@@ -40,19 +42,25 @@ export default function Coupon() {
   );
 
   async function getCoupon(page = 1) {
-    let { data } = await axios.get(
-      `https://zahaback.com/api/coupon/all?page=${page}`,
-      {
-        headers: {
-          Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
-        },
-      }
-    );
-    setCoupon(data.coupon.data);
-    setCurrentPage(data.coupon.current_page);
-    setLastPage(data.coupon.last_page);
+    setLoading(true)
+    try{
+      let { data } = await axios.get(
+        `https://zahaback.com/api/coupon/all?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+          },
+        }
+      );
+      setCoupon(data.coupon.data);
+      setCurrentPage(data.coupon.current_page);
+      setLastPage(data.coupon.last_page);
+      setLoading(false)
+    }catch(e){
+      console.log(e)
+ 
   }
-
+  }
   async function addCoupon() {
     const formData = new FormData();
     formData.append("price", price);
@@ -187,7 +195,7 @@ export default function Coupon() {
       <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Coupon
       </h1>
-      <div className="container">
+      {loading ? <Loading /> :  <div className="container">
         <div className="row g-3">
           {Coupon.length > 0 &&
             Coupon.map((coupon) => (
@@ -247,7 +255,8 @@ export default function Coupon() {
               </div>
             ))}
         </div>
-      </div>
+      </div> }
+     
 
       <div className="Btn">
       <button className="addBtn" variant="success" onClick={handleShow}>
