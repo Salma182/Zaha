@@ -31,7 +31,7 @@ export default function SocialLinks() {
         }
       );
       console.log(data);
-      setLinks(data.area.data);
+      setLinks(data.area.links);
       setCurrentPage(data.area.current_page);
       setLastPage(data.area.last_page);
       setLoading(false)
@@ -67,13 +67,38 @@ export default function SocialLinks() {
     setShowUpdateModal(true);
   };
 
+
   const addSocialLink = async () => {
+  
     try {
+      
+  const Formdata = new FormData();
+  if (newSocial && newLink) {
+    switch(newSocial.toLowerCase()) {
+      case 'facebook':
+        Formdata.append('facebook', newLink);
+        break;
+      case 'instagram':
+        Formdata.append('instagram', newLink);
+        break;
+      case 'snapchat':
+        Formdata.append('snapchat', newLink);
+        break;
+      case 'email':
+        Formdata.append('email', newLink);
+        break;
+      case 'twitter':
+        Formdata.append('twitter', newLink);
+        break;
+      default:
+        console.error('Unknown social media type');
+    }
+  }
+  
       const { data } = await axios.post(
         `https://zahaback.com/api/social/create`,
         {
-          social: newSocial,
-          link: newLink,
+          Formdata
         },
         {
           headers: {
@@ -81,8 +106,6 @@ export default function SocialLinks() {
           },
         }
       );
-
-      console.log(data.message);
 
       if (data.message === "social link created successfully") {
         handleCloseAddModal();
@@ -92,6 +115,8 @@ export default function SocialLinks() {
           title: "Social link added successfully",
         });
       }
+      console.log(data);
+
     } catch (error) {
       console.error("Error adding social link:", error);
     }

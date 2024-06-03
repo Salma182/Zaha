@@ -12,12 +12,15 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Cart from "../Cart/Cart";
-import CartContext from "../../CartContext/CartContext";
+import CartContext, { CartProvider } from "../../CartContext/CartContext";
 import Swal from "sweetalert2";
 import Loading from "../Loading/Loading";
+import WishlistContext from "../../WishlistContext/WishlistContext";
+import Rate from "./Rate";
 
 export default function ProductDetails() {
   const { cart, setCart, guestToken, setGuestToken } = useContext(CartContext);
+  const {AddtoWishlist, setSelectedwishlist , selectedwishlist}=useContext(WishlistContext)
   const [productdetails, setProductDetails] = useState([]);
   const { productId } = useParams();
 const[quantity, setQuantity] = useState(1);
@@ -26,11 +29,10 @@ const [selectedColor, setSelectedColor] = useState('');
 const[response, setResponse] = useState(null)
 const [selectedSizeId, setSelectedSizeId] = useState(null);
 const[loading, setloading] = useState(false);
-
 const settings = {
   dots: true,
     infinite: true,
-    autoplay: false, // Disable autoplay to handle manually
+    autoplay: true, // Disable autoplay to handle manually
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -41,6 +43,12 @@ function onSizeClick (sizeId) {
   setSelectedSizeId(sizeId);
     console.log('Selected size ID:', sizeId);
 }
+
+
+// const handleAddtoWishlist=(id) =>{
+//   AddtoWishlist(id);
+//   setSelectedwishlist((prev) => [...prev, id]);
+// }  
 
 async function ProductDetails(productId)  {
   setloading(false)
@@ -59,6 +67,12 @@ async function ProductDetails(productId)  {
       setloading(false)
     }
   }
+
+  const handleRate = (rate) => {
+    console.log('User rated:', rate);
+    // Optionally, send the rating to a backend server
+    // axios.post('/api/rate', { rate });
+  };
 
 console.log("productdetails:",productdetails)
 
@@ -183,11 +197,8 @@ const handleColorChange = (color, image) => {
             <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
               <h3>{productdetails.material}</h3>
               <div className="rate">
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
+              <Rate initialRate={3} onRate={handleRate} />
+              
                 <span className="ms-2">(7 customer reviews)</span>
               </div>
             </div>
@@ -206,9 +217,9 @@ const handleColorChange = (color, image) => {
               </div>
             </div>{" "}
             <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
-              <span>
+              {/* <span onClick={handleAddtoWishlist(productdetails.id)} >
                 <i className="fa-solid fa-heart"></i> Add To WishList
-              </span>
+              </span> */}
             </div>
             <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
               <CallBack />
@@ -229,19 +240,19 @@ const handleColorChange = (color, image) => {
           
   
         </div>
-  
-        <div className="container my-5">
+       {productdetails ?  <div className="container my-5">
           <hr className={style.hr} />
           <div className="desc my-5">
             <h2>Description</h2>
             <div className="small my-3">
               <p className="my-1">
-                Free size satin blouse and 2 sizes of the skirt.
+                {productdetails.desc}
               </p>
-              <p className="my-1">Size 1 : S/M</p>
-              <p className="my-1">Skirt waist “stretchy “ from 70:85 CM</p>
-            </div>
-            <div className="small my-3">
+              </div>
+              {/* <p className="my-1">Size 1 : S/M</p>
+              <p className="my-1">Skirt waist “stretchy “ from 70:85 CM</p> */}
+           
+            {/* <div className="small my-3">
               <p className="my-1">
                 Size 2 :L/XL <br /> Skirt waist “stretchy “
               </p>
@@ -255,21 +266,25 @@ const handleColorChange = (color, image) => {
                 ١٠٧
               </p>
               <p className="my-1">الوسط يلبس من ٧٠ الى ٨٥ س</p>
-            </div>
+            </div> */}
           </div>
           <hr className={`${style.hr} my-4`} />
           <div className="small my-3">
             <h3>Additional information</h3>
             <p className="my-1 ms-5">
-              <span className="fw-bolder me-2">Color</span> Black, Brown, nude,
-              Olive, purple
+              <span className="fw-bolder me-2">Color</span>{productdetails.colors?.map((color)=>color).join(' , ')}
             </p>
             <p className="my-1 ms-5">
               <span className="fw-bolder me-2">Size</span>
-              S/M, L/XL
+              {productdetails.sizes?.map((item)=>item.size).join(' , ')}
             </p>
           </div>
-          <hr className={`${style.hr} my-4`} />
+          </div>
+ : "" }
+      
+
+             <div className="container">
+                  <hr className={`${style.hr} my-4`} />
           <div className="small my-3">
             <h3>Reviews (3)</h3>
             <div className="container">
@@ -419,7 +434,9 @@ const handleColorChange = (color, image) => {
               </div>
             </div>
           </div>
-        </div>
+                  </div>
+         
+      
   
       </div>
     )}

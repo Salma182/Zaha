@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../Cart/Cart.module.css";
 import axios from "axios";
 
 export default function Wishlist({wishlistOpen, setWishlistOpen , addwishlist}) {
 
+  const[wishlistProducts,setWishlistProducts] = useState([])
 function remove(e) {
   if (e.target.classList.contains("cart")) {
     setWishlistOpen(false);
   }
 }
+
+
+async function GetWishlist() {
+
+  const guestToken= localStorage.getItem("guestToken");
+  const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${guestToken}`,
+  {  
+    headers: {
+      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    },
+  }
+  )
+  setWishlistProducts(data.wishlist)
+  console.log("wishlistProducts",data)
+}
+
+useEffect(()=> {
+  GetWishlist()
+},[])
 
   return (
     <>
@@ -30,39 +50,35 @@ function remove(e) {
         >
           <h4 className="text-center fw-bold my-4">My Wishlist</h4>
          
-                    
-          {/* {cart && cart.length > 0 ? (
-        cart?.map((item, index) => (
-          <div key={index}>
-           <div className="row g-2 my-3">
-            <div className="col-md-3">
-              <div className="img">
-                <img className="w-100" src={item.product?.images[0]} alt="img" />
-              </div>
-            </div>
-            <div className="col-md-7">
-              <div className="desc">
-                <p className="mt-0 mb-1 fw-bold small">
-                  {item.product?.name}
-                </p>
-                <p className="my-1 small">{item.product?.price} EGP</p>
-                <p className="my-1 small">{item.product?.size} </p>
+         {wishlistProducts && wishlistProducts.length > 0  ? (
+  wishlistProducts?.map((item, index) => (
+    <div key={index}>
+     <div className="row g-2 my-3">
+      <div className="col-md-3">
+        <div className="img">
+          <img className="w-100" src={item.product?.images[0]} alt="img" />
+        </div>
+      </div>
+      <div className="col-md-7">
+        <div className="desc">
+          <p className="mt-0 mb-1 fw-bold small">
+            {item.product?.name}
+          </p>
+          <p className="my-1 small">{item.product?.price} EGP</p>
+          <p className="my-1 small">{item.product?.size} </p>
 
-              </div>
-            </div>
-            <div className="col-md-2">
-              <div className="close">
-                <i onClick={()=> handleDelete(item.product_id)} className="fa-solid fa-xmark pointer"></i>
-              </div>
-            </div>
-          </div>
+        </div>
+      </div>
+      <div className="col-md-2">
+        <div className="close">
+          {/* <i onClick={()=> handleDelete(item.product_id)} className="fa-solid fa-xmark pointer"></i> */}
+        </div>
+      </div>
+    </div>
 
 
-          </div>
-        ))
-
-      ) : (
-        <div className="cont text-center">
+    </div>
+  ))) : ( <div className="cont text-center">
             <i className="fa-solid fa-bag-shopping text-secondary d-block  fs-1 my-5"></i>
             <p>No Product To Show </p>
             <div
@@ -71,17 +87,8 @@ function remove(e) {
               {" "}
               Return To Shop
             </div>
-          </div>
-      )}
-
-      {cart.length > 0 && (
-      <div className="w-100" style={{ position: 'relative', height: '150px' }}>
-        <button className={style.checkoutBtn} onClick={()=> handlecheckout()}>
-          Checkout
-        </button>
-      </div>
-    )} */}
-  
+          </div>) }
+                      
           <div
             className={`${style.toggle} test`}
             onClick={() => {

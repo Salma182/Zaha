@@ -1,23 +1,16 @@
-// ProtectedRoute.js
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../../AuthContext/AuthContext';
+import React, { useContext } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import Loading from '../Loading/Loading';
+import { AuthContext } from '../../AuthContext/AuthContext';
 
-const ProtectedRoute = ({ element: Component, adminOnly = false, ...rest }) => {
-  const { isAuthenticated, isAdmin } = useAuth();
+const ProtectedRoute = ({ children }) => {
+  const { isAdmin, isLoading } = useContext(AuthContext);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+  if (isLoading) {
+    return <Loading />; // Show a loading indicator while checking admin status
   }
 
-  if (adminOnly && !isAdmin) {
-    return <Navigate to="/" />;
-  }
-
-  return <Component {...rest} />;
+  return isAdmin ? children : <Navigate to="/login" />;
 };
 
-
 export default ProtectedRoute;
-
-

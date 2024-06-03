@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup'
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthContext/AuthContext";
+// import { useAuth } from "../../AuthContext/AuthContext";
 
 export default function Login() {
   // api/login
@@ -13,23 +13,23 @@ export default function Login() {
   let [UserToken,setUserToken]=useState(null)
   let navigate = useNavigate();
   
-  const { isAuthenticated, isAdmin , setIsAuthenticated , setIsAdmin } = useAuth();
+  // const { isAuthenticated, isAdmin , setIsAuthenticated , setIsAdmin } = useAuth();
 
   
-  async function Allusers(){
-    const{data}= await axios.get(`https://zahaback.com/api/allusers`,
-    {
-      headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-      },
-    }
-    )
-    const admins = data.allusers.map((user)=> {
-       user.isadmin === "admin" ? setIsAdmin(true) : setIsAdmin(false)
-    })
+  // async function Allusers(){
+  //   const{data}= await axios.get(`https://zahaback.com/api/allusers`,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+  //     },
+  //   }
+  //   )
+  //   const admins = data.allusers.map((user)=> {
+  //      user.isadmin === "admin" ? setIsAdmin(true) : setIsAdmin(false)
+  //   })
     
-    console.log(data.allusers)
-      }
+  //   console.log(data.allusers)
+  //     }
 
   const validationSchema = Yup.object({
     email: Yup.string().required('Email is required').email('Enter a valid email'),
@@ -58,8 +58,6 @@ export default function Login() {
       localStorage.setItem('token',data.token)  
       setUserToken(localStorage.getItem('token'))
       navigate('/')
-      setIsAuthenticated(true)
-      Allusers()
 
     } catch (error) {
       if (error.response) {

@@ -37,6 +37,7 @@ import { CategoriesProvider } from "./CategoriesContext/CategoriesContext.jsx";
 import ChosenCategory from "./Components/ChosenCategory/ChosenCategory.jsx";
 import Loading from "./Components/Loading/Loading.jsx";
 import { WishlistProvider } from "./WishlistContext/WishlistContext.jsx";
+import { CommonProvider } from "./CommonContext/CommonContext.jsx";
 
 
 const LazyComponent = ({ Component }) => (
@@ -44,6 +45,7 @@ const LazyComponent = ({ Component }) => (
     <Component />
   </Suspense>
 );
+
 
 const routers = createBrowserRouter([
   {
@@ -59,17 +61,19 @@ const routers = createBrowserRouter([
       { path: "dresses", element: <LazyComponent Component={Dresses} /> },
       { path: "wishlist", element: <LazyComponent Component={Wishlist} /> },
       { path: "register", element: <LazyComponent Component={Register} /> },
-      // { path: "recentlyviewd", element: <LazyComponent Component={RecentlyViewed} /> },
       { path: "productdetails/:productId", element: <LazyComponent Component={ProductDetails} /> },
       { path: "checkout", element: <LazyComponent Component={Checkout} /> },
       { path: "searchedproducts", element: <LazyComponent Component={SearchedProducts} /> },
       { path: "category/:categoryName", element: <LazyComponent Component={ChosenCategory} /> },
-      // { path: "*", element: <LazyComponent Component={NotFound} /> },
     ],
   },
   {
     path: "dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <LazyComponent Component={Orders} /> },
       { path: "reviews", element: <LazyComponent Component={Reviews} /> },
@@ -86,6 +90,7 @@ const routers = createBrowserRouter([
     ],
   },
 ]);
+
 //   <PrivateRoute path="/dashboard" element={<Dashboard />}>
 //   <PrivateRoute index element={<Orders />} />
 //   <PrivateRoute path="reviews" element={<Reviews />} />
@@ -103,22 +108,26 @@ const routers = createBrowserRouter([
 
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAdmin, setIsAdmin] = useState(false);
 
-  const authContextValue = { isAuthenticated, isAdmin };
 
-  return <WishlistProvider>
-<CategoriesProvider>
-    <AuthProvider value={authContextValue}>
+  // const authContextValue = { isAuthenticated, isAdmin };
+
+  return <CategoriesProvider>
+    <AuthProvider>
      <SearchProvider>
+      <CommonProvider>
+      <WishlistProvider>
         <CartProvider> 
              <RouterProvider router={routers}></RouterProvider>
          </CartProvider> 
+         </WishlistProvider> 
+      </CommonProvider>
         </SearchProvider> 
       </AuthProvider> 
     </CategoriesProvider>
-  </WishlistProvider> 
 }
 
 

@@ -75,6 +75,7 @@ console.log("cart", data.cart)
   useEffect(()=> {
     handleDelete(id, guestToken)
   },[id, guestToken])
+
   return (
     <>
       <div

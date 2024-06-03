@@ -21,7 +21,6 @@ export default function NavsAndTabs() {
    const[productID, setproductID] = useState("")
    const { AddtoWishlist, setproductId, productId , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
 
-
 const handleAddtoWishlist=(id) =>{
     AddtoWishlist(id);
     setSelectedwishlist((prev) => [...prev, id]);

@@ -3,13 +3,13 @@ import style from "./TopNav.module.css"
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from '../../Images/Logo PNG.png'
-import { useAuth } from "../../AuthContext/AuthContext";
 import CategoriesContext from "../../CategoriesContext/CategoriesContext";
+import { AuthContext } from "../../AuthContext/AuthContext";
 
 export default function TopNav ({isOpen, setIsOpen}){
 
 const[categories, setCategories] =useState("")
-const { isAuthenticated, isAdmin  } = useAuth();
+const { isAdmin, isLoading } = useContext(AuthContext);
 const { categoryName, setCategoryName, products, setProducts } = useContext(CategoriesContext);
 const navigate= useNavigate()
 
