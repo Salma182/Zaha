@@ -197,7 +197,7 @@ const handleColorChange = (color, image) => {
             <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
               <h3>{productdetails.material}</h3>
               <div className="rate">
-              <Rate initialRate={3} onRate={handleRate} />
+              <Rate  />
               
                 <span className="ms-2">(7 customer reviews)</span>
               </div>

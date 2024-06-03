@@ -19,7 +19,7 @@ const Rate = ( {initialRate, onRate }) => {
           },
         }
         )
-        setRate(data.rate)
+        setRate(data.ceil_rate)
         console.log(data)
         }
 
@@ -43,20 +43,20 @@ const Rate = ( {initialRate, onRate }) => {
           };
           
   return (
-//     <div className="flex items-center gap-1">
-//     {Array.from({ length: 5 }).map((_, index) => (
-//       <img
-//         key={index}
-//         src={index < rate ? YellowStarIcon : GrayStarIcon}
-//         width={30}
-//         alt="star"       
-//          className="w-4 h-4" // Adjust the size of the stars as needed
-//       />
-//     ))}
-//     <span className="text-gray-500">({rate}/5)</span>
-//   </div>
+    <div className="flex items-center gap-1">
+    {Array.from({ length: 5 }).map((_, index) => (
+      <img
+        key={index}
+        src={index < rate ? YellowStarIcon : GrayStarIcon}
+        width={30}
+        alt="star"       
+         className="w-4 h-4" // Adjust the size of the stars as needed
+      />
+    ))}
+    <span className="text-gray-500">({rate}/5)</span>
+  </div>
 
-<div className="flex items-center gap-1">
+/* <div className="flex items-center gap-1">
 {Array.from({ length: 5 }).map((_, index) => {
   const starIndex = index + 1;
   return (
@@ -73,9 +73,13 @@ const Rate = ( {initialRate, onRate }) => {
   );
 })}
 <span className="text-gray-500">({currentRate}/5)</span>
-</div>
+</div> */
 
   );
 };
+
+
+
+
 
 export default Rate;

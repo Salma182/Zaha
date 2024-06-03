@@ -69,36 +69,14 @@ export default function SocialLinks() {
 
 
   const addSocialLink = async () => {
-  
+    const formData = new FormData();
+    formData.append(newSocial, newLink);
+
     try {
-      
-  const Formdata = new FormData();
-  if (newSocial && newLink) {
-    switch(newSocial.toLowerCase()) {
-      case 'facebook':
-        Formdata.append('facebook', newLink);
-        break;
-      case 'instagram':
-        Formdata.append('instagram', newLink);
-        break;
-      case 'snapchat':
-        Formdata.append('snapchat', newLink);
-        break;
-      case 'email':
-        Formdata.append('email', newLink);
-        break;
-      case 'twitter':
-        Formdata.append('twitter', newLink);
-        break;
-      default:
-        console.error('Unknown social media type');
-    }
-  }
-  
       const { data } = await axios.post(
         `https://zahaback.com/api/social/create`,
         {
-          Formdata
+          formData
         },
         {
           headers: {
@@ -116,7 +94,6 @@ export default function SocialLinks() {
         });
       }
       console.log(data);
-
     } catch (error) {
       console.error("Error adding social link:", error);
     }

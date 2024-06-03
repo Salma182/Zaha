@@ -88,7 +88,7 @@ useEffect(() => {
           {categories ? categories.map(category => 
       
       <NavLink to={`/category/${category.name}`}
-      className={style.nav_link} onClick={() => specifiCategory(category.name)} >{category.name}</NavLink>      )
+      className={style.nav_link} onClick={() => specifiCategory(category.name)}>{category.name}</NavLink>      )
       : ""}
           </div>
           <div

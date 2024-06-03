@@ -56,7 +56,7 @@ return <>
 {products ?  <div className="container" style={{marginTop:"7%"}}>
             <div className="row g-3">
               {products.map((product) => (
-                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.name)}>
                   <div className="mycard rounded rounded-3 overflow-hidden pointer"
                   onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)} 

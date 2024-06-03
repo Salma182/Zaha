@@ -22,7 +22,9 @@ async function getOrders(page = 1) {
     }
     )
     setOrders(data.allOrders.data)
-    console.log(data.allOrders.data)
+    setCurrentPage(data.allOrders.current_page);
+    setLastPage(data.allOrders.last_page);
+    console.log(data.allOrders)
     setLoading(false)
   }
   catch(error)
@@ -33,6 +35,7 @@ async function getOrders(page = 1) {
 useEffect(() => {
   getOrders();
 }, []); 
+
 
 let items = [];
 for (let number = 1; number <= lastPage; number++) {

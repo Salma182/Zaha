@@ -60,14 +60,12 @@ export default function Slider() {
 
     }catch(e){
       console.log(e)
-   
   }
   }
   
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
-  
   
   const addSlide = async () => {
     const formData = new FormData();

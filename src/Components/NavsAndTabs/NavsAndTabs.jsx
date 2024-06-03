@@ -18,8 +18,8 @@ export default function NavsAndTabs() {
   const[categories, setCategories] = useState([])
   const navigate = useNavigate()
    const[Id, setId] = useState(null)
-   const[productID, setproductID] = useState("")
-   const { AddtoWishlist, setproductId, productId , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
+   const[productName, setproductName] = useState("")
+   const { AddtoWishlist, setproductname, productname , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
 
 const handleAddtoWishlist=(id) =>{
     AddtoWishlist(id);
@@ -104,9 +104,9 @@ console.log("navs",data.category)
     setSpecificProducts(data.products)
     console.log("productCategory",data.products)
   }
-  const handleProductClick = (productId) => {
-    setproductID(productId)
-    navigate(`/productdetails/${productId}`);
+  const handleProductClick = (productName) => {
+    setproductName(productName)
+    navigate(`/productdetails/${productName}`);
   };
 
   const handleTabClick = (categoryId) => {
@@ -176,11 +176,11 @@ console.log("navs",data.category)
             <div className="row g-3">
               {product.map((product) => (
                 <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} 
-           onClick={()=>handleProductClick(product.id)} >
+           onClick={()=>handleProductClick(product.name)} >
                   <div className="mycard rounded rounded-3 overflow-hidden pointer"
                   onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)}
-                       onClick={()=>handleProductClick(product.id)} >
+                       onClick={()=>handleProductClick(product.name)} >
                     <div className={`${style.myimg}`}>
                     <Slider  ref={sliderRef} {...settings}>
                             {product.images?.map((image, index) => (
@@ -243,12 +243,12 @@ console.log("navs",data.category)
               <div className="row g-3">
                 {specificProducts.map((product) => (
                   <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} 
-                  onClick={() => handleProductClick(product.id)}
+                  onClick={() => handleProductClick(product.name)}
                   >
                     <div className="mycard rounded rounded-3 overflow-hidden pointer"
                   onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)} 
-                        onClick={()=>handleProductClick(product.id)}
+                        onClick={()=>handleProductClick(product.name)}
                         >
 
 

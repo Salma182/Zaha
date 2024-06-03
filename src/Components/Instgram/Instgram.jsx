@@ -7,9 +7,6 @@ import "owl.carousel/dist/assets/owl.theme.default.min.css";
 
 export default function Instgram() {
 
-
-
-
   const options = {
     margin: 20,
     responsiveClass: true,
