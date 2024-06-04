@@ -60,7 +60,6 @@ const handleImageChange = (e) => {
     formData.append("name", Name);
     formData.append("path", img);
 
-
     try{
     const{data}= await axios.post(`https://zahaback.com/api/customerlink/create`,
     {  

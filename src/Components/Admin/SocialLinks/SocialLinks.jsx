@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
 import Loading from "../../Loading/Loading";
+import { Link } from "react-router-dom";
 
 export default function SocialLinks() {
   const [links, setLinks] = useState([]);
@@ -31,16 +32,16 @@ export default function SocialLinks() {
         }
       );
       console.log(data);
-      setLinks(data.area.links);
-      setCurrentPage(data.area.current_page);
-      setLastPage(data.area.last_page);
+      setLinks(data.social.data);
+      setCurrentPage(data.social.current_page);
+      setLastPage(data.social.last_page);
       setLoading(false)
 
-      if (data.area.total === 0) {
-        setNoData(true);
-      } else {
-        setNoData(false);
-      }
+      // if (data.area.total === 0) {
+      //   setNoData(true);
+      // } else {
+      //   setNoData(false);
+      // }
     } catch (error) {
       console.error("Error fetching social links:", error);
     }
@@ -70,21 +71,21 @@ export default function SocialLinks() {
 
   const addSocialLink = async () => {
     const formData = new FormData();
-    formData.append(newSocial, newLink);
-
+    formData.append("name", newSocial);
+    formData.append("link", newLink);
+  
     try {
       const { data } = await axios.post(
         `https://zahaback.com/api/social/create`,
-        {
-          formData
-        },
+        formData, // Pass formData as the data payload
         {
           headers: {
             Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            'Content-Type': 'multipart/form-data', // Specify content type for FormData
           },
         }
       );
-
+  
       if (data.message === "social link created successfully") {
         handleCloseAddModal();
         getSocial(currentPage);
@@ -98,14 +99,17 @@ export default function SocialLinks() {
       console.error("Error adding social link:", error);
     }
   };
-
+console.log(selectedLink.id)
   const updateSocialLink = async () => {
+    const formData = new FormData();
+    formData.append("name", updatedSocial);
+    formData.append("link", updatedLink);
+
     try {
       const { data } = await axios.post(
         `https://zahaback.com/api/social/update/${selectedLink.id}`,
         {
-          social: updatedSocial,
-          link: updatedLink,
+        formData
         },
         {
           headers: {
@@ -113,7 +117,6 @@ export default function SocialLinks() {
           },
         }
       );
-
       if (data.message === "social link updated successfully") {
         handleCloseUpdateModal();
         getSocial(currentPage);
@@ -176,8 +179,8 @@ export default function SocialLinks() {
                 {links.map((link, index) => (
                   <tr key={link.id}>
                     <td>{index + 1}</td>
-                    <td>{link.social}</td>
-                    <td>{link.link}</td>
+                    <td>{link.name}</td>
+                    <td><Link  to={link.link} target="blank"> {link.link} </Link></td>
                     <td className="text-center">
                       <Button
                         variant="primary"

@@ -8,9 +8,7 @@ export const WishlistProvider = ({ children }) => {
     const[addwishlist,setAddWishlist] = useState([])
     const[productId, setproductId ]=useState('')
     const [selectedwishlist, setSelectedwishlist]=useState([])
-const {guestToken,setGuestToken}=useContext(CommonContext)
-
-  const[token, setToken]=useState('')
+    const[Wtoken, setWToken]=useState('')
 
 async function AddtoWishlist(productId){  
 
@@ -27,15 +25,14 @@ async function AddtoWishlist(productId){
   }
   )
   setAddWishlist(data.wishlist_items)
-  if (!guestToken) {
-    const newGuestToken = data.wishlist_items.guest_token;
-    setToken(newGuestToken);
-    localStorage.setItem('guestToken', newGuestToken);
+  if (!Wtoken) {
+    const newToken = data.wishlist_items.guest_token;
+    setWToken(newToken);
+    localStorage.setItem('wtoken', newToken);
   }
 console.log("wishlistData",data.wishlist_items)  
-console.log(guestToken)
+console.log(Wtoken)
 }
-
 
   return (
     <WishlistContext.Provider value={{AddtoWishlist, setproductId, addwishlist, setAddWishlist, selectedwishlist, setSelectedwishlist}}>

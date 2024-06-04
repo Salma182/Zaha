@@ -16,26 +16,33 @@ export default function CallBack() {
       .required("phone is required"),
   });
 
-  async function callbackSubmit(values) {
-    // const { data } = await axios.post(
-    //   `https://zahaback.com/api/callback/create`,
-    //   values
-    // );
-    // console.log(data);
-    console.log(values);
-  }
-
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       phone: "",
-      country: "egypt",
+      country: "",
       type: "",
     },
     validationSchema,
     onSubmit: callbackSubmit,
   });
+
+  async function callbackSubmit(values) {
+    const { data } = await axios.post(
+      `https://zahaback.com/api/callback/create`,
+      {values},
+      {
+        headers: {
+          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        },
+      }
+    );
+    console.log(data);
+    console.log(values);
+  }
+
+
 
   return (
     <>
@@ -90,17 +97,27 @@ export default function CallBack() {
                       />
                     </div>
                     <label htmlFor="country">Country</label>
-                    <select
+
+                    <input
+                        id="country"
+                        type="text"
+                        name="country"
+                        className="form-control"
+                        onChange={formik.handleChange}
+                        value={formik.values.country}
+                      />
+                    {/* <select
                       name="country"
                       id="country"
                       className="form-select"
                       aria-label="Default select example"
                       onChange={formik.handleChange}
+                      value={formik.values.country}
                     >
                       <option value="egypt">Egypt</option>
                       <option value="ksa">ksa</option>
                       <option value="usa">usa</option>
-                    </select>
+                    </select> */}
 
                     <div className="my-2">
                       <label htmlFor="email" className="text-danger">
@@ -189,6 +206,7 @@ export default function CallBack() {
                       <button
                         type="submit"
                         className="btn btn-success px-5 btn-sm"
+                        // onClick={callbackSubmit}
                       >
                         send
                       </button>

@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./AskQuestions.module.css";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import Swal from "sweetalert2";
 
-export default function AskQuestions() {
-  
+export default function AskQuestions({ productId: productid }) {
+  // const [productid,setproductId] = useState('')
+
   async function AskQuestion(values) {
+    console.log("Submitted values:", values); 
     const { data } = await axios.post(
       `https://zahaback.com/api/question/create`,
-      { ...values }
+      { ...values },
+      {
+        headers: {
+          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        },
+      }
     );
+    if (data.message === "question created successfully") {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: data.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     console.log("values");
     console.log(data);
  }
-
+  }
   const phoneRegex = /^01[0125][0-9]{8}$/gm;
 
   const validationSchema = yup.object({
@@ -26,18 +42,33 @@ export default function AskQuestions() {
       .required("phone is required"),
   });
 
+  // setproductId(productId.productId)
+  
+  console.log(productid);
+
+
   const formik = useFormik({
     initialValues: {
       message: "",
       client_name: "",
       client_email: "",
       client_phone: "",
-      // product_id: "",
+      product_id:  productid || '',
     },
     validationSchema,
-    onSubmit: AskQuestion,
+    onSubmit: (values) => {
+      values.product_id = productid; // Ensure product_id is in values
+      AskQuestion(values)}
   });
 
+  useEffect(() => {
+    formik.setFieldValue('product_id', productid); // Update product_id dynamically
+  }, [productid]);
+  
+  // useEffect(() => {
+  //   setproductId(productId.productId);
+  // }, []);  
+  
   return (
     <>
       <>
@@ -100,7 +131,7 @@ export default function AskQuestions() {
                         name="client_name"
                         className="form-control"
                         onChange={formik.handleChange}
-                        // onBlur={formik.handleBlur}
+                        onBlur={formik.handleBlur}
                         value={formik.values.client_name}
                       />
                     </div>

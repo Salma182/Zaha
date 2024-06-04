@@ -107,6 +107,8 @@ console.log("navs",data.category)
   const handleProductClick = (productName) => {
     setproductName(productName)
     navigate(`/productdetails/${productName}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
   };
 
   const handleTabClick = (categoryId) => {
@@ -167,68 +169,74 @@ console.log("navs",data.category)
 
       <div className="tab-content" id="myTabContent">
         <div
-          className={`tab-pane fade ${Id === null || undefined ? 'show active' : ''}`}
+         className={`tab-pane fade ${Id === null || Id === undefined ? 'show active' : ''}`}
           id="all"
           role="tabpanel"
           aria-labelledby="all-tab"
         >
-          <div className="container my-5">
-            <div className="row g-3">
-              {product.map((product) => (
-                <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} 
-           onClick={()=>handleProductClick(product.name)} >
-                  <div className="mycard rounded rounded-3 overflow-hidden pointer"
-                  onMouseEnter={() => setIsHovering(true)}
-                        onMouseLeave={() => setIsHovering(false)}
-                       onClick={()=>handleProductClick(product.name)} >
-                    <div className={`${style.myimg}`}>
-                    <Slider  ref={sliderRef} {...settings}>
-                            {product.images?.map((image, index) => (
-                                    <div key={index}>
-                                      <img src={image} alt="img"  height={400} className="w-100 object-fit-cover pointer"/>
-                                    </div>
-                                  ))}
-                              </Slider>
-
-                              <div onClick={() => handleAddtoWishlist(product.id)} className={style.hearticon}>
-                        <i className={` fa-heart gold ${selectedwishlist.includes(product.id) ? `fa-solid` : `fa-regular ` } text-red  pointer fs-3`}></i>
-                     </div>
-
-                      <div className={`${style.layer}`}>
-                      {product.badge !== null ? <div className={style.badge} >{product.badge}</div> : ""}
-                        <span className={`${style.eye}`}>
-                          <i className={` fa-solid fa-eye fs-5`}></i>
-                          <small className={`${style.small}`}>overview</small>
-                        </span>
-                        <div className={`${style.shopCart} pointer`}>
-                          <i className="fa-solid fa-cart-plus"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`${style.content}`}>
-                      <div className="left">
-                        <h6 className="small my-2">{product.name}</h6>
-                        <ul className="p-0 my-2">
-                          {Array.from({ length: 5 }).map((_, index) => (
-                            <i
-                              key={index}
-                              className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
-                            ></i>
-                          ))}
-                        </ul>
-                        <p className="small">{product.price} EGP</p>
-                      </div>
-                      <div className={`${style.right}`}>
-                        {product.colors.map((color) => (
-                          <div key={color} className={`${style.circle}`} style={{ backgroundColor: color }}></div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+        <div className="container my-5">
+  <div className="row g-3">
+    {product.map((product) => (
+      <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
+        <div
+          className="mycard rounded rounded-3 overflow-hidden pointer"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          onClick={() => handleProductClick(product.name)}
+        >
+          <div className={`${style.myimg}`}>
+            <Slider ref={sliderRef} {...settings}>
+              {product.images?.map((image, index) => (
+                <div key={index}>
+                  <img src={image} alt="img" height={400} className="w-100 object-fit-cover pointer" onClick={() => handleProductClick(product.name)} />
                 </div>
+              ))}
+            </Slider>
+
+            <i
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent event bubbling
+                handleAddtoWishlist(product.id);
+              }}
+              className={`fa-heart gold ${selectedwishlist.includes(product.id) ? 'fa-solid' : 'fa-regular'} text-red pointer fs-3 ${style.hearticon}`}
+            ></i>
+
+            <div className={`${style.layer}`}>
+              {product.badge !== null ? <div className={style.badge}>{product.badge}</div> : ""}
+              <span className={`${style.eye}`}>
+                <i className={` fa-solid fa-eye fs-5`}></i>
+                <small className={`${style.small}`}>overview</small>
+              </span>
+              <div className={`${style.shopCart} pointer`}>
+                <i className="fa-solid fa-cart-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div className={`${style.content}`}>
+            <div className="left">
+              <h6 className="small my-2">{product.name}</h6>
+              <ul className="p-0 my-2">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <i
+                    key={index}
+                    className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
+                  ></i>
+                ))}
+              </ul>
+              <p className="small">{product.price} EGP</p>
+            </div>
+            <div className={`${style.right}`}>
+              {product.colors.map((color) => (
+                <div key={color} className={`${style.circle}`} style={{ backgroundColor: color }}></div>
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
         </div>
         
         {categories.map((category) => (

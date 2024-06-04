@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import style from "../Cart/Cart.module.css";
 import axios from "axios";
+import WishlistContext from "../../WishlistContext/WishlistContext";
 
 export default function Wishlist({wishlistOpen, setWishlistOpen , addwishlist}) {
 
   const[wishlistProducts,setWishlistProducts] = useState([])
+
+// const {selectedwishlist, setSelectedwishlist} = useContext(WishlistContext)
+
 function remove(e) {
   if (e.target.classList.contains("cart")) {
     setWishlistOpen(false);
   }
 }
 
-
 async function GetWishlist() {
 
-  const guestToken= localStorage.getItem("guestToken");
-  const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${guestToken}`,
+  const wtoken= localStorage.getItem("wtoken");
+  const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${wtoken}`,
   {  
     headers: {
       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -25,6 +28,7 @@ async function GetWishlist() {
   setWishlistProducts(data.wishlist)
   console.log("wishlistProducts",data)
 }
+
 
 useEffect(()=> {
   GetWishlist()

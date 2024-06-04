@@ -4,6 +4,7 @@ import image from "../../Images/model.jpg";
 import Delivery from "./../Delivery/Delivery";
 import CallBack from "./../CallBack/CallBack";
 import BackToTop from "./../BackToTop/BackToTop";
+import PostReview from "./PostReview"
 import DeliveryDetails from "../DeliveryDetails/DeliveryDetails";
 import AskQuestions from './../AskQuestions/AskQuestions';
 import axios from "axios";
@@ -17,18 +18,22 @@ import Swal from "sweetalert2";
 import Loading from "../Loading/Loading";
 import WishlistContext from "../../WishlistContext/WishlistContext";
 import Rate from "./Rate";
+import CommonContext from "../../CommonContext/CommonContext";
 
 export default function ProductDetails() {
-  const { cart, setCart, guestToken, setGuestToken } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
+  const{guestToken, setGuestToken} =useContext(CommonContext)
   const {AddtoWishlist, setSelectedwishlist , selectedwishlist}=useContext(WishlistContext)
   const [productdetails, setProductDetails] = useState([]);
   const { productId } = useParams();
-const[quantity, setQuantity] = useState(1);
-const [selectedImage, setSelectedImage] = useState('');
-const [selectedColor, setSelectedColor] = useState('');
-const[response, setResponse] = useState(null)
-const [selectedSizeId, setSelectedSizeId] = useState(null);
-const[loading, setloading] = useState(false);
+  const[productid, setproductid]=useState('')
+  const[quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const[response, setResponse] = useState(null)
+  const [selectedSizeId, setSelectedSizeId] = useState(null);
+  const[loading, setloading] = useState(false);
+
 const settings = {
   dots: true,
     infinite: true,
@@ -45,14 +50,13 @@ function onSizeClick (sizeId) {
 }
 
 
-// const handleAddtoWishlist=(id) =>{
-//   AddtoWishlist(id);
-//   setSelectedwishlist((prev) => [...prev, id]);
-// }  
+const handleAddtoWishlist=(id) =>{
+  AddtoWishlist(id);
+  setSelectedwishlist((prev) => [...prev, id]);
+}  
 
 async function ProductDetails(productId)  {
   setloading(false)
-
   try{
     const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
     {
@@ -63,16 +67,11 @@ async function ProductDetails(productId)  {
     )
     // console.log(data)
     setProductDetails(data.product)
+    setproductid(data.product.id)
     }catch (e) {console.error(e)} finally{
       setloading(false)
     }
   }
-
-  const handleRate = (rate) => {
-    console.log('User rated:', rate);
-    // Optionally, send the rating to a backend server
-    // axios.post('/api/rate', { rate });
-  };
 
 console.log("productdetails:",productdetails)
 
@@ -89,7 +88,7 @@ async function Addtocart(e) {
 
   const payload= { 
    items : [{
-      product_id: +productId,
+      product_id: +productid,
       quantity: quantity,
       size_id:selectedSizeId
     }],
@@ -197,7 +196,7 @@ const handleColorChange = (color, image) => {
             <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
               <h3>{productdetails.material}</h3>
               <div className="rate">
-              <Rate  />
+              <Rate productId={productid} />
               
                 <span className="ms-2">(7 customer reviews)</span>
               </div>
@@ -217,20 +216,20 @@ const handleColorChange = (color, image) => {
               </div>
             </div>{" "}
             <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
-              {/* <span onClick={handleAddtoWishlist(productdetails.id)} >
+              <span onClick={()=> handleAddtoWishlist(productdetails.id)} >
                 <i className="fa-solid fa-heart"></i> Add To WishList
-              </span> */}
+              </span>
             </div>
             <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
               <CallBack />
             </div>
             <div className="item my-2 bg-light rounded-3 shadow-lg pointer">
-              <AskQuestions />
+              <AskQuestions  productId={productid} />
             </div>
             <div className="item my-2 p-2 rounded-3 bg-light shadow-sm">
               <span>
-                <i className="fa-solid fa-truck-fast"></i> Estimated Delivery:
-                Mar 07 – Mar 09
+                <i className="fa-solid fa-truck-fast"></i> Shipping:
+              5 to 7 Working Days
               </span>
             </div>
           </div>
@@ -283,160 +282,8 @@ const handleColorChange = (color, image) => {
  : "" }
       
 
-             <div className="container">
-                  <hr className={`${style.hr} my-4`} />
-          <div className="small my-3">
-            <h3>Reviews (3)</h3>
-            <div className="container">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="rev">
-                    <h4 className="mt-4">Based On 7 Reviews</h4>
-                    <p className="my-1">
-                      <span className="fw-bold fs-3 text-success">4.86</span>{" "}
-                      Overall
-                    </p>
-  
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-sm-3">
-                          <div className="stars">
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                          </div>
-                        </div>
-                        <div className="col-sm-6"></div>
-                        <div className="col-sm-3">85.71%</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="add">
-                    <h4>Add Review</h4>
-                    <p className="my-1">
-                      Your email address will not be published. Required fields
-                      are marked *
-                    </p>
-                    <p className="my-1">
-                      <span className="me-3">Your rating:</span>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>{" "}
-                    </p>
-                    <label htmlFor="rev">Your Review:</label> *
-                    <textarea
-                      name="rev"
-                      id="rev"
-                      className={`${style.area} form-control p-3`}
-                      placeholder="add your review here...."
-                    ></textarea>
-                    <form>
-                      <div
-                        className={`${style.form} d-flex justify-content-between my-3`}
-                      >
-                        <div className={`${style.cont}`}>
-                          <label htmlFor="name" className="mb-2">
-                            Name
-                          </label>{" "}
-                          *
-                          <input
-                            id="name"
-                            type="text"
-                            className={`${style.input} form-control`}
-                          />
-                        </div>
-                        <div className={`${style.cont}`}>
-                          <label htmlFor="email" className="mb-2">
-                            Email :
-                          </label>{" "}
-                          *
-                          <input
-                            className={`${style.input} form-control`}
-                            id="email"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-  
-                      <p className="my-1">
-                        Pictures (max size: 3000 kB, max files: 1){" "}
-                      </p>
-                      <label htmlFor="file" className="text-success fw-bold me-2">
-                        Upload Image :
-                      </label>
-                      <input type="file" id="file" />
-                      <br />
-                      <br />
-                      <div className="d-flex align-align-items-center">
-                        <input type="checkbox" name="saveme" id="save" />
-                        <label htmlFor="save" className="ms-2 small pointer">
-                          Save my name, email, and website in this browser for the
-                          next time I comment.
-                        </label>
-                      </div>
-                      <button
-                        type="submit"
-                        className="btn btn-success btn-sm my-3 px-4"
-                      >
-                        {" "}
-                        Submit{" "}
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <hr className={`${style.hr} my-4`} />
-              <div className="allrev my-5">
-                <h2 className="text-uppercase text-center fw-bold">
-                  no reviews yet
-                </h2>
-  
-                <div className="rev my-5">
-                  <div className=" comment align-items-center d-flex justify-content-start ">
-                    <img className={style.userImage} src={image} alt="user" />
-                    <div className="ms-4">
-                      <div className="icon">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                      </div>
-                      <p className="my-1">username</p>
-                      <p className="my-1">comment</p>
-                    </div>
-                  </div>
-                  <hr className={style.hr} />
-                </div>
-                <div className="rev my-5">
-                  <div className=" comment align-items-center d-flex justify-content-start ">
-                    <img className={style.userImage} src={image} alt="user" />
-                    <div className="ms-4">
-                      <div className="icon">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                      </div>
-                      <p className="my-1">username</p>
-                      <p className="my-1">comment</p>
-                    </div>
-                  </div>
-                  <hr className={style.hr} />
-                </div>
-              </div>
-            </div>
-          </div>
-                  </div>
-         
-      
+             
+        <PostReview productId={productid}  />
   
       </div>
     )}

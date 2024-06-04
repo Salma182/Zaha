@@ -53,7 +53,7 @@ const handleProductClick = (productId) => {
   };
 
 return <>
-{products ?  <div className="container" style={{marginTop:"7%"}}>
+{products ?  <div className="container" style={{marginTop:"10%"}}>
             <div className="row g-3">
               {products.map((product) => (
                 <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.name)}>

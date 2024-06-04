@@ -85,14 +85,8 @@ const user = {
         <div className="py-5"></div>
         <h1 className="text-center fw-bold mb-3">Register</h1>
         <form onSubmit={formik.handleSubmit} className="bg-color p-3 rounded-3 w-50 m-auto">
-        {errors ? (
-            <div className="bg-white" style={{ color: "red" }}>
-              {" "}
-              {errors.all}{" "}
-            </div>
-          ) : (
-            ""
-          )}
+        {error ? <div className='alert alert-danger'> {error} </div> : ''}
+
           
           <div>
         <label htmlFor="name">Username :</label>
