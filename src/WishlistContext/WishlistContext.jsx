@@ -9,9 +9,10 @@ export const WishlistProvider = ({ children }) => {
     const[productId, setproductId ]=useState('')
     const [selectedwishlist, setSelectedwishlist]=useState([])
     const[Wtoken, setWToken]=useState('')
+    let currentWToken = localStorage.getItem('Wtoken') || Wtoken;
+
 
 async function AddtoWishlist(productId){  
-
     const products= [
         {
           "product_id": productId,
@@ -25,11 +26,13 @@ async function AddtoWishlist(productId){
   }
   )
   setAddWishlist(data.wishlist_items)
-  if (!Wtoken) {
+  setWToken(data.wishlist_items.guest_token);
+  if (!currentWToken) {
     const newToken = data.wishlist_items.guest_token;
     setWToken(newToken);
     localStorage.setItem('wtoken', newToken);
   }
+
 console.log("wishlistData",data.wishlist_items)  
 console.log(Wtoken)
 }

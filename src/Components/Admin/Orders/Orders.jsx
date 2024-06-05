@@ -72,8 +72,8 @@ const paginationBasic = (
             <th>quantity</th>
             <th>city</th>
             <th>phone</th>
-          
             <th>price</th>
+            <th>status</th>
 
           </tr>
         </thead>
@@ -92,6 +92,7 @@ const paginationBasic = (
               <td>{order.city}</td>
               <td>{order.phone}</td>
               <td>{order.total_price}</td>
+              <td>{order.status}</td>
 
             </tr>
             

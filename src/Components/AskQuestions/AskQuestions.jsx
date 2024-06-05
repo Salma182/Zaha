@@ -74,7 +74,7 @@ export default function AskQuestions({ productId: productid }) {
       <>
         <button
           type="button"
-          className="btn text-dark fs-5"
+          className="btn text-dark fs-5 w-100 text-start"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdropa"
         >
@@ -95,7 +95,7 @@ export default function AskQuestions({ productId: productid }) {
             <div className="modal-content">
               <div className="modal-header">
                 <h5
-                  className="modal-title bg-dark text-warning w-50 rounded px-2 py-1 mt-5"
+                  className="modal-title text-color text-center fw-bold fs-3 w-100 rounded px-2 py-1" 
                   id="staticBackdropLabel"
                 >
                   Ask Questions
@@ -118,13 +118,12 @@ export default function AskQuestions({ productId: productid }) {
                         name="message"
                         className="form-control"
                         onChange={formik.handleChange}
-                        // onBlur={formik.handleBlur}
+                        onBlur={formik.handleBlur}
                         value={formik.values.message}
                       />
                     </div>
                     <label htmlFor="client_name">Name</label>
                     <div className="my-2">
-                      <label htmlFor="email">Your Name</label>
                       <input
                         id="client_name"
                         type="text"
@@ -138,7 +137,7 @@ export default function AskQuestions({ productId: productid }) {
 
                     <div className="my-2">
                       <label htmlFor="client_email">
-                        Your Email (required)*
+                        Email *
                       </label>
                       <input
                         id="client_email"
@@ -150,7 +149,7 @@ export default function AskQuestions({ productId: productid }) {
                         value={formik.values.client_email}
                       />
                       {formik.errors.client_email && formik.touched.client_email? (
-                        <div className="alert alert-danger p-1">
+                        <div className="alert alert-danger p-1 mt-2">
                           {formik.errors.client_email}
                         </div>
                       ) : (
@@ -160,7 +159,7 @@ export default function AskQuestions({ productId: productid }) {
 
                     <div className="my-2">
                       <label htmlFor="client_phone">
-                        Your Phone (required)*
+                       Phone *
                       </label>
                       <input
                         id="client_phone"
@@ -172,7 +171,7 @@ export default function AskQuestions({ productId: productid }) {
                         value={formik.values.client_phone}
                       />
                       {formik.errors.client_phone && formik.touched.client_phone ? (
-                        <div className="alert alert-danger p-1">
+                        <div className="alert alert-danger p-1 mt-2">
                           {formik.errors.client_phone}
                         </div>
                       ) : (
@@ -182,13 +181,19 @@ export default function AskQuestions({ productId: productid }) {
 
                     <div className="d-flex justify-content-end">
                       <button
+                          type="button"
+                          className="btn btn-secondary mx-3"
+                          data-bs-dismiss="modal">
+                          Close
+                       </button>
+                
+                        <button
                         type="submit"
-                        className="btn btn-success px-5 btn-sm"
-                        onSubmit={()=>AskQuestion}
-                      >
+                        className="btn btn-success px-5 fs-6 btn-sm">
                         Send
                       </button>
-                    </div>
+                
+                </div>
                   </form>
                 </div>
               </div>

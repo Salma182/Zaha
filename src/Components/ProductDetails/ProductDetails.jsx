@@ -33,6 +33,7 @@ export default function ProductDetails() {
   const[response, setResponse] = useState(null)
   const [selectedSizeId, setSelectedSizeId] = useState(null);
   const[loading, setloading] = useState(false);
+const[error,setError] = useState('')
 
 const settings = {
   dots: true,
@@ -80,7 +81,16 @@ useEffect(() => {
 }, [productId]);
 
 const handleQuantityChange = (e) => {
-  setQuantity(e.target.value);
+  const value = Math.max(1, Math.min(100, parseInt(e.target.value, 10))); // Ensures the value stays between 1 and 100
+  setQuantity(isNaN(value) ? 1 : value);
+};
+
+const incrementQuantity = () => {
+  setQuantity((prev) => Math.min(prev + 1, 100));  // Increment quantity, but not above 100
+};
+
+const decrementQuantity = () => {
+  setQuantity((prev) => Math.max(prev - 1, 1));  // Decrement quantity, but not below 1
 };
 
 async function Addtocart(e) {
@@ -123,6 +133,9 @@ async function Addtocart(e) {
    }
   catch(error){
     console.error('Error adding item to cart:', error);
+    if(error.response.data.message === "The items.0.size_id field is required."){
+      setError(error)
+    }
   }
 }
 
@@ -162,6 +175,9 @@ const handleColorChange = (color, image) => {
             <h2>{productdetails.name}</h2>
             <h3>{productdetails.price} EGP</h3>
             <p>Sizes</p>
+            {error && ( <div className="text-danger fw-bold p-1 w-50">
+            Size is Required
+          </div>  )}
             <ul className="list-unstyled d-flex flex-row gap-3">
               {productdetails?.sizes?.map((product)=>
                <li
@@ -176,21 +192,39 @@ const handleColorChange = (color, image) => {
                 </ul>
   
             <form onSubmit={Addtocart}>
-              <div className="buy d-flex align-items-center">
-                <input
-                  type="number"
-                  placeholder="number of items"
-                  className={`${style.input} form-control w-25`}
-                  min={1}
-                  max={100}
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                />
-                <button type="submit" className={`addBtn mx-2`}>
-                  Add to cart
-                </button>
-                {/* <button className="btn btn-success px-4">Buy now</button> */}
-              </div>
+            <div className="buy">
+      <div className="d-flex align-items-center">
+        <input
+          placeholder="number of items"
+          className={`${style.input} form-control me-2`}
+          min={1}
+          max={100}
+          value={quantity}
+          onChange={handleQuantityChange}
+        />
+        <div className="d-flex flex-column me-2">
+          <button
+            type="button"
+            className={`${style.quantityBtn} mb-1`}
+            onClick={incrementQuantity}
+            disabled={quantity >= 100}
+          >
+            +
+          </button>
+          <button
+            type="button"
+            className={`${style.quantityBtn} mb-1`}
+            onClick={decrementQuantity}
+            disabled={quantity <= 1}
+          >
+            -
+          </button>
+        </div>
+        <button type="submit" className={`${style.addCart} mx-2 ${productdetails.is_sold_out ? `disabled` : ""}`}>
+             Add to cart
+          </button>
+      </div>
+    </div>
             </form>
             {response && <Cart response={response} />}
             <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">

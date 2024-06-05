@@ -10,7 +10,7 @@ export default function Delivery() {
         <h4 className="text-center fw-bold mb-3">
           <DeliveryDetails />
         </h4>
-        <div className="container bg-dark text-white text-center p-2 small">
+        <div className="container text-white text-center p-2 small" style={{backgroundColor:"#956911"}}>
           © By Zaha 2024 – All Right reserved!
         </div>
       </div>

@@ -111,6 +111,8 @@ color: white;
 .sizebtn{
     border-radius: 50%;
     padding: 0.25rem 0.5rem;
+    border: 2px #956911 solid;
+    color: #956911;
 }
 
 .selected {

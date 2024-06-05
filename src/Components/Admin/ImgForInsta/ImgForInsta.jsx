@@ -56,18 +56,28 @@ const handleImageChange = (e) => {
 
 
   async function AddImage() {
+    if (!Name || !img) {
+      // Check if Name and img are empty
+      // You can also add additional validation if needed
+      console.error("Name and Image are required");
+      return;
+    }
+
+    
     const formData = new FormData();
     formData.append("name", Name);
     formData.append("path", img);
 
     try{
     const{data}= await axios.post(`https://zahaback.com/api/customerlink/create`,
+    {formData},
     {  
       headers: {
         Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
       },
     }
     )
+    
     console.log(data)
   }catch(e) {
     console.error(e)

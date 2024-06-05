@@ -12,7 +12,7 @@ export default function SocialLinks() {
   const [lastPage, setLastPage] = useState(1);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [selectedLink, setSelectedLink] = useState(null);
+  const [selectedLink, setSelectedLink] = useState("");
   const [newSocial, setNewSocial] = useState("");
   const [newLink, setNewLink] = useState("");
   const [updatedSocial, setUpdatedSocial] = useState("");
@@ -63,7 +63,7 @@ export default function SocialLinks() {
 
   const handleShowUpdateModal = (link) => {
     setSelectedLink(link);
-    setUpdatedSocial(link.social || "");
+    setUpdatedSocial(link.name || "");
     setUpdatedLink(link.link || "");
     setShowUpdateModal(true);
   };
@@ -99,7 +99,9 @@ export default function SocialLinks() {
       console.error("Error adding social link:", error);
     }
   };
-console.log(selectedLink.id)
+  
+console.log(selectedLink.name)
+
   const updateSocialLink = async () => {
     const formData = new FormData();
     formData.append("name", updatedSocial);
@@ -107,7 +109,7 @@ console.log(selectedLink.id)
 
     try {
       const { data } = await axios.post(
-        `https://zahaback.com/api/social/update/${selectedLink.id}`,
+        `https://zahaback.com/api/social/update/${selectedLink.name}}`,
         {
         formData
         },
@@ -130,10 +132,10 @@ console.log(selectedLink.id)
     }
   };
 
-  const deleteSocialLink = async (id) => {
+  const deleteSocialLink = async (name) => {
     try {
       const { data } = await axios.get(
-        `https://zahaback.com/api/social/delete/${id}`,
+        `https://zahaback.com/api/social/delete/${name}`,
         {
           headers: {
             Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -176,7 +178,7 @@ console.log(selectedLink.id)
             </thead>
             {links.length > 0 && (
               <tbody>
-                {links.map((link, index) => (
+                {links?.map((link, index) => (
                   <tr key={link.id}>
                     <td>{index + 1}</td>
                     <td>{link.name}</td>
@@ -200,7 +202,7 @@ console.log(selectedLink.id)
                             cancelButtonText: "No, cancel!",
                           }).then((result) => {
                             if (result.isConfirmed) {
-                              deleteSocialLink(link.id);
+                              deleteSocialLink(link.name);
                             } else if (
                               result.dismiss === Swal.DismissReason.cancel
                             ) {

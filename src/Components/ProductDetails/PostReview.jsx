@@ -14,7 +14,18 @@ export default function PostReview({productId}) {
 const [Data,setData]=useState("");
 const [review,setReview]=useState("");
 const [errors, setErrors] = useState({});
-
+const[reviews,setreviews]= useState([])
+async function getReview(id){
+const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`,
+{
+  headers: {
+    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+  },
+}
+)
+setreviews(data.reviews)
+console.log(data.reviews)
+}
 
 async function GetRate(id){
   const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`,
@@ -83,6 +94,7 @@ console.log("productid",productId)
 
 useEffect(() => {
   GetRate(id)
+  getReview(id)
   setid(productId)},
    [productId]);
 
@@ -207,44 +219,29 @@ return<>
 
               <hr className={`${style.hr} my-4`} />
               <div className="allrev my-5">
-                <h2 className="text-uppercase text-center fw-bold">
-                  no reviews yet
-                </h2>
+               
   
+              {reviews && reviews.length > 0 ? ( reviews.map((review)=>{
                 <div className="rev my-5">
-                  <div className=" comment align-items-center d-flex justify-content-start ">
-                    {/* <img className={style.userImage} src={image} alt="user" /> */}
-                    <div className="ms-4">
-                      <div className="icon">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                      </div>
-                      <p className="my-1">username</p>
-                      <p className="my-1">comment</p>
-                    </div>
+                <div className=" comment align-items-center d-flex justify-content-start ">
+                  <img className={style.userImage} src={review.image} width={100} alt="user" />
+                  <div className="ms-4">
+                      <Rate rating={review.rate}/>
+                    <p className="my-1">{review.name}</p>
+                    <p className="my-1">{review.review}</p>
                   </div>
-                  <hr className={style.hr} />
                 </div>
-                <div className="rev my-5">
-                  <div className=" comment align-items-center d-flex justify-content-start ">
-                    {/* <img className={style.userImage} src={image} alt="user" /> */}
-                    <div className="ms-4">
-                      <div className="icon">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                      </div>
-                      <p className="my-1">username</p>
-                      <p className="my-1">comment</p>
-                    </div>
-                  </div>
-                  <hr className={style.hr} />
-                </div>
+                <hr className={style.hr} />
+              </div>
+              }) 
+            ) : (
+
+                  <h2 className="text-uppercase text-center fw-bold">
+                  no reviews yet
+                  </h2>
+                  
+                )}  
+             
               </div>
             </div>
           </div>

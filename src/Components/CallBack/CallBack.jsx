@@ -3,6 +3,7 @@ import style from "./CallBack.module.css";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import Swal from "sweetalert2";
 
 export default function CallBack() {
   const phoneRegex = /^01[0125][0-9]{8}$/gm;
@@ -14,6 +15,9 @@ export default function CallBack() {
       .string()
       .matches(phoneRegex, "Invalid phone number")
       .required("phone is required"),
+      country: yup.string().required("Country is required"),
+      type: yup.string().oneOf(['call', 'sms', 'whatsapp']).required("Type is required"),
+
   });
 
   const formik = useFormik({
@@ -22,26 +26,39 @@ export default function CallBack() {
       email: "",
       phone: "",
       country: "",
-      type: "",
+      type: "sms",
     },
     validationSchema,
     onSubmit: callbackSubmit,
   });
 
   async function callbackSubmit(values) {
-    const { data } = await axios.post(
-      `https://zahaback.com/api/callback/create`,
-      {values},
-      {
-        headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-        },
-      }
-    );
-    console.log(data);
-    console.log(values);
+    try {
+      const { data } = await axios.post(
+        `https://zahaback.com/api/callback/create`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          },
+        }
+      );
+      if (data.message === "callBack created successfully") {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: data.message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      console.log("values");
+      console.log(data);
+   }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   }
-
+  
 
 
   return (
@@ -49,7 +66,7 @@ export default function CallBack() {
       <>
         <button
           type="button"
-          className="btn text-dark fs-5"
+          className="btn text-dark fs-5 w-100 text-start"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
@@ -70,7 +87,7 @@ export default function CallBack() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5
-                  className="modal-title bg-dark text-warning w-50 rounded px-2 py-1 mt-5"
+                  className="modal-title text-color text-center fw-bold fs-3 w-100 rounded px-2 py-1 "
                   id="staticBackdropLabel"
                 >
                   Callback
@@ -82,150 +99,155 @@ export default function CallBack() {
                   aria-label="Close"
                 ></button>
               </div>
-              <div className="modal-body">
-                <div className="container">
-                  <form onSubmit={formik.handleSubmit}>
-                    <div className="my-2">
-                      <label htmlFor="name">Name</label>
-                      <input
-                        id="name"
-                        type="text"
-                        name="name"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.name}
-                      />
-                    </div>
-                    <label htmlFor="country">Country</label>
 
-                    <input
-                        id="country"
-                        type="text"
-                        name="country"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.country}
-                      />
-                    {/* <select
-                      name="country"
-                      id="country"
-                      className="form-select"
-                      aria-label="Default select example"
-                      onChange={formik.handleChange}
-                      value={formik.values.country}
-                    >
-                      <option value="egypt">Egypt</option>
-                      <option value="ksa">ksa</option>
-                      <option value="usa">usa</option>
-                    </select> */}
+           <div className="modal-body">
+  <div className="container">
+    <form onSubmit={formik.handleSubmit}>
+      <div className="my-2">
+        <label htmlFor="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          className="form-control"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.name}
+        />
+        {formik.errors.name && formik.touched.name && (
+          <div className="alert alert-danger p-1">
+            {formik.errors.name}
+          </div>
+        )}
+      </div>
 
-                    <div className="my-2">
-                      <label htmlFor="email" className="text-danger">
-                        Your Email (required)*
-                      </label>
-                      <input
-                        id="email"
-                        type="text"
-                        name="email"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                      />
-                      {formik.errors.email && formik.touched.email? (
-                        <div className="alert alert-danger p-1">
-                          {formik.errors.email}
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+      <div className="my-2">
+        <label htmlFor="country">Country</label>
+        <input
+          id="country"
+          type="text"
+          name="country"
+          className="form-control"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.country}
+        />
+        {formik.errors.country && formik.touched.country ?(
+          <div className="alert alert-danger p-1">
+            {formik.errors.country}
+          </div>
+        ) : ""}
+      </div>
 
-                    <div className="my-2">
-                      <label className="text-danger" htmlFor="phone">
-                        Your Phone (required)*
-                      </label>
-                      <input
-                        id="phone"
-                        type="text"
-                        name="phone"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.phone}
-                      />
-                      {formik.errors.phone && formik.touched.phone? (
-                        <div className="alert alert-danger p-1">
-                          {formik.errors.phone}
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+      <div className="my-2">
+        <label htmlFor="email" >
+          Email *
+        </label>
+        <input
+          id="email"
+          type="text"
+          name="email"
+          className="form-control"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+        />
+        {formik.errors.email && formik.touched.email ? 
+          <div className="alert alert-danger p-1 mt-2">
+            {formik.errors.email}
+          </div>
+         : ""}
 
-                    <div className="my-2">
-                      <div className="rad d-flex align-items-center">
-                        <label htmlFor="call">Call</label>
-                        <input
-                          className="ms-2"
-                          id="call"
-                          type="radio"
-                          name="type"
-                          value="call"
-                          onChange={formik.handleChange}
-                          checked
-                        />
-                      </div>
+      </div>
 
-                      <div className="rad d-flex align-items-center">
-                        <label htmlFor="sms">SMS</label>
-                        <input
-                          className="ms-2"
-                          id="sms"
-                          type="radio"
-                          name="type"
-                          value="sms"
-                          onChange={formik.handleChange}
-                        />
-                      </div>
+      <div className="my-2">
+        <label  htmlFor="phone">
+          Phone Number *
+        </label>
+        <input
+          id="phone"
+          type="text"
+          name="phone"
+          className="form-control"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.phone}
+        />
+        {formik.errors.phone && formik.touched.phone && (
+          <div className="alert alert-danger p-1 mt-2">
+            {formik.errors.phone}
+          </div>
+        )}
+      </div>
 
-                      <div className="rad d-flex align-items-center">
-                        <label htmlFor="wats">whatsapp</label>
-                        <input
-                          className="ms-2"
-                          id="wats"
-                          type="radio"
-                          name="type"
-                          value="whatsapp"
-                          onChange={formik.handleChange}
-                        />
-                      </div>
-                    </div>
+      <div className="my-2">
+        <div className="rad d-flex align-items-center">
+          <label htmlFor="call">Call</label>
+          <input
+            className="ms-2"
+            id="call"
+            type="radio"
+            name="type"
+            value="call"
+            onChange={formik.handleChange}
+            checked={formik.values.type === 'call'}
+          />
+        </div>
 
-                    <div className="d-flex justify-content-end">
-                      <button
-                        type="submit"
-                        className="btn btn-success px-5 btn-sm"
-                        // onClick={callbackSubmit}
-                      >
-                        send
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              {/* <div className="modal-footer">
-                <button
+        <div className="rad d-flex align-items-center">
+          <label htmlFor="sms">SMS</label>
+          <input
+            className="ms-2"
+            id="sms"
+            type="radio"
+            name="type"
+            value="sms"
+            onChange={formik.handleChange}
+            checked={formik.values.type === 'sms'}
+          />
+        </div>
+
+        <div className="rad d-flex align-items-center">
+          <label htmlFor="wats">whatsapp</label>
+          <input
+            className="ms-2"
+            id="wats"
+            type="radio"
+            name="type"
+            value="whatsapp"
+            onChange={formik.handleChange}
+            checked={formik.values.type === 'whatsapp'}
+          />
+        </div>
+        {formik.errors.type && formik.touched.type && (
+          <div className="alert alert-danger p-1">
+            {formik.errors.type}
+          </div>
+        )}
+      </div>
+
+      <div className="d-flex justify-content-end">
+              <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary mx-3"
                   data-bs-dismiss="modal"
                 >
                   Close
-                </button>
-                <button type="button" className="btn btn-success">
-                  Understood
-                </button>
-              </div> */}
+                  </button>
+                
+          <button
+          type="submit"
+          className="btn btn-success px-5 btn-sm"
+        >
+          Send
+        </button>
+      
+      </div>
+    </form>
+  </div>
+</div>
+
+        
             </div>
           </div>
         </div>
