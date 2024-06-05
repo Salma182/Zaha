@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import CartContext from '../CartContext/CartContext';
 import CommonContext from '../CommonContext/CommonContext';
 const WishlistContext = createContext();
@@ -8,34 +8,51 @@ export const WishlistProvider = ({ children }) => {
     const[addwishlist,setAddWishlist] = useState([])
     const[productId, setproductId ]=useState('')
     const [selectedwishlist, setSelectedwishlist]=useState([])
-    const[Wtoken, setWToken]=useState('')
-    let currentWToken = localStorage.getItem('Wtoken') || Wtoken;
+    const [Wtoken, setWToken] = useState(localStorage.getItem('wtoken') || '');
 
 
 async function AddtoWishlist(productId){  
-    const products= [
-        {
-          "product_id": productId,
-        }
-      ]
-  const {data} = await axios.post(`https://zahaback.com/api/wishlist/create`, {products} ,
-  {  
-    headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-    },
-  }
-  )
-  setAddWishlist(data.wishlist_items)
-  setWToken(data.wishlist_items.guest_token);
-  if (!currentWToken) {
-    const newToken = data.wishlist_items.guest_token;
-    setWToken(newToken);
-    localStorage.setItem('wtoken', newToken);
-  }
+  let currentWToken = localStorage.getItem('wtoken');
 
-console.log("wishlistData",data.wishlist_items)  
-console.log(Wtoken)
+  const products = [
+    {
+      "product_id": productId,
+    }
+  ];
+
+  try {
+    const { data } = await axios.post(
+      `https://zahaback.com/api/wishlist/create`,
+      { products },
+      {  
+        headers: {
+          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          'Wtoken': currentWToken // Pass the token in the headers
+        },
+      }
+    );
+    setAddWishlist(data.wishlist_items);
+
+    // If there's no token in localStorage, set the new token
+    if (!currentWToken && data.wishlist_items.guest_token) {
+      const newToken = data.wishlist_items.guest_token;
+      setWToken(newToken);
+      localStorage.setItem('wtoken', newToken);
+    } else {
+      setWToken(currentWToken); // Ensure the token state is set to the current token
+    }
+
+    console.log("wishlistData", data.wishlist_items);
+    console.log(Wtoken);
+
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+  }
 }
+
+useEffect(() => {
+  console.log('Current Wtoken:', Wtoken);
+}, [Wtoken]);
 
   return (
     <WishlistContext.Provider value={{AddtoWishlist, setproductId, addwishlist, setAddWishlist, selectedwishlist, setSelectedwishlist}}>

@@ -15,6 +15,7 @@ const [Data,setData]=useState("");
 const [review,setReview]=useState("");
 const [errors, setErrors] = useState({});
 const[reviews,setreviews]= useState([])
+
 async function getReview(id){
 const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`,
 {
@@ -98,16 +99,14 @@ useEffect(() => {
   setid(productId)},
    [productId]);
 
-return<>
-
+  return<>
 
     <div className="container">
                   <hr className={`${style.hr} my-4`} />
           <div className="small my-3">
-            <h3>Reviews (3)</h3>
+            <h3>Reviews ({Data.count})</h3>
             <div className="container">
               <div className="row">
-              {/* {Data && ( ) } */}
               <div className="col-md-6">
               <div className="rev">
                 <h4 className="mt-4">Based On {Data.count} Reviews</h4>
@@ -120,7 +119,7 @@ return<>
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="stars">
-                      <Rate  returnedData={Data} />
+                      <Rate rating={Data.ceil_rate} />
                       </div>
                     </div>
                     <div className="col-sm-6"></div>
@@ -165,7 +164,7 @@ return<>
                           <input
                             id="name"
                             type="text"
-                            className={`${style.input} form-control`}
+                            className={`${style.input} form-control w-100`}
                             value={name}
                             onChange={e=> setName(e.target.value)}
                           />
@@ -178,7 +177,7 @@ return<>
                           </label>{" "}
                           *
                           <input
-                            className={`${style.input} form-control`}
+                            className={`${style.input} form-control w-100`}
                             id="email"
                             type="text"
                             value={email}
@@ -219,36 +218,28 @@ return<>
 
               <hr className={`${style.hr} my-4`} />
               <div className="allrev my-5">
-               
-  
-              {reviews && reviews.length > 0 ? ( reviews.map((review)=>{
-                <div className="rev my-5">
-                <div className=" comment align-items-center d-flex justify-content-start ">
+              {reviews && reviews.length > 0 ? (
+              reviews.map((review) => (
+              <div className="rev my-5 " key={review.id}>
+                <div className="comment align-items-center d-flex justify-content-start">
                   <img className={style.userImage} src={review.image} width={100} alt="user" />
                   <div className="ms-4">
-                      <Rate rating={review.rate}/>
-                    <p className="my-1">{review.name}</p>
+                    <p className="my-1 fw-bold">{review.name}</p>
                     <p className="my-1">{review.review}</p>
+                    <Rate rating={review.rate} />
                   </div>
                 </div>
-                <hr className={style.hr} />
               </div>
-              }) 
-            ) : (
+            ))
+          ) : (
+            <h2 className="text-uppercase text-center fw-bold">
+              no reviews yet
+            </h2>
+          )}
 
-                  <h2 className="text-uppercase text-center fw-bold">
-                  no reviews yet
-                  </h2>
-                  
-                )}  
-             
               </div>
             </div>
           </div>
                   </div>
-
-
-
-
 </>
 }

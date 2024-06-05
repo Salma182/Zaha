@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ImgForInsta.module.css";
 import { Table } from "react-bootstrap";
 import img from "../../../Images/model.jpg";
@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
+import Pagination from "react-bootstrap/Pagination";
 
 export default function ImgForInsta() {
 
@@ -21,7 +22,7 @@ const [currentPage, setCurrentPage] = useState(1);
 const [editingSlide, setEditingSlide] = useState(null);
 const [editingImage, setEditingImage] = useState(null);
 const [updatedName, setUpdatedName] = useState("");
-
+const[data ,setData]=useState([]);
 const handleCloseAddModal = () => {
   setShowAddModal(false);
   setSlideName("");
@@ -55,34 +56,71 @@ const handleImageChange = (e) => {
 };
 
 
-  async function AddImage() {
-    if (!Name || !img) {
-      // Check if Name and img are empty
-      // You can also add additional validation if needed
-      console.error("Name and Image are required");
-      return;
-    }
+async function getImages(page = 1){
+  const{data}= await axios.get(`https://zahaback.com/api/customerlink/all?page=${page}`,
+  {  
+    headers: {
+      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    },
+  }
+  )
+  setCurrentPage(data.link.current_page);
+  setLastPage(data.link.last_page);
+  console.log(data)
+  setData(data.link.data)
+}
 
-    
+  async function AddImage() {    
     const formData = new FormData();
     formData.append("name", Name);
     formData.append("path", img);
 
     try{
     const{data}= await axios.post(`https://zahaback.com/api/customerlink/create`,
-    {formData},
+    formData,
     {  
       headers: {
         Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
       },
     }
-    )
-    
+    ) 
+    if (data.message === "customerlink created successfully") {
+      handleCloseAddModal();
+      Swal.fire({
+        icon: "success",
+        title: "customerlink created successfully",
+      });
+    }
+
     console.log(data)
   }catch(e) {
     console.error(e)
   }
 }
+
+let items = [];
+for (let number = 1; number <= lastPage; number++) {
+  items.push(
+    <Pagination.Item
+      key={number}
+      active={number === currentPage}
+      onClick={() => getImages(number)}
+    >
+      {number}
+    </Pagination.Item>
+  );
+}
+const paginationBasic = (
+  <div>
+    <Pagination size="sm">{items}</Pagination>
+  </div>
+);
+
+useEffect(() => {
+  getImages();
+}, []);
+
+
 
   return (
     <>
@@ -98,45 +136,54 @@ const handleImageChange = (e) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td width={100}>1</td>
-            <td className="text-center" width={100}>
-              <img src={img} height={80} alt="product" />
-            </td>
-            <td className={style.cont}>
-            <div className="w-50 buttons"> 
-                  <button
-                    className="deleteBtn"
-                    onClick={() => {
-                      Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          // deleteSlide(img.id);
-                        }
-                      });
-                    }}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="editBtn"
-                    onClick={() => handleEditSlide(img)}
-                  >
-                    Edit
-                  </button>
-
-                  </div>
-                  
-            </td>
-          </tr>
+          {data && data.length >0 ? (
+            data.map((link)=>
+              <tr>
+              <td width={100}>{link.id}</td>
+              <td className="text-center" width={100}>
+                <img src={link.path} height={80} alt="product" />
+              </td>
+              <td className={style.cont}>
+              <div className="w-50 buttons"> 
+                    <button
+                      className="deleteBtn"
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            // deleteSlide(img.id);
+                          }
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="editBtn"
+                      onClick={() => handleEditSlide(img)}
+                    >
+                      Edit
+                    </button>
+  
+                    </div>
+                    
+              </td>
+            </tr>
+            )
+     ) :""}
+        
         </tbody>
+
+        <div className="my-2 d-flex justify-content-center">
+        {paginationBasic}
+      </div>
       </Table>
       <div onClick={handleShowAddModal} className="btn btn-primary w-100 my-3">Add Image</div>
 

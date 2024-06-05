@@ -28,6 +28,15 @@ export default function ProductsForDashboard() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [updatedname, setupdatedname] = useState("");
+  const [updatedDesc, setupdatedDesc] = useState("");
+  const [updatedPrice, setupdatedPrice] = useState("");
+  const [updatedImages, setupdatedImages] = useState([]);
+  const [updatedcolors, setupdatedcolors] = useState([]);
+  const [updatedsize, setupdatedsize] = useState([]);
+  const [updatedmaterial, setupdatedmaterial] = useState("");
+  const [updatedquantity, setupdatedquantity] = useState("");
+  const [updatedSubcategory, setupdatedSubcategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
@@ -87,6 +96,7 @@ export default function ProductsForDashboard() {
   const handleImageChange = (e) => {
     setImages(Array.from(e.target.files));
   };
+  
   
   const handleColorsChange = (e) => {
     setColors(e.target.value.split(','));
@@ -157,36 +167,53 @@ export default function ProductsForDashboard() {
     }
   }  
 
+  const handleShowUpdateModal = (product) => {
+    setSelectedProductId(product.id);
+    setupdatedname(product.name);
+    setupdatedDesc(product.desc);
+    setupdatedPrice(product.price);
+    setupdatedImages(product.images || []);
+    setupdatedcolors(product.colors.map((color)=>color) || []);
+    setupdatedsize(product.sizes.map((size) => size.size) || []);
+    setupdatedmaterial(product.material);
+    setupdatedquantity(product.quantity);
+    setupdatedSubcategory(product.subcategory_id);
+    setShowUpdateModal(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setShowUpdateModal(false);
+  };
+
   async function updateProduct() {
-    
-    const selectedId = subcategories.find(subcategory => subcategory.name === selectedSubcategory)?.id;
-    if (!selectedId) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Invalid subcategory selected',
-      });
-      return;
-    }
-
-    console.log("selectedId",selectedId)
-
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("desc", desc);
-      formData.append("material", material);
-      formData.append("quantity", quantity);
-      formData.append("price", price);
-      images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
-      });
 
-    colors.forEach((color, index) => {
+      const selectedId = subcategories.find(subcategory => subcategory.name === updatedSubcategory)?.id;
+      if (!selectedId) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Invalid subcategory selected',
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("name", updatedname);
+      formData.append("desc", updatedDesc);
+      formData.append("material", updatedmaterial);
+      formData.append("quantity", updatedquantity);
+      formData.append("price", updatedPrice);
+
+      if (updatedImages) {
+        formData.append('images', updatedImages);
+      }
+
+      updatedcolors.forEach((color, index) => {
         formData.append(`colors[${index}]`, color);
       });
 
-      sizes.forEach((size, index) => {
+      updatedsize.forEach((size, index) => {
         formData.append(`sizes[${index}]`, size);
       });
 
@@ -208,6 +235,7 @@ export default function ProductsForDashboard() {
         icon: "success",
         title: "Product updated successfully",
       });
+    console.log(updatedSubcategory)
     } catch (error) {
       console.error("Error updating product:", error);
       Swal.fire({
@@ -336,16 +364,10 @@ export default function ProductsForDashboard() {
                      <span className="fw-bold">Sizes:</span> {product.sizes?.map((size) => size.size).join(",")}
                    </p>
 
-                   
                    <div className="mt-auto buttons">
                      <button
                        className="editBtn"
-                       onClick={() => {
-                         setSelectedProductId(product.id);
-                         setSelectedSubcategory(product.subcategory_id);
-                         setShowUpdateModal(true);
-                       }}
-                     >
+                       onClick={() => handleShowUpdateModal(product)}>
                        Edit
                      </button>
                      <button
@@ -482,64 +504,90 @@ export default function ProductsForDashboard() {
       </Modal>
 
       {/* Update Product Modal */}
-      <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+      <Modal show={showUpdateModal} onHide={handleCloseUpdateModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Product</Modal.Title>
+          <Modal.Title>Edit Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="productName">
-              <Form.Label>Name</Form.Label>
+            <Form.Group className="mb-3" controlId="productName">
+              <Form.Label>Product Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter product name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={updatedname}
+                onChange={(e) => setupdatedname(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="productDesc">
+            <Form.Group className="mb-3" controlId="productDesc">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                as="textarea"
-                rows={3}
+                type="text"
                 placeholder="Enter product description"
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
+                value={updatedDesc}
+                onChange={(e) => setupdatedDesc(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="productMaterial">
-              <Form.Label>Material</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter product material"
-                value={material}
-                onChange={(e) => setMaterial(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="productQuantity">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter product quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="productPrice">
+            <Form.Group className="mb-3" controlId="productPrice">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter product price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                value={updatedPrice}
+                onChange={(e) => setupdatedPrice(e.target.value)}
               />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="productImages">
+              <Form.Label>Images</Form.Label>
+              <Form.Control
+                type="file"
+                multiple
+                onChange={(e) => handleImageChange(e)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="productColors">
+              <Form.Label>Colors</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter product colors"
+                value={updatedcolors.join(', ')}
+                onChange={(e) => setupdatedcolors(e.target.value.split(','))}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="productSize">
+              <Form.Label>Size</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter product size"
+                value={updatedsize.join(", ")}
+                onChange={(e) => setupdatedsize(e.target.value.split(','))}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="productMaterial">
+              <Form.Label>Material</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter product material"
+                value={updatedmaterial}
+                onChange={(e) => setupdatedmaterial(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="productQuantity">
+              <Form.Label>Quantity</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter product quantity"
+                value={updatedquantity}
+                onChange={(e) => setupdatedquantity(e.target.value)}
+              />
+            </Form.Group>
+
             <Form.Group controlId="productCategory">
               <Form.Label>Subcategory</Form.Label>
               <Form.Control
                 as="select"
-                value={selectedSubcategory}
-                onChange={(e)=>setSelectedSubcategory(e)}
+                value={updatedSubcategory}
+                onChange={(e) => setupdatedSubcategory(e.target.value)}
               >
                 <option value="">Select Subcategory</option>
                 {subcategories?.map((subcategory) => (
@@ -548,43 +596,28 @@ export default function ProductsForDashboard() {
                   </option>
                 ))}
               </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="productColors">
-              <Form.Label>Colors</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter product colors (separated by comma)"
-                value={colors}
-                multiple
-                onChange={handleColorsChange}
-              />
-            </Form.Group>
-             <Form.Group controlId="productSize">
-              <Form.Label>Size</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter product size"
-                value={sizes}
-                multiple
-                onChange={handleSizesChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="productImages">
-              <Form.Label>Images</Form.Label>
-              <Form.Control
-                type="file"
-                multiple
-                onChange={(e) => handleImageChange(e)}
-              />
-            </Form.Group>
+
+          </Form.Group>
+          {/* <Form.Control
+                as="select"
+                value={updatedSubcategory}
+                onChange={(e) => setupdatedSubcategory(e)}
+              >
+                <option value="">Select Subcategory</option>
+                {subcategories?.map((subcategory) => (
+                  <option key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                  </option>
+                ))}
+              </Form.Control> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+          <Button variant="secondary" onClick={handleCloseUpdateModal }>
             Close
           </Button>
           <Button variant="primary" onClick={updateProduct}>
-            Update Product
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

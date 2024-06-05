@@ -14,10 +14,10 @@ function remove(e) {
     setWishlistOpen(false);
   }
 }
+const wtoken= localStorage.getItem("wtoken");
 
 async function GetWishlist() {
 
-  const wtoken= localStorage.getItem("wtoken");
   const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${wtoken}`,
   {  
     headers: {
@@ -31,7 +31,7 @@ async function GetWishlist() {
 
 
 useEffect(()=> {
-  GetWishlist()
+  GetWishlist(wtoken)
 },[])
 
   return (

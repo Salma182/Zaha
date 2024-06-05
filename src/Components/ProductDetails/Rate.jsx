@@ -12,8 +12,6 @@ const Rate = ( {initialRate, onRate , productId, rating, returnedData}) => {
     const [hoverRate, setHoverRate] = useState(null);
     const[Data,setData] = useState('')
   
-
-
         useEffect(() => {
           setRate(rating)
           setID(productId)   
