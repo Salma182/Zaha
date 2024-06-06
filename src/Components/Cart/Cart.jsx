@@ -58,7 +58,6 @@ setCart(data.cart)
 console.log("cart", data.cart)
 }catch(error) {
   console.error(error);
-
 }
   }
   
@@ -120,8 +119,6 @@ console.log("cart", data.cart)
               </div>
             </div>
           </div>
-
-
           </div>
         ))
 
@@ -133,7 +130,7 @@ console.log("cart", data.cart)
               className={`text-white btn ${style.btn} d-flex justify-content-center my-3`} onClick={()=>setCartOpen(false)}
             >
               {" "}
-            <Link to="home">  Return To Shop </Link> 
+            <Link className={`${style.btn}`} to="/">  Return To Shop </Link> 
             </div>
           </div>
       )}

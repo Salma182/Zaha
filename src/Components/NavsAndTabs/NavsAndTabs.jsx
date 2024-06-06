@@ -129,7 +129,7 @@ console.log("navs",data.category)
 
 <div className="mt-5">
   <div className="container w-100">
-  <h3 className={style.newcollection}>New Collection</h3>
+  <h1 className="title">New Collection</h1>
 
   </div>
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">

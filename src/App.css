@@ -1,9 +1,7 @@
 * {
     font-family: "Fraunces",serif;
   }
-
   
-
   .gold{
     color: #956911;
   }
@@ -15,6 +13,13 @@
 display: block;
 }
 
+.title{
+    margin: 2% auto;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: #956911;
+}
 /* .topnav::before{
     content: "";
     position: absolute;
@@ -67,7 +72,27 @@ color: white;
 
 }
 
-    /* .deleteBtn:hover{
+.accepted , .rejected{
+    padding: 2%;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 60%;
+    margin: 0 2%;
+}
+
+.rejected{
+    background-color: #ffcbd3;
+    border: 1px solid #ffcbd3 ;
+    color: black;
+}
+
+.accepted {
+    background-color: rgb(27, 117, 47);
+    border: 1px solid rgb(27, 117, 47) ;
+    color: white;
+}
+
+/* .deleteBtn:hover{
         background-color: rgb(218, 12, 12);
         border:1px solid rgb(218, 12, 12);
         color: white;
@@ -166,3 +191,53 @@ color: white;
     right: 0;
  }
 
+
+ /* NotFound.css */
+
+  .not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .not-found-content {
+    max-width: 600px;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .not-found-title {
+    font-size: 96px;
+    font-weight: 700;
+    color: #956911;
+    margin-bottom: 20px;
+  }
+  
+  .not-found-text {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .not-found-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #956911;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .not-found-link:hover {
+    background-color: #956911;
+  }
+  

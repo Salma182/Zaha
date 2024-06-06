@@ -46,7 +46,6 @@ const LazyComponent = ({ Component }) => (
   </Suspense>
 );
 
-
 const routers = createBrowserRouter([
   {
     path: "",
@@ -65,6 +64,7 @@ const routers = createBrowserRouter([
       { path: "checkout", element: <LazyComponent Component={Checkout} /> },
       { path: "searchedproducts", element: <LazyComponent Component={SearchedProducts} /> },
       { path: "category/:categoryName", element: <LazyComponent Component={ChosenCategory} /> },
+      { path: "*", element: <LazyComponent Component={Notfound} /> },
     ],
   },
   {

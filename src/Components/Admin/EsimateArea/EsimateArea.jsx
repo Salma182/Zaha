@@ -29,7 +29,7 @@ export default function EsimateArea() {
   const [Area, setArea] = useState([]);
   const [selectedArea, setSelectedArea] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
     items.push(

@@ -9,7 +9,7 @@ import Loading from "../Loading/Loading";
 export default function Carousel() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   async function getProductsFromPage(page) {
     try {
       const { data } = await axios.get(

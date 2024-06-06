@@ -9,7 +9,7 @@ import { AuthContext } from "../../AuthContext/AuthContext";
 export default function TopNav ({isOpen, setIsOpen}){
 
 const[categories, setCategories] =useState("")
-const { isAdmin, isLoading } = useContext(AuthContext);
+const { isAdmin, isAuthenticated } = useContext(AuthContext);
 const { categoryName, setCategoryName, products, setProducts } = useContext(CategoriesContext);
 const navigate= useNavigate()
 
@@ -62,7 +62,7 @@ useEffect(() => {
       )
       : ""}
 
-      {isAdmin ?
+      {isAdmin && isAuthenticated ?
             <NavLink to="dashboard" className={style.nav_link}>Dashboard</NavLink>
          : "" }
  </div>
@@ -94,7 +94,7 @@ useEffect(() => {
           {category.name}</NavLink>      )
       : ""}
 
-       {isAdmin ?
+       {isAdmin && isAuthenticated ?
             <NavLink to="dashboard" className={style.nav_link}>Dashboard</NavLink>
          : "" }
           </div>

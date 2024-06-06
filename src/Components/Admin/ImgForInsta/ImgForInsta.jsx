@@ -9,6 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
 import Loading from "../../Loading/Loading";
+import { Link } from "react-router-dom";
 
 export default function ImgForInsta() {
 
@@ -207,18 +208,20 @@ useEffect(() => {
         <thead>
           <tr>
             <th>#</th>
-            <th>image</th>
+            <th>Image</th>
+            <th>Link</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          {data && data.length >0 ? (
-            data.map((link)=>
+          {data && data.length > 0 ? (
+            data.map((link,index)=>
               <tr>
-              <td width={50}>{link.id}</td>
+              <td width={50}>{index  +1}</td>
               <td className="text-center" width={50}>
                 <img src={link.path} height={80} alt="product" />
               </td>
+               <td> <Link to={link.name}> {link.name} </Link></td>
               <td className={style.cont}>
               <div className="w-50 buttons"> 
                     <button

@@ -54,6 +54,8 @@
 
 .btn {
   background-color: #73454f !important;
+  color: white !important;
+  text-decoration: none;
 }
 
 .checkoutDiv{

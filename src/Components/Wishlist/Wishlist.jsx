@@ -29,10 +29,9 @@ async function GetWishlist() {
   console.log("wishlistProducts",data)
 }
 
-
 useEffect(()=> {
   GetWishlist(wtoken)
-},[])
+},[wtoken])
 
   return (
     <>

@@ -10,8 +10,8 @@ export const WishlistProvider = ({ children }) => {
     const [selectedwishlist, setSelectedwishlist]=useState([])
     const [Wtoken, setWToken] = useState(localStorage.getItem('wtoken') || '');
 
-
-async function AddtoWishlist(productId){  
+async function AddtoWishlist(productId) {
+  // Always get the latest token from localStorage
   let currentWToken = localStorage.getItem('wtoken');
 
   const products = [
@@ -31,19 +31,25 @@ async function AddtoWishlist(productId){
         },
       }
     );
-    setAddWishlist(data.wishlist_items);
 
-    // If there's no token in localStorage, set the new token
-    if (!currentWToken && data.wishlist_items.guest_token) {
+    // If data.wishlist_items exists and has guest_token, update it
+    if (data.wishlist_items && data.wishlist_items.guest_token) {
       const newToken = data.wishlist_items.guest_token;
       setWToken(newToken);
       localStorage.setItem('wtoken', newToken);
+    } else if (!currentWToken) {
+      // If there's no token in localStorage, set the new token from data
+      const newToken = data.guest_token;
+      setWToken(newToken);
+      localStorage.setItem('wtoken', newToken);
     } else {
-      setWToken(currentWToken); // Ensure the token state is set to the current token
+      // Ensure the token state is set to the current token
+      setWToken(currentWToken);
     }
 
+    setAddWishlist(data.wishlist_items);
     console.log("wishlistData", data.wishlist_items);
-    console.log(Wtoken);
+    console.log("Wtoken:", Wtoken);
 
   } catch (error) {
     console.error("Error adding to wishlist:", error);
