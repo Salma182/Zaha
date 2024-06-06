@@ -26,7 +26,7 @@ const [editingImage, setEditingImage] = useState(null);
 const [updatedName, setUpdatedName] = useState("");
 const[data ,setData]=useState([]);
 const [loading,setLoading] = useState(false)
-
+const token = localStorage.getItem('token');
 
 const handleCloseAddModal = () => {
   setShowAddModal(false);
@@ -67,7 +67,7 @@ async function getImages(page = 1){
     const{data}= await axios.get(`https://zahaback.com/api/customerlink/all?page=${page}`,
     {  
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )
@@ -94,7 +94,7 @@ async function getImages(page = 1){
     formData,
     {  
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     ) 
@@ -126,7 +126,7 @@ async function updateImage() {
   formData,
   {  
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   ) 
@@ -154,7 +154,7 @@ async function deleteImage(link) {
   const{data}= await axios.get(`https://zahaback.com/api/customerlink/delete/${link}`,
   {  
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   ) 

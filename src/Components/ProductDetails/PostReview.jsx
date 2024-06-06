@@ -17,12 +17,13 @@ const [review,setReview]=useState("");
 const [errors, setErrors] = useState({});
 const[reviews,setreviews]= useState([])
 const[loading, setLoading]=useState(false); 
+const token = localStorage.getItem('token');
 
 async function getReview(id){
 const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`,
 {
   headers: {
-    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    Authorization: `Bearer ${token}`,
   },
 }
 )
@@ -37,7 +38,7 @@ async function GetRate(id){
     const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`,
   {
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   )
@@ -83,7 +84,7 @@ async function Review(e){
   formData ,
   {
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   )

@@ -20,6 +20,7 @@ export default function NavsAndTabs() {
    const[Id, setId] = useState(null)
    const[productName, setproductName] = useState("")
    const { AddtoWishlist, setproductname, productname , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
+   const token = localStorage.getItem('token');
 
 const handleAddtoWishlist=(id) =>{
     AddtoWishlist(id);
@@ -56,7 +57,7 @@ const settings = {
 const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
 {
   headers: {
-    Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+    Authorization: `Bearer ${token}`,
   },
 }
 )
@@ -70,7 +71,7 @@ console.log("navs",data.category)
       `https://zahaback.com/api/userproduct/all`,
       {
         headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -83,7 +84,7 @@ console.log("navs",data.category)
     const{data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
     {
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )
@@ -97,7 +98,7 @@ console.log("navs",data.category)
     const{data}= await axios.get(`https://zahaback.com/api/products/category/${Id}`,
     {
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )

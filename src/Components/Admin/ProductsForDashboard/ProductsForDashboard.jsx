@@ -40,6 +40,7 @@ export default function ProductsForDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
+  const token = localStorage.getItem('token');
 
   const settings = {
     dots: false,
@@ -58,7 +59,7 @@ export default function ProductsForDashboard() {
         `https://zahaback.com/api/product/all?page=${pageNumber}`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -82,7 +83,7 @@ export default function ProductsForDashboard() {
         `https://zahaback.com/api/subcategory/all`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -145,7 +146,7 @@ export default function ProductsForDashboard() {
         formData,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -226,7 +227,7 @@ export default function ProductsForDashboard() {
         formData,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -270,7 +271,7 @@ export default function ProductsForDashboard() {
           `https://zahaback.com/api/product/delete/${productId}`,
           {
             headers: {
-              Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );

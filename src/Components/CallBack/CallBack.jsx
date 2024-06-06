@@ -6,6 +6,8 @@ import * as yup from "yup";
 import Swal from "sweetalert2";
 
 export default function CallBack() {
+  const token = localStorage.getItem('token');
+
   const phoneRegex = /^01[0125][0-9]{8}$/gm;
 
   const validationSchema = yup.object({
@@ -39,7 +41,7 @@ export default function CallBack() {
         values,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

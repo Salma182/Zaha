@@ -29,7 +29,8 @@ export default function EsimateArea() {
   const [Area, setArea] = useState([]);
   const [selectedArea, setSelectedArea] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+  const token = localStorage.getItem('token'); 
+
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
     items.push(
@@ -55,7 +56,7 @@ export default function EsimateArea() {
         `https://zahaback.com/api/area/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -80,7 +81,7 @@ export default function EsimateArea() {
         formData,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -111,7 +112,7 @@ export default function EsimateArea() {
         `https://zahaback.com/api/area/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -146,7 +147,7 @@ export default function EsimateArea() {
         },
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

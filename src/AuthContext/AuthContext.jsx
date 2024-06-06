@@ -7,7 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     const adminStatus = localStorage.getItem('isAdmin') === 'true';
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await axios.post('https://zahaback.com/api/login', values, 
       {
         headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

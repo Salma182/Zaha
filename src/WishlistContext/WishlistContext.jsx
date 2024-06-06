@@ -9,6 +9,7 @@ export const WishlistProvider = ({ children }) => {
     const[productId, setproductId ]=useState('')
     const [selectedwishlist, setSelectedwishlist]=useState([])
     const [Wtoken, setWToken] = useState(localStorage.getItem('wtoken') || '');
+    const token = localStorage.getItem('token');
 
 async function AddtoWishlist(productId) {
   // Always get the latest token from localStorage
@@ -26,7 +27,7 @@ async function AddtoWishlist(productId) {
       { products },
       {  
         headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          Authorization: `Bearer ${token}`,
           'Wtoken': currentWToken // Pass the token in the headers
         },
       }

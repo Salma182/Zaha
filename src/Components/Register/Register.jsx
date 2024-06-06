@@ -10,6 +10,7 @@ export default function Register() {
   let [error, setError] =useState('')
   let [UserToken,setUserToken]=useState(null)
   let navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
 const user = {
     name: "",

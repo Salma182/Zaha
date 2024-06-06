@@ -22,6 +22,7 @@ export default function Coupon() {
   const [endDate, setEndDate] = useState("");
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('token'); // Fetch token dynamically
 
   let items = [];
   for (let number = 1; number <= lastPage; number++) {
@@ -48,7 +49,7 @@ export default function Coupon() {
         `https://zahaback.com/api/coupon/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -74,7 +75,7 @@ export default function Coupon() {
         formData,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -110,7 +111,7 @@ export default function Coupon() {
         `https://zahaback.com/api/coupon/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -145,7 +146,7 @@ export default function Coupon() {
         },
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

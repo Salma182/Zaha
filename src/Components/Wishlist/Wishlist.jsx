@@ -6,6 +6,7 @@ import WishlistContext from "../../WishlistContext/WishlistContext";
 export default function Wishlist({wishlistOpen, setWishlistOpen , addwishlist}) {
 
   const[wishlistProducts,setWishlistProducts] = useState([])
+  const token = localStorage.getItem('token');
 
 // const {selectedwishlist, setSelectedwishlist} = useContext(WishlistContext)
 
@@ -21,7 +22,7 @@ async function GetWishlist() {
   const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${wtoken}`,
   {  
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   )

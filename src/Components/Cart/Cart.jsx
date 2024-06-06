@@ -11,7 +11,8 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
   const { cart, setCart } = useContext(CartContext);
   const[id, setId]=useState('')
   const navigate = useNavigate()
-  
+  const token = localStorage.getItem('token');
+
   function remove(e) {
     if (e.target.classList.contains("cart")) {
       setCartOpen(false);
@@ -28,7 +29,7 @@ deleteProduct(guestToken, id)
     const{data}= await axios.post(`https://zahaback.com/api/cart/deleteItem/${guestToken}/item/${id}`,
     {  
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     );
@@ -50,7 +51,7 @@ try {
 const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
 {  
   headers: {
-    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    Authorization: `Bearer ${token}`,
   },
 }
 )

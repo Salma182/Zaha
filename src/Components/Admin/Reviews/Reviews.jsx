@@ -10,6 +10,7 @@ export default function Reviews() {
   const [Reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 const[toggle, setToggle] = useState(false);
+const token = localStorage.getItem('token');
 
   async function getReviews() {
     setLoading(true)
@@ -18,7 +19,7 @@ const[toggle, setToggle] = useState(false);
         `https://zahaback.com/api/userData/allReviews`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -46,7 +47,7 @@ const[toggle, setToggle] = useState(false);
         `https://zahaback.com/api/userData/review/${id}/changeStatus`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

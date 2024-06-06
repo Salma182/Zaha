@@ -19,7 +19,8 @@ export default function Categories() {
   const [isHome, setIsHome] = useState(false);
   const [updatedName, setupdatedName] = useState("");
   const [updatedIshome, setupdatedIshome] = useState(false);
-
+  const token = localStorage.getItem('token');
+  
   async function getAllCategories(page = 1) {
     setLoading(true)
     try {
@@ -27,7 +28,7 @@ export default function Categories() {
         `https://zahaback.com/api/category/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -59,7 +60,7 @@ export default function Categories() {
          formData ,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -83,7 +84,7 @@ export default function Categories() {
         `https://zahaback.com/api/category/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -111,7 +112,7 @@ export default function Categories() {
         formData ,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

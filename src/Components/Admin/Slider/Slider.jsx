@@ -19,7 +19,8 @@ export default function Slider() {
   const [editingImage, setEditingImage] = useState(null);
   const [updatedSlideName, setUpdatedSlideName] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const token = localStorage.getItem('token');
+  
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     setSlideName("");
@@ -44,7 +45,7 @@ export default function Slider() {
         `https://zahaback.com/api/slider/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -75,7 +76,7 @@ export default function Slider() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -108,7 +109,7 @@ export default function Slider() {
         `https://zahaback.com/api/slider/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -147,7 +148,7 @@ export default function Slider() {
         formData,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

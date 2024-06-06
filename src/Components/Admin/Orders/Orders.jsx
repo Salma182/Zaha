@@ -10,6 +10,7 @@ const [orders, setOrders]= useState([])
 const [currentPage, setCurrentPage] = useState(1);
 const [lastPage, setLastPage] = useState(1); 
 const [loading, setLoading] = useState(false);
+const token = localStorage.getItem('token');
 
 async function getOrders(page = 1) {
   setLoading(true)
@@ -17,7 +18,7 @@ async function getOrders(page = 1) {
     const {data}= await axios(`https://zahaback.com/api/orders/allOrders?page=${page}`,
     {
       headers: {
-        Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )

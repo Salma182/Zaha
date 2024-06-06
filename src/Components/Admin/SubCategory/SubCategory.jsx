@@ -22,7 +22,8 @@ export default function SubCategory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading,setLoading] = useState(false)
-
+  const token = localStorage.getItem('token');
+  
   async function getSubCategories(pageNumber = 1) {
     setLoading(true)
     try {
@@ -30,7 +31,7 @@ export default function SubCategory() {
         `https://zahaback.com/api/subcategory/all?page=${pageNumber}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -55,7 +56,7 @@ export default function SubCategory() {
           `https://zahaback.com/api/category/all?page=${pageNumber}`,
           {
             headers: {
-              Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -88,7 +89,7 @@ export default function SubCategory() {
         { name, status, category_id: categoryId },
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -125,7 +126,7 @@ export default function SubCategory() {
         },
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -148,7 +149,7 @@ export default function SubCategory() {
         `https://zahaback.com/api/subcategory/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

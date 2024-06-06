@@ -11,6 +11,7 @@ import Loading from "../Loading/Loading";
 export default function Instgram() {
  const[images, setImages]=useState([])
 const[loading, setLoading] = useState(false)
+const token = localStorage.getItem('token');
 
   const options = {
     margin: 10,
@@ -34,7 +35,7 @@ const[loading, setLoading] = useState(false)
       const {data}= await axios.get(`https://zahaback.com/api/allInsta`,
       {  
         headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          Authorization: `Bearer ${token}`,
         },
       }
       )

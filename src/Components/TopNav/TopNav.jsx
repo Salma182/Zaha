@@ -12,6 +12,7 @@ const[categories, setCategories] =useState("")
 const { isAdmin, isAuthenticated } = useContext(AuthContext);
 const { categoryName, setCategoryName, products, setProducts } = useContext(CategoriesContext);
 const navigate= useNavigate()
+const token = localStorage.getItem('token');
 
   function remove(e) {
     if (e.target.classList.contains("side")) {
@@ -23,7 +24,7 @@ async function specifiCategory(categoryName){
   const{data} = await axios.get(`https://zahaback.com/api/products/category/navbar/${categoryName}`,
   {
     headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      Authorization: `Bearer ${token}`,
     },
   }
   )
@@ -35,7 +36,7 @@ async function specifiCategory(categoryName){
     const{data}= await axios.get(`https://zahaback.com/api/allcategories`,
     {
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )

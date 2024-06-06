@@ -8,6 +8,7 @@ export default function Checkout() {
 
 const [cities, setCities]= useState([])
 const [cityId, setCityId]= useState("")
+const token = localStorage.getItem('token');
 
     const user = {
       first_name: "",
@@ -63,7 +64,7 @@ const [cityId, setCityId]= useState("")
       try {
         const { data } = await axios.post(`https://zahaback.com/api/checkout/${token}`, values, {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         });
         Swal.fire({
@@ -88,7 +89,7 @@ async function Getcity(){
 const {data} = await axios.get(`https://zahaback.com/api/getAreaEstimate`,
 {  
   headers: {
-    Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    Authorization: `Bearer ${token}`,
   },
 }
 )

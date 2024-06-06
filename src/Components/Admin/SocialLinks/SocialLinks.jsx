@@ -20,6 +20,7 @@ export default function SocialLinks() {
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editingSlide, setEditingSlide] = useState(null);
+  const token = localStorage.getItem('token');
 
   async function getSocial(page = 1) {
     setLoading(true)
@@ -28,7 +29,7 @@ export default function SocialLinks() {
         `https://zahaback.com/api/social/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -83,7 +84,7 @@ export default function SocialLinks() {
         formData, // Pass formData as the data payload
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data', // Specify content type for FormData
           },
         }
@@ -117,7 +118,7 @@ export default function SocialLinks() {
        formData ,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -140,7 +141,7 @@ export default function SocialLinks() {
         `https://zahaback.com/api/social/delete/${name}`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

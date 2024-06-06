@@ -34,6 +34,7 @@ export default function ProductDetails() {
   const [selectedSizeId, setSelectedSizeId] = useState(null);
   const[loading, setloading] = useState(false);
 const[error,setError] = useState('')
+const token = localStorage.getItem('token');
 
 const settings = {
   dots: true,
@@ -62,7 +63,7 @@ async function ProductDetails(productId)  {
     const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
     {
       headers: {
-        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+        Authorization: `Bearer ${token}`,
       },
     }
     )
@@ -109,7 +110,7 @@ async function Addtocart(e) {
     const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload ,
     {  
      headers: {
-       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+       Authorization: `Bearer ${token}`,
      },
    }
    )

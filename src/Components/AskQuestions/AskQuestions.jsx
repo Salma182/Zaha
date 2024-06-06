@@ -7,7 +7,8 @@ import Swal from "sweetalert2";
 
 export default function AskQuestions({ productId: productid }) {
   // const [productid,setproductId] = useState('')
-
+  const token = localStorage.getItem('token');
+  
   async function AskQuestion(values) {
     console.log("Submitted values:", values); 
     const { data } = await axios.post(
@@ -15,7 +16,7 @@ export default function AskQuestions({ productId: productid }) {
       { ...values },
       {
         headers: {
-          Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

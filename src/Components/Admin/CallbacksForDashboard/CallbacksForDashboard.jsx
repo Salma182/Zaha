@@ -7,7 +7,8 @@ import Loading from "../../Loading/Loading";
 export default function CallbacksForDashboard() {
   const [CallBackes, setCallBackes] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const token = localStorage.getItem('token');
+  
   async function getCallBackes() {
     setLoading(true)
     try{
@@ -15,7 +16,7 @@ export default function CallbacksForDashboard() {
         `https://zahaback.com/api/userData/allCallbacks`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

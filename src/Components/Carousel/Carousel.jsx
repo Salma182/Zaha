@@ -9,14 +9,15 @@ import Loading from "../Loading/Loading";
 export default function Carousel() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const token = localStorage.getItem('token');
+
   async function getProductsFromPage(page) {
     try {
       const { data } = await axios.get(
         `https://zahaback.com/api/slider/all?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -33,7 +34,7 @@ export default function Carousel() {
         `https://zahaback.com/api/slider/all`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

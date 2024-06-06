@@ -7,6 +7,7 @@ import Loading from "../../Loading/Loading";
 export default function Questions() {
   const [Questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('token');
 
   async function getQuestions() {
     setLoading(true)
@@ -15,7 +16,7 @@ export default function Questions() {
         `https://zahaback.com/api/userData/allQuestions`,
         {
           headers: {
-            Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
