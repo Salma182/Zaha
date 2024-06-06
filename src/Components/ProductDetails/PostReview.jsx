@@ -3,6 +3,7 @@ import style from "./ProductDetails.module.css";
 import axios from "axios";
 import Rate from "./Rate";
 import Swal from "sweetalert2";
+import Loading from "../Loading/Loading";
 
 export default function PostReview({productId}) {
   const [name, setName]=useState("");
@@ -15,6 +16,7 @@ const [Data,setData]=useState("");
 const [review,setReview]=useState("");
 const [errors, setErrors] = useState({});
 const[reviews,setreviews]= useState([])
+const[loading, setLoading]=useState(false); 
 
 async function getReview(id){
 const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`,
@@ -29,7 +31,10 @@ console.log(data.reviews)
 }
 
 async function GetRate(id){
-  const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`,
+
+  setLoading(true)
+  try{
+    const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`,
   {
     headers: {
       Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -39,6 +44,11 @@ async function GetRate(id){
   setRating(data.ceil_rate)
   setData(data)
   console.log("returnedData",data)
+  }catch(e){
+    console.error(e)
+  }finally{
+    setLoading(false)
+  }
   }
 
 const handleImageChange=(e) =>{
@@ -100,13 +110,13 @@ useEffect(() => {
    [productId]);
 
   return<>
-
-    <div className="container">
+{loading ? <Loading /> : (<div className="container">
                   <hr className={`${style.hr} my-4`} />
           <div className="small my-3">
-            <h3>Reviews ({Data.count})</h3>
+          <h3>Reviews {Data.count}</h3>
             <div className="container">
               <div className="row">
+                {/* {Data &&} */}
               <div className="col-md-6">
               <div className="rev">
                 <h4 className="mt-4">Based On {Data.count} Reviews</h4>
@@ -196,13 +206,13 @@ useEffect(() => {
                       onChange={handleImageChange}/>
                       <br />
                       <br />
-                      <div className="d-flex align-align-items-center">
+                      {/* <div className="d-flex align-align-items-center">
                         <input type="checkbox" name="saveme" id="save" />
                         <label htmlFor="save" className="ms-2 small pointer">
                           Save my name, email, and website in this browser for the
                           next time I comment.
                         </label>
-                      </div>
+                      </div> */}
                       <button
                         type="submit"
                         className="btn btn-success btn-sm my-3 px-4"
@@ -240,6 +250,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-                  </div>
+                  </div>)}
+    
 </>
 }

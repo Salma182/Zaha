@@ -133,7 +133,7 @@ console.log("cart", data.cart)
               className={`text-white btn ${style.btn} d-flex justify-content-center my-3`} onClick={()=>setCartOpen(false)}
             >
               {" "}
-              Return To Shop
+            <Link to="home">  Return To Shop </Link> 
             </div>
           </div>
       )}

@@ -75,10 +75,11 @@ const routers = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <LazyComponent Component={Orders} /> },
+      { index: true, element: <LazyComponent Component={EsimateArea} /> },
       { path: "reviews", element: <LazyComponent Component={Reviews} /> },
       { path: "slider", element: <LazyComponent Component={Slider} /> },
       { path: "area", element: <LazyComponent Component={EsimateArea} /> },
+      { path: "orders", element: <LazyComponent Component={Orders} /> },
       { path: "products", element: <LazyComponent Component={ProductsForDashboard} /> },
       { path: "questions", element: <LazyComponent Component={Questions} /> },
       { path: "categories", element: <LazyComponent Component={Categories} /> },

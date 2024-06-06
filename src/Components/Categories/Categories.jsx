@@ -16,7 +16,9 @@ export default function Categories() {
   const [loading,setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1); 
-  // const [isHome, setIsHome] = useState(false);
+  const [isHome, setIsHome] = useState(false);
+  const [updatedName, setupdatedName] = useState("");
+  const [updatedIshome, setupdatedIshome] = useState(false);
 
   async function getAllCategories(page = 1) {
     setLoading(true)
@@ -29,12 +31,7 @@ export default function Categories() {
           },
         }
       );
-      const updatedCategories = data.category.data.map(category => ({
-        ...category,
-        is_home: category.is_home === "true",
-      }));
-      
-      setCategories(updatedCategories);
+      setCategories(data.category.data);
       setCurrentPage(data.category.current_page);
       setLastPage(data.category.last_page);
       setLoading(false)
@@ -46,30 +43,35 @@ export default function Categories() {
     }
   }
 
-  const handleCheckboxChange = async (categoryId, isChecked) => {
-    const updatedCategories = categories.map(category =>
-      category.id === categoryId ? { ...category, is_home: isChecked } : category
-    );
-    setCategories(updatedCategories);
-  }
+  const handleCheckboxChange = (e) => {
+    setIsHome(e.target.checked);
+  };
 
   async function addCategory() {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("is_home", isHome);
+    
+
     try {
       await axios.post(
         `https://zahaback.com/api/category/create`,
-        { name },
+         formData ,
         {
           headers: {
             Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
           },
         }
       );
-      setShowAddModal(false);
-      getAllCategories(currentPage);
+      
       Swal.fire({
         icon: "success",
         title: "Category added successfully",
-      });
+      }).then(() =>{
+        setShowAddModal(false);
+        getAllCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error adding category:", error);
     }
@@ -85,33 +87,42 @@ export default function Categories() {
           },
         }
       );
-      getAllCategories(currentPage);
       Swal.fire({
         icon: "success",
         title: "Category deleted successfully",
-      });
+      }).then(() =>{
+        getAllCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error deleting category:", error);
     }
   }
 
+  
   async function updateCategory() {
+    const formData = new FormData();
+    formData.append('name', updatedName);
+    formData.append('is_home', updatedIshome);
+    
     try {
       await axios.post(
         `https://zahaback.com/api/category/update/${categoryIdToUpdate}`,
-        { name },
+        formData ,
         {
           headers: {
             Authorization: `Bearer tmTqMwqaJf0gGEQWE5kQAkfn37ITr46RpjVCfHWha266e4cc`,
           },
         }
       );
-      setShowUpdateModal(false);
-      getAllCategories(currentPage);
       Swal.fire({
         icon: "success",
         title: "Category updated successfully",
-      });
+      }).then(() =>{
+        setShowUpdateModal(false);
+        getAllCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error updating category:", error);
     }
@@ -120,6 +131,14 @@ export default function Categories() {
   useEffect(() => {
     getAllCategories();
   }, []); // Reload categories when currentPage changes
+
+
+  useEffect(() => {
+    if (categories) {
+      setupdatedName(name || '');
+      setupdatedIshome(isHome || false);
+    }
+  }, [categories]);
 
   ///
   let items = [];
@@ -175,6 +194,7 @@ export default function Categories() {
                   >
                     Delete
                   </button>
+                  
                   <button
                     className="editBtn"
                     onClick={() => {
@@ -217,10 +237,22 @@ export default function Categories() {
               <Form.Label>Category Name</Form.Label>
               <Form.Control
                 type="text"
+                value={name}
                 placeholder="Enter category name"
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
+
+            <div>
+            <label htmlFor="is_home">Is Home:</label>
+            <input
+              type="checkbox"
+              id="is_home"
+              checked={isHome}
+              onChange={handleCheckboxChange}
+            />
+          </div>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -233,45 +265,44 @@ export default function Categories() {
         </Modal.Footer>
       </Modal>
 
+ {/* update Modal */}
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="categoryNameUpdate">
-              <Form.Label>Category Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter category name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Category</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group className="mb-3" controlId="categoryNameUpdate">
+            <Form.Label>Category Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter category name"
+              value={updatedName}
+              onChange={(e) => setupdatedName(e.target.value)}
+            />
+          </Form.Group>
 
-            
-            {/* <label>
+          <div>
+            <label htmlFor="is_home">Is Home:</label>
             <input
               type="checkbox"
-              checked={category.is_home}
-              onChange={e => handleCheckboxChange(category.id, e.target.checked)}
+              id="is_home"
+              checked={updatedIshome}
+              onChange={handleCheckboxChange}
             />
-            {" in home ?"}
-          </label> */}
+          </div>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
 
-
-
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={updateCategory}>
-            Update Category
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={updateCategory}>
+          Update Category
+        </Button>
+      </Modal.Footer>
+    </Modal>
 
       <div className="my-2 d-flex justify-content-center">
         {paginationBasic}

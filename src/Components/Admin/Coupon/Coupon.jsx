@@ -192,7 +192,7 @@ export default function Coupon() {
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Coupon
       </h1>
       {loading ? <Loading /> :  <div className="container">

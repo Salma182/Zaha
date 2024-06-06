@@ -18,16 +18,15 @@ export default function DeliveryDetails() {
         id="deliverdetails"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
-        // tabindex="-1"
         aria-labelledby="deliverdetailsLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered w-75 text-start">
+        <div className="modal-dialog modal-dialog-centered w-100 text-start">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="deliverdetailsLabel">
-                Delivery & Return
-              </h5>
+              {/* <h5 className="modal-title text-center gold m-auto" id="deliverdetailsLabel">
+                Delivery & Return 
+              </h5> */}
               <button
                 type="button"
                 className="btn-close"
@@ -36,16 +35,16 @@ export default function DeliveryDetails() {
               ></button>
             </div>
             <div className="modal-body">
-              <h3 className="bg-dark text-warning p-2 rounded rounded-2">
+              <h3 className=" m-auto text-center gold p-2 rounded rounded-2">
                 Delivery
               </h3>
               <p className="small my-1 ">Estimated Delivery</p>
               <p className="my-1 small">5-7 Working Days</p>
               <hr />
-              <h3 className="bg-dark text-warning p-2 rounded rounded-2">
-                Returns
+              <h3 className="m-auto text-center gold p-2 rounded rounded-2">
+              Returns & Exchange
               </h3>
-              <p>Returns & Exchange</p>
+              {/* <p>Returns & Exchange</p> */}
               <ul className="small">
                 <li className="small">
                   Please check the item and try it once when you receive it
@@ -75,7 +74,7 @@ export default function DeliveryDetails() {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-success"
+                className="btn btn-dark"
                 data-bs-dismiss="modal"
               >
                 Close

@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <>
     
-      <nav className={`bg-color p-2 text-capitalize fixed-bottom bottom-navbar`}>
+      {/* <nav className={`bg-color p-2 text-capitalize fixed-bottom bottom-navbar`}>
         <div className="container d-flex justify-content-around align-items-center ">
           <div className="ico small d-flex align-items-center justify-content-center flex-column dark-color pointer">
             <i className="fa-solid small fa-cart-plus"></i>
@@ -25,7 +25,7 @@ export default function Navbar() {
             <span className="small">wishlist</span>
           </div>
         </div>
-      </nav>
+      </nav> */}
     </>
   );
 }

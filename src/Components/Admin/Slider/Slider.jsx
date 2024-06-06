@@ -20,10 +20,6 @@ export default function Slider() {
   const [updatedSlideName, setUpdatedSlideName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // setEditingSlide(slide);
-  // setUpdatedSlideName(slide.name);
-  // handleShowUpdateModal();
-
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     setSlideName("");
@@ -90,9 +86,11 @@ export default function Slider() {
           title: data.message,
           showConfirmButton: false,
           timer: 2000,
-        });
-        setShowAddModal(false);
-        getSliderImages(currentPage);
+        }).then(() =>{
+          setShowAddModal(false);
+          getSliderImages(currentPage);
+          window.location.reload();
+        })
       }
     } catch (error) {
       console.error("Error adding slide:", error);
@@ -134,7 +132,6 @@ export default function Slider() {
       });
     }
   };
-  
   
   const updateSlide = async () => {
 

@@ -54,7 +54,7 @@ useEffect(() => {
 
     <div className="container topnav">
     <div className={style.NavLinks}>
-      <NavLink to="/" onClick={()=> setIsOpen(false)} className={style.nav_link}>Home </NavLink>
+      <NavLink to="/" className={style.nav_link}>Home </NavLink>
 
       {categories ? categories.map(category => 
       <NavLink to={`/category/${category.name}`}
@@ -88,8 +88,15 @@ useEffect(() => {
           {categories ? categories.map(category => 
       
       <NavLink to={`/category/${category.name}`}
-      className={style.nav_link} onClick={() => specifiCategory(category.name)}>{category.name}</NavLink>      )
+      className={style.nav_link} onClick={() =>{
+        setIsOpen(false);
+        specifiCategory(category.name)}}>
+          {category.name}</NavLink>      )
       : ""}
+
+       {isAdmin ?
+            <NavLink to="dashboard" className={style.nav_link}>Dashboard</NavLink>
+         : "" }
           </div>
           <div
             className={`${style.toggle} test`}

@@ -82,7 +82,7 @@ const paginationBasic = (
           {orders && orders.length > 0 && 
             orders.map((order,index) => 
               <tr>
-              <td>{index} </td>
+              <td>{index + 1} </td>
               <td>{order.first_name}</td>
               <td width={300}>
                {order.email}

@@ -33,7 +33,7 @@ export default function CallbacksForDashboard() {
   
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Callbacks
       </h1>
       {loading ? <Loading /> : <Table striped bordered>
@@ -46,7 +46,7 @@ export default function CallbacksForDashboard() {
             <th>Phone</th>
             <th>Type</th>
             <th>Date</th>
-            <th>Action</th>
+            {/* <th>Action</th> */}
           </tr>
         </thead>
         {CallBackes.length > 0 ? (
@@ -60,9 +60,9 @@ export default function CallbacksForDashboard() {
                 <td>{callback.phone}</td>
                 <td>{callback.type}</td>
                 <td>{callback.created_at.slice(0, 10)}</td>
-                <td>
+                {/* <td>
                   <button className="btn btn-success w-100">Done</button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

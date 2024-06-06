@@ -203,13 +203,13 @@ console.log("navs",data.category)
 
             <div className={`${style.layer}`}>
               {product.badge !== null ? <div className={style.badge}>{product.badge}</div> : ""}
-              <span className={`${style.eye}`}>
+              {/* <span className={`${style.eye}`}>
                 <i className={` fa-solid fa-eye fs-5`}></i>
                 <small className={`${style.small}`}>overview</small>
               </span>
               <div className={`${style.shopCart} pointer`}>
                 <i className="fa-solid fa-cart-plus"></i>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={`${style.content}`}>

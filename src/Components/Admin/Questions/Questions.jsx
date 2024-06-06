@@ -32,7 +32,7 @@ export default function Questions() {
   }, []);
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Questions
       </h1>
       {loading ? <Loading /> :  <Table striped bordered>
@@ -44,7 +44,7 @@ export default function Questions() {
             <th>Phone</th>
             <th>Date</th>
             <th>Message</th>
-            <th>Actions</th>
+            {/* <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>
@@ -56,9 +56,9 @@ export default function Questions() {
               <td>{Questions.client_phone}</td>
               <td>{Questions.created_at}</td>
               <td>{Questions.message}</td>
-              <td>
+              {/* <td>
                 <button className="btn btn-success w-100">Done</button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

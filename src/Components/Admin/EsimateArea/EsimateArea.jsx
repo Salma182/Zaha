@@ -177,8 +177,8 @@ export default function EsimateArea() {
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
-        Estimate Area
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+        Area Estimate
       </h1>
       {loading ? <Loading /> :  <Table striped bordered>
         <thead>

@@ -8,6 +8,7 @@
   color: #333 !important;
   margin-inline: 15px;
   border-radius: 28px;
+  font-weight: bold !important;
   -webkit-border-radius: 28px;
   -moz-border-radius: 28px;
   -ms-border-radius: 28px;
@@ -21,7 +22,7 @@
 
 .link:hover,
 .link.active {
-  background-color: #f3dade !important;
+  background-color: #ffcbd3 !important;
   color: #333 !important;
 }
 

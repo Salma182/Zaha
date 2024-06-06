@@ -19,6 +19,7 @@ export default function SocialLinks() {
   const [updatedLink, setUpdatedLink] = useState("");
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [editingSlide, setEditingSlide] = useState(null);
 
   async function getSocial(page = 1) {
     setLoading(true)
@@ -54,6 +55,7 @@ export default function SocialLinks() {
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     setNewSocial("");
+    setEditingSlide(null);
     setNewLink("");
   };
 
@@ -62,10 +64,11 @@ export default function SocialLinks() {
   const handleCloseUpdateModal = () => setShowUpdateModal(false);
 
   const handleShowUpdateModal = (link) => {
-    setSelectedLink(link);
+    setSelectedLink(link.name);
     setUpdatedSocial(link.name || "");
     setUpdatedLink(link.link || "");
     setShowUpdateModal(true);
+    setEditingSlide(link);
   };
 
 
@@ -100,19 +103,18 @@ export default function SocialLinks() {
     }
   };
   
-console.log(selectedLink.name)
 
-  const updateSocialLink = async () => {
+  const updateSocialLink = async (selectedLink) => {
+    console.log(selectedLink)
+
     const formData = new FormData();
     formData.append("name", updatedSocial);
     formData.append("link", updatedLink);
 
     try {
       const { data } = await axios.post(
-        `https://zahaback.com/api/social/update/${selectedLink.name}}`,
-        {
-        formData
-        },
+        `https://zahaback.com/api/social/update/${selectedLink}`,       
+       formData ,
         {
           headers: {
             Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
@@ -182,7 +184,7 @@ console.log(selectedLink.name)
                   <tr key={link.id}>
                     <td>{index + 1}</td>
                     <td>{link.name}</td>
-                    <td><Link  to={link.link} target="blank"> {link.link} </Link></td>
+                    <td className='w-50'><Link to={link.link} target="blank"> {link.link} </Link></td>
                     <td className="text-center">
                       <Button
                         variant="primary"
@@ -282,38 +284,38 @@ console.log(selectedLink.name)
       </Modal>
 
       <Modal show={showUpdateModal} onHide={handleCloseUpdateModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Social Link</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="updatedSocial">
-              <Form.Label>Social</Form.Label>
-              <Form.Control
-                type="text"
-                value={updatedSocial}
-                onChange={(e) => setUpdatedSocial(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="updatedLink">
-              <Form.Label>Link</Form.Label>
-              <Form.Control
-                type="text"
-                value={updatedLink}
-                onChange={(e) => setUpdatedLink(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseUpdateModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={updateSocialLink}>
-            Update Social Link
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title>Update Social Link</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group className="mb-3" controlId="updatedSocial">
+        <Form.Label>Social</Form.Label>
+        <Form.Control
+          type="text"
+          value={updatedSocial}
+          onChange={(e) => setUpdatedSocial(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="updatedLink">
+        <Form.Label>Link</Form.Label>
+        <Form.Control
+          type="text"
+          value={updatedLink}
+          onChange={(e) => setUpdatedLink(e.target.value)}
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseUpdateModal}>
+      Close
+    </Button>
+    <Button variant="primary" onClick={() => updateSocialLink(selectedLink)}>
+      Update Social Link
+    </Button>
+  </Modal.Footer>
+</Modal>
     </>
   );
 }

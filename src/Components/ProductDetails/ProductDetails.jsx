@@ -57,7 +57,7 @@ const handleAddtoWishlist=(id) =>{
 }  
 
 async function ProductDetails(productId)  {
-  setloading(false)
+  setloading(true)
   try{
     const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
     {
@@ -145,6 +145,7 @@ const handleColorChange = (color, image) => {
   setSelectedColor(color);
   setSelectedImage(image);
 };
+
   return (
     <>
 

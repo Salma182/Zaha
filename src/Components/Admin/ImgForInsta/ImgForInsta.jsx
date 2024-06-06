@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
+import Loading from "../../Loading/Loading";
 
 export default function ImgForInsta() {
 
@@ -23,6 +24,9 @@ const [editingSlide, setEditingSlide] = useState(null);
 const [editingImage, setEditingImage] = useState(null);
 const [updatedName, setUpdatedName] = useState("");
 const[data ,setData]=useState([]);
+const [loading,setLoading] = useState(false)
+
+
 const handleCloseAddModal = () => {
   setShowAddModal(false);
   setSlideName("");
@@ -42,32 +46,41 @@ const handleShowUpdateModal = () => setShowUpdateModal(true);
 
 const handleUpdateImage = (e) => {
   setEditingImage(e.target.files[0]);
-  handleShowUpdateModal();
+  handleShowUpdateModal(true);
 }
 
 const handleEditSlide = (slide) => {
   setEditingSlide(slide);
+  setEditingImage(slide.path)
   setUpdatedName(slide.name);
-  handleShowUpdateModal();
+  handleShowUpdateModal(false);
 };
 
 const handleImageChange = (e) => {
   setImg(e.target.files[0]);
 };
 
-
 async function getImages(page = 1){
-  const{data}= await axios.get(`https://zahaback.com/api/customerlink/all?page=${page}`,
-  {  
-    headers: {
-      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
-    },
+  setLoading(true)
+  try{
+    const{data}= await axios.get(`https://zahaback.com/api/customerlink/all?page=${page}`,
+    {  
+      headers: {
+        Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+      },
+    }
+    )
+    setCurrentPage(data.link.current_page);
+    setLastPage(data.link.last_page);
+    console.log(data)
+    setData(data.link.data)
+  }catch(e){
+    console.error(e)
+  }finally{
+    setLoading(false)
+
   }
-  )
-  setCurrentPage(data.link.current_page);
-  setLastPage(data.link.last_page);
-  console.log(data)
-  setData(data.link.data)
+
 }
 
   async function AddImage() {    
@@ -91,13 +104,75 @@ async function getImages(page = 1){
         title: "customerlink created successfully",
       });
     }
-
-    console.log(data)
+    console.log("images", data)
   }catch(e) {
     console.error(e)
   }
 }
 
+
+async function updateImage() {    
+  const formData = new FormData();
+  if (updatedName) {
+    formData.append("name",  updatedName);  }
+  
+  if (editingImage) {
+    formData.append('path', editingImage);
+  }
+
+  try{
+  const{data}= await axios.post(`https://zahaback.com/api/customerlink/update/${editingSlide.id}`,
+  formData,
+  {  
+    headers: {
+      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    },
+  }
+  ) 
+  if (data.message === "customerlink updated successfully") {
+    handleCloseAddModal();
+    setShowUpdateModal(false);
+    Swal.fire({
+      icon: "success",
+      title: "customerlink updated successfully",
+    }).then(() =>{
+      setShowUpdateModal(false);
+      getImages(currentPage);
+      window.location.reload();
+    })
+  }
+
+  console.log(data)
+}catch(e) {
+  console.error(e)
+}
+}
+
+async function deleteImage(link) {    
+  try{
+  const{data}= await axios.get(`https://zahaback.com/api/customerlink/delete/${link}`,
+  {  
+    headers: {
+      Authorization: `Bearer G7h22L1YUtE9wexBIepKfZ6dac1yIcgMNFLAsC9d73580a97`,
+    },
+  }
+  ) 
+  if (data.message === "Customer link deleted successfully") {
+    handleCloseAddModal();
+    setShowUpdateModal(false);
+    Swal.fire({
+      icon: "success",
+      title: "Customer link deleted successfully",
+    }).then(() =>{
+      getImages(currentPage);
+      window.location.reload();
+    })
+  }
+  console.log(data)
+}catch(e) {
+  console.error(e)
+}
+}
 let items = [];
 for (let number = 1; number <= lastPage; number++) {
   items.push(
@@ -124,10 +199,11 @@ useEffect(() => {
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
-        Image For Instagram
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+        Instagram Images
       </h1>
-      <Table className="text-center" striped bordered>
+
+      {loading ? <Loading /> : ( <Table className="text-center" striped bordered>
         <thead>
           <tr>
             <th>#</th>
@@ -139,8 +215,8 @@ useEffect(() => {
           {data && data.length >0 ? (
             data.map((link)=>
               <tr>
-              <td width={100}>{link.id}</td>
-              <td className="text-center" width={100}>
+              <td width={50}>{link.id}</td>
+              <td className="text-center" width={50}>
                 <img src={link.path} height={80} alt="product" />
               </td>
               <td className={style.cont}>
@@ -159,6 +235,7 @@ useEffect(() => {
                         }).then((result) => {
                           if (result.isConfirmed) {
                             // deleteSlide(img.id);
+                            deleteImage(link.id)
                           }
                         });
                       }}
@@ -167,7 +244,7 @@ useEffect(() => {
                     </button>
                     <button
                       className="editBtn"
-                      onClick={() => handleEditSlide(img)}
+                      onClick={() => handleEditSlide(link)}
                     >
                       Edit
                     </button>
@@ -181,12 +258,14 @@ useEffect(() => {
         
         </tbody>
 
-        <div className="my-2 d-flex justify-content-center">
-        {paginationBasic}
-      </div>
-      </Table>
+        
+      </Table>)}
+     
       <div onClick={handleShowAddModal} className="btn btn-primary w-100 my-3">Add Image</div>
 
+      <div className="my-2 d-flex justify-content-center">
+        {paginationBasic}
+      </div>
 
       {/* Add Modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
@@ -239,7 +318,7 @@ useEffect(() => {
 
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Image</Form.Label>
-              <Form.Control type="file" onChange={handleUpdateImage} />
+              <Form.Control type="file" onChange={e => handleUpdateImage(e)} />
             </Form.Group>
 
           </Form>
@@ -248,7 +327,7 @@ useEffect(() => {
           <Button variant="secondary" onClick={handleCloseUpdateModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={""}>
+          <Button variant="primary" onClick={updateImage}>
             Update Slide
           </Button>
         </Modal.Footer>

@@ -151,12 +151,14 @@ export default function ProductsForDashboard() {
         }
       );
     
-      setShowAddModal(false);
-      getProducts();
       Swal.fire({
         icon: "success",
         title: "Product created successfully",
-      });
+      }).then(() =>{
+        setShowAddModal(false);
+        getProducts(currentPage);
+        window.location.reload();
+      })
     } catch (error) {
       console.error("Error adding product:", error);
       Swal.fire({
@@ -229,12 +231,16 @@ export default function ProductsForDashboard() {
           },
         }
       );
-      setShowUpdateModal(false);
-      getProducts();
       Swal.fire({
         icon: "success",
         title: "Product updated successfully",
-      });
+      }).then(() =>{
+        setShowUpdateModal(false);
+        getProducts(currentPage);
+        window.location.reload();
+      })
+
+
     console.log(updatedSubcategory)
     } catch (error) {
       console.error("Error updating product:", error);

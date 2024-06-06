@@ -92,12 +92,15 @@ export default function SubCategory() {
           },
         }
       );
-      setShowAddModal(false);
-      getSubCategories();
+
       Swal.fire({
         icon: "success",
         title: "SubCategory created successfully",
-      });
+      }).then(() =>{
+        setShowAddModal(false);
+        getSubCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error adding subcategory:", error);
     }
@@ -126,12 +129,14 @@ export default function SubCategory() {
           },
         }
       );
-      setShowUpdateModal(false);
-      getSubCategories();
       Swal.fire({
         icon: "success",
         title: "Subcategory updated successfully",
-      });
+      }).then(() =>{
+        setShowUpdateModal(false);
+        getSubCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error updating subcategory:", error);
     }
@@ -151,7 +156,10 @@ export default function SubCategory() {
       Swal.fire({
         icon: "success",
         title: "Subcategory deleted successfully",
-      });
+      }).then(() =>{
+        getSubCategories(currentPage);
+        window.location.reload();
+    })
     } catch (error) {
       console.error("Error deleting subcategory:", error);
     }

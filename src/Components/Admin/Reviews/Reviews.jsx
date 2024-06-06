@@ -23,20 +23,21 @@ export default function Reviews() {
       console.log(data.link.data);
       setReviews(data.link.data);
       setLoading(false)
-
     }catch(e){
- 
+      console.log(e)
     }
   }
+
   useEffect(() => {
     getReviews();
   }, []);
+
   return (
     <>
       <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Reviews
       </h1>
-      {loading ? <Loading /> :   <div className="container">
+      {loading ? <Loading /> :  <div className="container">
         <div className="row">
           {Reviews.length > 0
             ? Reviews.map((review) => (
