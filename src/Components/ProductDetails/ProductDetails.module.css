@@ -129,8 +129,9 @@
   color: #956911;
 
 }
-.addCart .disabled{
+ .disabled{
   background-color: #c5a057;
+
 }
 .customModal{
   margin-top: 15% !important;

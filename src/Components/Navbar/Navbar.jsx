@@ -8,10 +8,6 @@ export default function Navbar() {
     
       {/* <nav className={`bg-color p-2 text-capitalize fixed-bottom bottom-navbar`}>
         <div className="container d-flex justify-content-around align-items-center ">
-          <div className="ico small d-flex align-items-center justify-content-center flex-column dark-color pointer">
-            <i className="fa-solid small fa-cart-plus"></i>
-            <span className="small">shop</span>
-          </div>
           <div className="ico d-flex align-items-center justify-content-center small flex-column dark-color pointer">
             <i className="fa-solid small fa-layer-group"></i>
             <span className="small">categories</span>

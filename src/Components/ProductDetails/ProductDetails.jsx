@@ -224,11 +224,12 @@ const handleColorChange = (color, image) => {
             -
           </button>
         </div>
-        <button type="submit" className={`${style.addCart} mx-2 ${productdetails.is_sold_out ? `disabled` : ""}`}>
+        <button type="submit" className={`${style.addCart} mx-2 ${productdetails.is_sold_out === true ? `${style.disabled}` : ""}`}  
+         disabled={productdetails.is_sold_out}>
              Add to cart
           </button>
 
-          <NotifyMeModal productId={productdetails.id}  />
+          {productdetails.is_sold_out && <NotifyMeModal productId={productdetails.id} />}
       </div>
     </div>
             </form>
@@ -238,7 +239,8 @@ const handleColorChange = (color, image) => {
               <div className="rate">
               <Rate productId={productid} />
               
-                <span className="ms-2">(7 customer reviews)</span>
+                {/* <span className="ms-2">(7 customer reviews)</span> */}
+                
               </div>
             </div>
             <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">

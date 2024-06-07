@@ -99,10 +99,26 @@ export default function Categories() {
     }
   }
   
+  useEffect(() => {
+    if (categories) {
+      const categoryToUpdate = categories.find(category => category.id === categoryIdToUpdate);
+      if (categoryToUpdate) {
+        setupdatedName(categoryToUpdate.name);
+        setupdatedIshome(categoryToUpdate.isHome);
+      }
+    }
+  }, [categories, categoryIdToUpdate]);
+
+
+  const handleCheckboxChange2 = (e) => {
+    setupdatedIshome(prevState => !prevState);
+  };
+
+  
   const updateCategory = async () => {
     const formData = new FormData();
     formData.append('name', updatedName);
-    formData.append('is_home', updatedIshome ? 1 : 0);
+    formData.append('is_home', updatedIshome || false);
 
     try {
       await axios.post(
@@ -130,12 +146,6 @@ export default function Categories() {
   }, []); // Reload categories when currentPage changes
 
 
-  useEffect(() => {
-    if (categories) {
-      setupdatedName(name);
-      setupdatedIshome(isHome);
-    }
-  }, [categories]);
 
   ///
   let items = [];
@@ -287,7 +297,7 @@ export default function Categories() {
               type="checkbox"
               id="is_home"
               checked={updatedIshome}
-              onChange={e =>handleCheckboxChange(e)}
+              onChange={e =>handleCheckboxChange2(e)}
             />
           </div>
 

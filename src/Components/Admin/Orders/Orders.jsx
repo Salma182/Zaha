@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import style from "./Orders.module.css";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { Pagination } from "react-bootstrap";
+import { Form, Pagination } from "react-bootstrap";
 import Loading from "../../Loading/Loading";
+import { Link } from "react-router-dom";
 
 export default function Orders() {
 const [orders, setOrders]= useState([])
@@ -12,10 +13,11 @@ const [lastPage, setLastPage] = useState(1);
 const [loading, setLoading] = useState(false);
 const token = localStorage.getItem('token');
 
+
 async function getOrders(page = 1) {
   setLoading(true)
   try{
-    const {data}= await axios(`https://zahaback.com/api/orders/allOrders?page=${page}`,
+    const {data}= await axios.get(`https://zahaback.com/api/orders/allOrders?page=${page}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,6 +40,8 @@ useEffect(() => {
 }, []); 
 
 
+
+
 let items = [];
 for (let number = 1; number <= lastPage; number++) {
   items.push(
@@ -58,7 +62,7 @@ const paginationBasic = (
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Orders
       </h1>
 
@@ -68,13 +72,14 @@ const paginationBasic = (
           <tr>
             <th>index</th>
             <th>Name</th>
-            <th>Email</th>
+            {/* <th>Email</th> */}
             <th>product-id</th>
             <th>quantity</th>
             <th>city</th>
             <th>phone</th>
             <th>price</th>
             <th>status</th>
+
 
           </tr>
         </thead>
@@ -83,18 +88,48 @@ const paginationBasic = (
           {orders && orders.length > 0 && 
             orders.map((order,index) => 
               <tr>
-              <td>{index + 1} </td>
-              <td>{order.first_name}</td>
-              <td width={300}>
-               {order.email}
-              </td>
-                <td>{order.product_id.map((p)=>p).join(",")}</td>
-              <td>{order.quantity.map((q)=>q).join(",")}</td>
-              <td>{order.city}</td>
-              <td>{order.phone}</td>
-              <td>{order.total_price}</td>
-              <td>{order.status}</td>
-
+              <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {index + 1}
+                </Link>
+                </td>
+              <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.first_name}
+                </Link>
+                </td>
+        
+                <td>
+                <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.product_id.join(",")}
+                </Link>
+                  </td>
+              <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.quantity.join(",")}
+                </Link>
+                </td>
+              <td>
+              <Link className="orderLink"  to={`orderDetails/${order.id}`}>
+                  {order.city}
+                </Link>
+                </td>
+              <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.phone}
+                </Link>
+                </td>
+              <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.total_price}
+                </Link>
+                </td>
+          
+                <td>
+              <Link className="orderLink" to={`orderDetails/${order.id}`}>
+                  {order.status}
+                </Link>
+                </td>
             </tr>
             
           ) }

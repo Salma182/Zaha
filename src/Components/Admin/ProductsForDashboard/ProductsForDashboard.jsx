@@ -171,6 +171,7 @@ export default function ProductsForDashboard() {
   }  
 
   const handleShowUpdateModal = (product) => {
+    const subcategory = subcategories.find(subcat => subcat.name === product.subcategory_id);
     setSelectedProductId(product.id);
     setupdatedname(product.name);
     setupdatedDesc(product.desc);
@@ -180,27 +181,29 @@ export default function ProductsForDashboard() {
     setupdatedsize(product.sizes.map((size) => size.size) || []);
     setupdatedmaterial(product.material);
     setupdatedquantity(product.quantity);
-    setupdatedSubcategory(product.subcategory_id);
+    setupdatedSubcategory(subcategory ? subcategory.id : ""); // Set to ID if found, else empty
     setShowUpdateModal(true);
   };
 
   const handleCloseUpdateModal = () => {
     setShowUpdateModal(false);
   };
+  console.log(updatedSubcategory);
 
   async function updateProduct() {
-    try {
+    console.log(updatedSubcategory);
 
-      const selectedId = subcategories.find(subcategory => subcategory.name === updatedSubcategory)?.id;
-      if (!selectedId) {
+    try {
+      const selectedId = updatedSubcategory;
+        if (!selectedId) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Invalid subcategory selected',
         });
-        return;
+          console.log(selectedId) ;
+          return; 
       }
-
       const formData = new FormData();
       formData.append("name", updatedname);
       formData.append("desc", updatedDesc);
@@ -228,7 +231,6 @@ export default function ProductsForDashboard() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -240,9 +242,9 @@ export default function ProductsForDashboard() {
         getProducts(currentPage);
         window.location.reload();
       })
-
-
     console.log(updatedSubcategory)
+    console.log(selectedId) 
+
     } catch (error) {
       console.error("Error updating product:", error);
       Swal.fire({
