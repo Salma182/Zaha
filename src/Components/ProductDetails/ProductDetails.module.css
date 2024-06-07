@@ -112,13 +112,26 @@
   border-radius: 7px;
   background-color: #956911;
   font-weight: 500;
-  width: 50%;
+  width: 30%;
   border:1px solid transparent;
   box-shadow: 0px 3px 5px rgb(0, 0, 0, 0.1);
   padding: 1%;
   color: white;
 }
+.notify{
+  border-radius: 7px;
+  background-color: white;
+  font-weight: 500;
+  width: 30%;
+  border:1px solid #956911;
+  /* box-shadow: 0px 3px 5px rgb(0, 0, 0, 0.1); */
+  padding: 1%;
+  color: #956911;
 
+}
 .addCart .disabled{
   background-color: #c5a057;
+}
+.customModal{
+  margin-top: 15% !important;
 }

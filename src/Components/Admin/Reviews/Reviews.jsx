@@ -32,7 +32,6 @@ const token = localStorage.getItem('token');
       }else {
         setToggle(false)
       }
-
       setLoading(false)
 
     }catch(e){
@@ -41,28 +40,60 @@ const token = localStorage.getItem('token');
   }
 
   async function EditReview(id) {
-    setLoading(true)
-    try{
+    try {
       let { data } = await axios.post(
         `https://zahaback.com/api/userData/review/${id}/changeStatus`,
+        null, // Passing null as the second parameter since there's no data to send
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if(data.message === "Review status changed to reject"){
-        setToggle(false)
-      }else {
-        setToggle(true)
+      if (data.message === "Review status changed to reject") {
+        setToggle(false);
+      } else if (data.message === "Review status changed to accept"){
+        setToggle(true);
       }
-
-      console.log(111);
+  
+    Swal.fire({
+        icon: 'success',
+        title: 'Review Status Changed',
+      }).then(() => {
+        getReviews();
+      });
       console.log(data.message);
       // setReviews(data.allReviews.data);
-      setLoading(false)
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  
+
+  async function DeleteReview(id) {
+    setLoading(true);
+    try {
+      let { data } = await axios.get(
+        `https://zahaback.com/api/userData/deletereview/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );  
+      Swal.fire({
+        icon: "success",
+        title: "Review deleted successfully",
+      }).then(() =>{
+        getReviews();
+        window.location.reload();
+    })
+      console.log(data.message);
+      // setReviews(data.allReviews.data);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -79,54 +110,58 @@ const token = localStorage.getItem('token');
         <div className="row">
           {Reviews.length > 0
             ? Reviews.map((review) => (
-              <div className="col-md-3" key={review.id}>
-              <div className="item text-start border border-3 rounded-3 p-3">
-                    <p className="fw-bold pt-3">Name : {review.name}</p>
-                  <p className="fw-bold ">Product Id : {review.product_id}</p>
-                   <p className="fw-bold ">Review : {review.review}</p>
-                   <p className="fw-bold ">Email : {review.email}</p>
-                   <p className="fw-bold ">Status :      
-                   <button className={review.is_accepted === "accepted" ? `accepted` : `rejected`} 
-                   onClick={()=>EditReview(review.id)}
-                   >
-                   {review.is_accepted}
-                   </button>
-                   </p>
-                  <Rate rating={review.rate} />
-
-                  {review.image ?  <img
-                   src={review.image}
-                   className="object-fit-cover mt-3"
-                   width={200}
-                   height={150}
-                   alt=""
-                 /> : ""}
-                <div>
-
-              <div className="buttons"> 
-              <button
-                  className="deleteBtn mt-4 w-75"
-                  onClick={() => {
-                    Swal.fire({
-                      title: "Are you sure?",
-                      text: "You won't be able to revert this!",
-                      icon: "warning",
-                      showCancelButton: true,
-                      confirmButtonColor: "#3085d6",
-                      cancelButtonColor: "#d33",
-                      confirmButtonText: "Yes, delete it!",
-                    }).then((result) => {
-                      if (result.message) {
-                        // deleteReview(review.id);
-                      }
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
+              <div className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4" key={review.id}>
+              <div className="item text-start border border-3 rounded-3 p-3 h-100 d-flex flex-column">
+                <p className="fw-bold pt-3">Name : {review.name}</p>
+                <p className="fw-bold">Product Id : {review.product_id}</p>
+                <p className="fw-bold">Review : {review.review}</p>
+                <p className="fw-bold">Email : {review.email}</p>
+                <p className="fw-bold">Status :
+                  <button
+                    className={review.is_accepted === "accepted" ? `accepted` : `rejected`}
+                    onClick={() => EditReview(review.id)}
+                    disabled={loading}
+                  >
+                    {review.is_accepted}
+                  </button>
+                </p>
+                <Rate rating={review.rate} />
+        
+                {review?.image ? (
+                  <img
+                    src={review.image}
+                    className="object-fit-cover mt-3"
+                    width={200}
+                    height={150}
+                    alt=""
+                  />
+                ) : ""}
+        
+                <div className="mt-auto">
+                  <div className="buttons">
+                    <button
+                      className="deleteBtn mt-4 w-75"
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            DeleteReview(review.id);
+                          }
+                        });
+                      }}
+                      disabled={loading}
+                    >
+                      Delete
+                    </button>
                   </div>
-           
+                </div>
               </div>
             </div>
 

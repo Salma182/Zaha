@@ -241,3 +241,6 @@ color: white;
     background-color: #956911;
   }
   
+  .custom-modal-margin .modal-dialog {
+    margin-top: 300px; /* Adjust this value as needed */
+  }

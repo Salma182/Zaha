@@ -43,7 +43,7 @@ export default function Dashboard() {
               </button>
             </Link>
 
-            <Link className={` ${style.dashboardBtn}`} to="/dashboard">
+            <Link className={` ${style.dashboardBtn}`} to="orders">
             <button className={`border-0 bg-transparent fw-bold text-capitalize`}>
                 orders
               </button>

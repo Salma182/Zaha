@@ -88,6 +88,8 @@ const routers = createBrowserRouter([
       { path: "coupon", element: <LazyComponent Component={Coupon} /> },
       { path: "sociallinks", element: <LazyComponent Component={SocialLinks} /> },
       { path: "imageforinsta", element: <LazyComponent Component={ImgForDashboard} /> },
+      { path: "*", element: <LazyComponent Component={Notfound} /> },
+
     ],
   },
 ]);

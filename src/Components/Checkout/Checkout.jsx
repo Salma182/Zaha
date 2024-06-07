@@ -60,9 +60,9 @@ const token = localStorage.getItem('token');
     });
   
     const Checkout = async (values) => {
-      const token = localStorage.getItem('guestToken');
+      const guestToken = localStorage.getItem('guestToken');
       try {
-        const { data } = await axios.post(`https://zahaback.com/api/checkout/${token}`, values, {
+        const { data } = await axios.post(`https://zahaback.com/api/checkout/${guestToken}`, values, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -74,7 +74,7 @@ const token = localStorage.getItem('token');
           showConfirmButton: false,
           timer: 2000,
         });
-        console.log(data);
+        console.log(token);
       } catch (error) {
         console.error('Error:', error);
         Swal.fire({

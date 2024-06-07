@@ -52,8 +52,7 @@ export default function Categories() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("is_home", isHome);
-    
-
+  
     try {
       await axios.post(
         `https://zahaback.com/api/category/create`,
@@ -99,17 +98,16 @@ export default function Categories() {
       console.error("Error deleting category:", error);
     }
   }
-
   
-  async function updateCategory() {
+  const updateCategory = async () => {
     const formData = new FormData();
     formData.append('name', updatedName);
-    formData.append('is_home', updatedIshome);
-    
+    formData.append('is_home', updatedIshome ? 1 : 0);
+
     try {
       await axios.post(
         `https://zahaback.com/api/category/update/${categoryIdToUpdate}`,
-        formData ,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -117,18 +115,16 @@ export default function Categories() {
         }
       );
       Swal.fire({
-        icon: "success",
-        title: "Category updated successfully",
-      }).then(() =>{
+        icon: 'success',
+        title: 'Category updated successfully',
+      }).then(() => {
         setShowUpdateModal(false);
         getAllCategories(currentPage);
-        window.location.reload();
-    })
+      });
     } catch (error) {
-      console.error("Error updating category:", error);
+      console.error('Error updating category:', error);
     }
-  }
-
+  };
   useEffect(() => {
     getAllCategories();
   }, []); // Reload categories when currentPage changes
@@ -136,8 +132,8 @@ export default function Categories() {
 
   useEffect(() => {
     if (categories) {
-      setupdatedName(name || '');
-      setupdatedIshome(isHome || false);
+      setupdatedName(name);
+      setupdatedIshome(isHome);
     }
   }, [categories]);
 
@@ -244,6 +240,7 @@ export default function Categories() {
               />
             </Form.Group>
 
+            <Form.Group className="mb-3" controlId="categoryisHome">
             <div>
             <label htmlFor="is_home">Is Home:</label>
             <input
@@ -253,7 +250,7 @@ export default function Categories() {
               onChange={handleCheckboxChange}
             />
           </div>
-
+          </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -272,27 +269,30 @@ export default function Categories() {
         <Modal.Title>Edit Category</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3" controlId="categoryNameUpdate">
-            <Form.Label>Category Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter category name"
-              value={updatedName}
-              onChange={(e) => setupdatedName(e.target.value)}
-            />
-          </Form.Group>
+      <Form onSubmit={(e) => { e.preventDefault(); updateCategory(); }}>
+      <Form.Group className="mb-3" controlId="categoryNameUpdate">
+        <Form.Label>Category Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter category name"
+          value={updatedName}
+          onChange={(e) => setupdatedName(e.target.value)}
+        />
+      </Form.Group>
 
-          <div>
+      <Form.Group className="mb-3" controlId="updatecategoryisHome">
+         <div>
             <label htmlFor="is_home">Is Home:</label>
             <input
               type="checkbox"
               id="is_home"
               checked={updatedIshome}
-              onChange={handleCheckboxChange}
+              onChange={e =>handleCheckboxChange(e)}
             />
           </div>
-        </Form>
+
+          </Form.Group>
+    </Form>
       </Modal.Body>
       <Modal.Footer>
 

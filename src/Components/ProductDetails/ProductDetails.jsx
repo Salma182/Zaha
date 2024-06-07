@@ -19,6 +19,7 @@ import Loading from "../Loading/Loading";
 import WishlistContext from "../../WishlistContext/WishlistContext";
 import Rate from "./Rate";
 import CommonContext from "../../CommonContext/CommonContext";
+import NotifyMeModal from "./Notifyme";
 
 export default function ProductDetails() {
   const { cart, setCart } = useContext(CartContext);
@@ -45,6 +46,7 @@ const settings = {
     slidesToScroll: 1,
     swipeToSlide: true,
 };
+
 
 function onSizeClick (sizeId) {
   setSelectedSizeId(sizeId);
@@ -225,6 +227,8 @@ const handleColorChange = (color, image) => {
         <button type="submit" className={`${style.addCart} mx-2 ${productdetails.is_sold_out ? `disabled` : ""}`}>
              Add to cart
           </button>
+
+          <NotifyMeModal productId={productdetails.id}  />
       </div>
     </div>
             </form>
