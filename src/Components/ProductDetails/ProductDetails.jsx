@@ -30,7 +30,7 @@ export default function ProductDetails() {
   const[productid, setproductid]=useState('')
   const[quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedColorId, setSelectedColorId] = useState('');
   const[response, setResponse] = useState(null)
   const [selectedSizeId, setSelectedSizeId] = useState(null);
   const[loading, setloading] = useState(false);
@@ -53,6 +53,11 @@ function onSizeClick (sizeId) {
     console.log('Selected size ID:', sizeId);
 }
 
+function handleColorChange(colorid){
+setSelectedColorId(colorid);
+console.log('Selected color ID:', colorid);
+
+}
 
 const handleAddtoWishlist=(id) =>{
   AddtoWishlist(id);
@@ -144,10 +149,10 @@ async function Addtocart(e) {
 
 console.log("response", response)
 
-const handleColorChange = (color, image) => {
-  setSelectedColor(color);
-  setSelectedImage(image);
-};
+// const handleColorChange = (color, image) => {
+//   setSelectedColor(color);
+//   setSelectedImage(image);
+// };
 
   return (
     <>
@@ -246,14 +251,26 @@ const handleColorChange = (color, image) => {
             <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
               <h4>Color</h4>
               <div className="color my-2 d-flex align-items-center">
-              {productdetails.colors?.map((color, index) => (
-                  <div
-                    key={color}
-                    className={`${style.ball} mx-2`}
-                    style={{ backgroundColor: color }}
-                    onClick={() => handleColorChange(color, productdetails.images[index])}
-                  ></div>
-                ))}        
+            {/* \
+                    // key={color}
+                    // className={`${style.ball} mx-2`}
+                    // style={{ backgroundColor: color }}
+                    // onClick={() => handleColorChange(color, productdetails.images[index])}
+                  > */}
+            <ul className="list-unstyled d-flex flex-row gap-3">
+              {productdetails?.colors?.map((product)=>
+               <li
+               key={product.id} 
+               className={`${style.ball} mx-2 ${selectedColorId === product.id ? 'selected' : ''}`}
+               
+               onClick={() => handleColorChange(product.id)} 
+               style={{ cursor: 'pointer',backgroundColor: product.name }} 
+             >
+               {/* {product.name} */}
+             </li>
+                )}
+                </ul>
+                  
                
               </div>
             </div>{" "}
@@ -313,7 +330,7 @@ const handleColorChange = (color, image) => {
           <div className="small my-3">
             <h3>Additional information</h3>
             <p className="my-1 ms-5">
-              <span className="fw-bolder me-2">Color</span>{productdetails.colors?.map((color)=>color).join(' , ')}
+              <span className="fw-bolder me-2">Color</span>{productdetails.colors?.map((color)=>color.name).join(' , ')}
             </p>
             <p className="my-1 ms-5">
               <span className="fw-bolder me-2">Size</span>
