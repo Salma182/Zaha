@@ -10,7 +10,6 @@ const NotifyMeModal = ({ productId}) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const token = localStorage.getItem('token');
   const [emailError, setEmailError] = useState('');
 
 
@@ -34,12 +33,8 @@ const NotifyMeModal = ({ productId}) => {
     try {
       const { data } = await axios.post(
         `https://zahaback.com/api/userproduct/${productId}/notify-me`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        formData
+      
       );
       if (data.message === "You will be notified when the product is available.") 
         Swal.fire({

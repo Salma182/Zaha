@@ -17,15 +17,9 @@ const [review,setReview]=useState("");
 const [errors, setErrors] = useState({});
 const[reviews,setreviews]= useState([])
 const[loading, setLoading]=useState(false); 
-const token = localStorage.getItem('token');
 
 async function getReview(id){
-const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`,
-{
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-}
+const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`
 )
 setreviews(data.reviews)
 console.log(data.reviews)
@@ -35,12 +29,7 @@ async function GetRate(id){
 
   setLoading(true)
   try{
-    const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
+    const {data} = await axios.get(`https://zahaback.com/api/review/productReviewResult/${id}`
   )
   setRating(data.ceil_rate)
   setData(data)
@@ -81,12 +70,7 @@ async function Review(e){
 
   try{
   const {data} = await axios.post(`https://zahaback.com/api/review/create`,
-  formData ,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
+  formData 
   )
   Swal.fire({
     position: "center",

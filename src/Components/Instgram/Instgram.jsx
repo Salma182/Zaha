@@ -11,7 +11,6 @@ import Loading from "../Loading/Loading";
 export default function Instgram() {
  const[images, setImages]=useState([])
 const[loading, setLoading] = useState(false)
-const token = localStorage.getItem('token');
 
   const options = {
     margin: 10,
@@ -29,23 +28,17 @@ const token = localStorage.getItem('token');
     },
   };
 
-  async function GetImages(){
-    setLoading(true)
-    try{
-      const {data}= await axios.get(`https://zahaback.com/api/allInsta`,
-      {  
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-      )
-      setImages(data.allInsta)
-      console.log(data.allInsta)  
-
-    }catch(e){console.error(e)
-      setLoading(false)
+  async function GetImages() {
+    setLoading(true);
+    try {
+      const { data } = await axios.get('https://zahaback.com/api/allInsta');
+      setImages(data.allInsta);
+      console.log(data.allInsta);
+      setLoading(false); // Set loading to false after fetching data
+    } catch (e) {
+      console.error(e);
+      setLoading(false); // Ensure loading is set to false on error
     }
-
   }
 
 
@@ -56,12 +49,10 @@ const token = localStorage.getItem('token');
   return (
     <>
 
-{/* {loading ? <Loading /> :  */}
-<div>
+{loading ? <Loading /> : (<div>
 <h1 className={` title `}>
         follow us on Instgram
       </h1>
-
 
   <OwlCarousel {...options}>
          {images && images.length > 0 ? (
@@ -86,6 +77,7 @@ const token = localStorage.getItem('token');
           
         </OwlCarousel>
 </div> 
+)}
 
 
     </>

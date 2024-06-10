@@ -11,7 +11,7 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
   const { cart, setCart } = useContext(CartContext);
   const[id, setId]=useState('')
   const navigate = useNavigate()
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
 
   function remove(e) {
     if (e.target.classList.contains("cart")) {
@@ -20,18 +20,10 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
   }
   const guestToken= localStorage.getItem("guestToken");
 
-function handleDelete(id){
-setId(id)
-deleteProduct(guestToken, id)
-}
+
 
   async function deleteProduct() {
-    const{data}= await axios.post(`https://zahaback.com/api/cart/deleteItem/${guestToken}/item/${id}`,
-    {  
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    const{data}= await axios.post(`https://zahaback.com/api/cart/deleteItem/${guestToken}/item/${id}`
     );
     setCartOpen(false)
     Swal.fire({
@@ -44,16 +36,15 @@ deleteProduct(guestToken, id)
     console.log(data)
   }
 
+  function handleDelete(id){
+    setId(id)
+    deleteProduct(guestToken, id)
+    }
 
   async function GetToCart(){
     const guestToken= localStorage.getItem("guestToken");
 try {
-const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`,
-{  
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-}
+const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`
 )
 setCart(data.cart)
 console.log("cart", data.cart)

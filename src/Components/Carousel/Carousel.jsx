@@ -9,49 +9,33 @@ import Loading from "../Loading/Loading";
 export default function Carousel() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const token = localStorage.getItem('token');
 
   async function getProductsFromPage(page) {
     try {
-      const { data } = await axios.get(
-        `https://zahaback.com/api/slider/all?page=${page}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`https://zahaback.com/api/allSlider?page=${page}`);
+      console.log(`Data from page ${page}:`, data.slider.data);
       return data.slider.data;
     } catch (error) {
-      console.error(`Error fetching products from page ${page}:`, error);
+      console.error(`Error fetching products from page ${page}:`, error.response || error);
       return [];
     }
   }
 
   async function getImgs() {
+    setIsLoading(true);
     try {
-      const { data } = await axios.get(
-        `https://zahaback.com/api/slider/all`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`https://zahaback.com/api/allSlider`);
+      const { data } = response;
+      console.log("API Response:", data);
 
-      const { slider } = data;
-      const { last_page } = slider;
-
-      let allProducts = [];
-      for (let page = 1; page <= last_page; page++) {
-        const productsFromPage = await getProductsFromPage(page);
-        allProducts = [...allProducts, ...productsFromPage];
+      if (data && data.sliders) {
+        setProducts(data.sliders);
+      } else {
+        console.error("Unexpected API response structure:", data);
       }
-
-      setProducts(allProducts);
-      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching images:", error);
+    } finally {
       setIsLoading(false);
     }
   }
@@ -77,16 +61,16 @@ export default function Carousel() {
   };
 
   return (
-    <div className="slider">
+   <div className="slider">
       <div className="mt-5"></div>
       {isLoading ? (
-    <Loading />
+        <Loading />
       ) : (
         <OwlCarousel {...options}>
           {products.map((product) => (
             <div
               key={product.id}
-              className={`${style.item} mt-5 rounded rounded-3 overflow-hidden position-relative`}
+              className="mt-5 rounded rounded-3 overflow-hidden position-relative"
             >
               <img
                 className="object-fit-cover w-100"
@@ -95,10 +79,10 @@ export default function Carousel() {
                 alt="img"
               />
               {/* <div
-                className={`${style.layer} border-0 d-flex justify-content-center align-items-center`}
+                className="border-0 d-flex justify-content-center align-items-center"
               >
                 <div
-                  className={`btn ${style.btn} fw-bold text-white text-capitalize`}
+                  className="btn fw-bold text-white text-capitalize"
                 >
                   View More
                 </div>

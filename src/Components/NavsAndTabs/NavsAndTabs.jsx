@@ -20,7 +20,6 @@ export default function NavsAndTabs() {
    const[Id, setId] = useState(null)
    const[productName, setproductName] = useState("")
    const { AddtoWishlist, setproductname, productname , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
-   const token = localStorage.getItem('token');
 
 const handleAddtoWishlist=(id) =>{
     AddtoWishlist(id);
@@ -54,12 +53,7 @@ const settings = {
 };
 
   async function Navs() {
-const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
-{
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-}
+const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`
 )
 setNav(data.category)
 setId(null)
@@ -68,12 +62,7 @@ console.log("navs",data.category)
 
   async function getAllProducts() {
     const { data } = await axios.get(
-      `https://zahaback.com/api/userproduct/all`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `https://zahaback.com/api/userproduct/all`
     );
     setProduct(data.products);
     setSpecificProducts(data.products);
@@ -81,12 +70,7 @@ console.log("navs",data.category)
   }
 
   async function getCategories(){
-    const{data}= await axios.get(`https://zahaback.com/api/categoriesCollection`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    const{data}= await axios.get(`https://zahaback.com/api/categoriesCollection`
     )
     setCategories(data.category)
     setId(data.category.id)
@@ -95,12 +79,7 @@ console.log("navs",data.category)
 
 
   async function getSpecificProducts(Id){
-    const{data}= await axios.get(`https://zahaback.com/api/products/category/${Id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    const{data}= await axios.get(`https://zahaback.com/api/products/category/${Id}`
     )
     setSpecificProducts(data.products)
     console.log("productCategory",data.products)

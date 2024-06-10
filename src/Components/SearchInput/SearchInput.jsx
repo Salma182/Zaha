@@ -13,7 +13,6 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     showResults, setShowResults,
     loading, setLoading
   } = useContext(SearchContext);
-  const token = localStorage.getItem('token');
   const searchBoxRef = useRef(null);
   const navigate = useNavigate();
 
@@ -60,7 +59,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     try {
       const { data } = await axios.get(`https://zahaback.com/api/userproduct/search?search=`, {
         params: { search: input },
-        headers: { Authorization: `Bearer ${token}` },
+        // headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(data.products);
       setShowResults(data.products.length > 0 ? true : false);

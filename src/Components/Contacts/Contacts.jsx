@@ -6,16 +6,9 @@ import { Link } from "react-router-dom";
 export default function Contacts() {
   
   const[links, setLinks] =useState([])
-  const token = localStorage.getItem('token');
 
 async function getLinks(){
-  const {data} = await axios.get(`https://zahaback.com/api/allSocialLink`,
-  {  
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-  )
+  const {data} = await axios.get(`https://zahaback.com/api/allSocialLink`)
   setLinks(data.allSocialLink)
   console.log(data.allSocialLink)
 }

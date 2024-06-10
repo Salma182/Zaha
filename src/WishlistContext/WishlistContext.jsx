@@ -9,7 +9,6 @@ export const WishlistProvider = ({ children }) => {
     const[productId, setproductId ]=useState('')
     const [selectedwishlist, setSelectedwishlist]=useState([])
     const [Wtoken, setWToken] = useState(localStorage.getItem('wtoken') || '');
-    const token = localStorage.getItem('token');
 
 async function AddtoWishlist(productId) {
   // Always get the latest token from localStorage
@@ -24,13 +23,7 @@ async function AddtoWishlist(productId) {
   try {
     const { data } = await axios.post(
       `https://zahaback.com/api/wishlist/create`,
-      { products },
-      {  
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Wtoken': currentWToken // Pass the token in the headers
-        },
-      }
+      { products }
     );
 
     // If data.wishlist_items exists and has guest_token, update it

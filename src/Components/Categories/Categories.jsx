@@ -25,12 +25,8 @@ export default function Categories() {
     setLoading(true)
     try {
       let { data } = await axios.get(
-        `https://zahaback.com/api/category/all?page=${page}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `https://zahaback.com/api/category/all?page=${page}`
+       
       );
       setCategories(data.category.data);
       setCurrentPage(data.category.current_page);
@@ -57,11 +53,7 @@ export default function Categories() {
       await axios.post(
         `https://zahaback.com/api/category/create`,
          formData ,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      
       );
       
       Swal.fire({
@@ -80,12 +72,8 @@ export default function Categories() {
   async function deleteCategory(id) {
     try {
       await axios.get(
-        `https://zahaback.com/api/category/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `https://zahaback.com/api/category/delete/${id}`
+        
       );
       Swal.fire({
         icon: "success",
@@ -123,12 +111,7 @@ export default function Categories() {
     try {
       await axios.post(
         `https://zahaback.com/api/category/update/${categoryIdToUpdate}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        formData
       );
       Swal.fire({
         icon: 'success',

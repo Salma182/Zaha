@@ -67,12 +67,12 @@ const handleAddtoWishlist=(id) =>{
 async function ProductDetails(productId)  {
   setloading(true)
   try{
-    const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    const {data} =await axios.get(`https://zahaback.com/api/userproduct/getProduct/${productId}`
+    // {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // }
     )
     // console.log(data)
     setProductDetails(data.product)
@@ -114,12 +114,12 @@ async function Addtocart(e) {
 }
  
   try{
-    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload ,
-    {  
-     headers: {
-       Authorization: `Bearer ${token}`,
-     },
-   }
+    const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload 
+  //   {  
+  //    headers: {
+  //      Authorization: `Bearer ${token}`,
+  //    },
+  //  }
    )
    setResponse(data.cart_items)
    if (!guestToken) {
