@@ -42,6 +42,7 @@ export default function Carousel() {
 
   useEffect(() => {
     getImgs();
+    getProductsFromPage()
   }, []);
 
   const options = {

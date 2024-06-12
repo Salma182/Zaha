@@ -157,7 +157,7 @@ async function deleteImage(link) {
       Authorization: `Bearer ${token}`,
     },
   }
-  ) 
+  )
   if (data.message === "Customer link deleted successfully") {
     handleCloseAddModal();
     setShowUpdateModal(false);
@@ -221,7 +221,7 @@ useEffect(() => {
               <td className="text-center" width={50}>
                 <img src={link.path} height={80} alt="product" />
               </td>
-               <td> <Link to={link.name}> {link.name} </Link></td>
+               <td width={100}> <Link to={link.name}> {link.name} </Link></td>
               <td className={style.cont}>
               <div className="w-50 buttons"> 
                     <button
@@ -237,7 +237,6 @@ useEffect(() => {
                           confirmButtonText: "Yes, delete it!",
                         }).then((result) => {
                           if (result.isConfirmed) {
-                            // deleteSlide(img.id);
                             deleteImage(link.id)
                           }
                         });

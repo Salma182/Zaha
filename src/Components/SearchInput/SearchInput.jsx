@@ -59,7 +59,6 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     try {
       const { data } = await axios.get(`https://zahaback.com/api/userproduct/search?search=`, {
         params: { search: input },
-        // headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(data.products);
       setShowResults(data.products.length > 0 ? true : false);
@@ -78,6 +77,10 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
     if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
       setShowResults(false);
     }
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/productdetails/${productId}`);
   };
 
   useEffect(() => {
@@ -108,9 +111,9 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
 
     {showResults && (
         <div ref={searchBoxRef} className={`${style.searchbox} ${style.searchbox_visible}`}>
-           {loading && <div>Loading...</div>}
+           {/* {loading && <div>Loading...</div>} */}
           {products ? products.map((product) => (
-            <div key={product.id} className="d-flex col">
+            <div key={product.id} className="d-flex col pointer" onClick={() => handleProductClick(product.name)} >
               <img width={80} src={product.images[0]} alt={product.name} />
               <div className="d-flex flex-column">
                 <h5>{product.name}</h5>

@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "../NavsAndTabs/NavsAndTabs.module.css";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import OwlCarousel from "react-owl-carousel";
+import "owl.carousel/dist/assets/owl.carousel.min.css";
+import "owl.carousel/dist/assets/owl.theme.default.min.css";
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../SearchContext/SearchContext";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import Loading from "../Loading/Loading";
+import WishlistContext from "../../WishlistContext/WishlistContext";
 
 export default function SearchedProducts() {
   const {
@@ -16,92 +15,78 @@ export default function SearchedProducts() {
     showResults, setShowResults,
     loading, setLoading
   } = useContext(SearchContext);
+  const {selectedwishlist , AddtoWishlist ,setSelectedwishlist} = useContext(WishlistContext)
 
-    const [isHovering, setIsHovering] = useState(false);
-    const sliderRef = useRef(null);
     const navigate= useNavigate();
 
-    useEffect(() => {
-      setShowResults(false)
-      console.log(products)
-      let interval;
-      if (isHovering) {
-        interval = setInterval(() => {
-          if (sliderRef.current) {
-            sliderRef.current.slickNext();
-          }
-        }, 1000); // Adjust the interval as needed
-      }
-      return () => {
-        clearInterval(interval);
-      };
-    }, [isHovering]);
-  
-  const settings = {
-    dots: true,
-      infinite: true,
-      autoplay: false, // Disable autoplay to handle manually
-      speed: 300,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipeToSlide: true,
-  };
-
+    const settings = {
+      margin: 20,
+      responsiveClass: true,
+      loop: true,
+      autoplay: false,
+      smartSpeed: 500,
+      responsive: {
+        0: { items: 1 },
+        400: { items: 1 },
+        550: { items:1 },
+        750: { items: 1 },
+        1000: { items: 1 },
+        1200: { items: 1 },
+      },
+    };
   
   const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);
   };
 
+  const handleAddtoWishlist=(id) =>{
+    AddtoWishlist(id);
+    setSelectedwishlist((prev) => [...prev, id]);
+    console.log("wishlist",id)
+    console.log(selectedwishlist)
+  }  
 
 
     return <>
 {loading ? (<Loading />) :
 (
-  <div className={style.searchedProducts} style={{marginTop:"5%"}}>
-  <div className="container my-5">
+  <div className={style.searchedProducts} >
+  <div className="container responsive gold">
           <div className="row g-3">
   {products && products.length > 0 ? (
       products.map((product) => (
   
-        <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.id)}>
+        <div className="col-sm-6 col-md-4 col-lg-3" key={product.id} onClick={() => handleProductClick(product.name)}>
         <div className="mycard rounded rounded-3 overflow-hidden pointer"
-        onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)} 
               onClick={()=>handleProductClick(product.id)}>
 
 
           <div className={`${style.myimg}`}>
-          <Slider  ref={sliderRef} {...settings}>
+          <OwlCarousel {...settings}>
                   {product.images?.map((image, index) => (
                           <div key={index}>
                             <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
                           </div>
                         ))}
-                    </Slider>
+                    </OwlCarousel>
+                    <i
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling
+                  handleAddtoWishlist(product.id);
+                }}
+                className={`fa-heart gold ${selectedwishlist.includes(product.id) ? 'fa-solid' : 'fa-regular'} text-red pointer fs-3 ${style.hearticon}`}
+              ></i>
 
             <div className={`${style.layer}`}>
               <div className={`${style.sold}`}>{product.soldOut ? 'sold out' : ''}</div>
-              <span className={`${style.eye}`}>
-                <i className={` fa-solid fa-eye`}></i>
-                <small className={`${style.small}`}>overview</small>
-              </span>
-              <div className={`${style.shopCart} pointer`}>
-                <i className="fa-solid fa-cart-plus"></i>
-              </div>
+             
               <span className={style.title}>{product.name}</span>
             </div>
           </div>
           <div className={`${style.content}`}>
             <div className="left">
               <h6 className="small my-2">{product.name}</h6>
-              <ul className="p-0 my-2">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <i
-                    key={index}
-                    className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
-                  ></i>
-                ))}
-              </ul>
+
               <p className="small">{product.price} EGP</p>
             </div>
             <div className={`${style.right}`}>

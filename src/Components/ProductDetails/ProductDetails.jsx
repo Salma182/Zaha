@@ -9,9 +9,9 @@ import DeliveryDetails from "../DeliveryDetails/DeliveryDetails";
 import AskQuestions from './../AskQuestions/AskQuestions';
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import OwlCarousel from "react-owl-carousel";
+import "owl.carousel/dist/assets/owl.carousel.min.css";
+import "owl.carousel/dist/assets/owl.theme.default.min.css";
 import Cart from "../Cart/Cart";
 import CartContext, { CartProvider } from "../../CartContext/CartContext";
 import Swal from "sweetalert2";
@@ -36,17 +36,23 @@ export default function ProductDetails() {
   const[loading, setloading] = useState(false);
 const[error,setError] = useState('')
 const token = localStorage.getItem('token');
-
+const userId= localStorage.getItem('userid')
+  
 const settings = {
-  dots: true,
-    infinite: true,
-    autoplay: true, // Disable autoplay to handle manually
-    speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    swipeToSlide: true,
+  margin: 20,
+  responsiveClass: true,
+  loop: true,
+  autoplay: false,
+  smartSpeed: 500,
+  responsive: {
+    0: { items: 1 },
+    400: { items: 1 },
+    550: { items:1 },
+    750: { items: 1 },
+    1000: { items: 1 },
+    1200: { items: 1 },
+  },
 };
-
 
 function onSizeClick (sizeId) {
   setSelectedSizeId(sizeId);
@@ -108,11 +114,14 @@ async function Addtocart(e) {
    items : [{
       product_id: +productid,
       quantity: quantity,
-      size_id:selectedSizeId
+      size_id:selectedSizeId,
+      color_id:selectedColorId,
+     user_id:userId
     }],
   guest_token: guestToken
 }
- 
+ console.log("userId",userId)
+
   try{
     const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload 
   //   {  
@@ -170,36 +179,52 @@ console.log("response", response)
           {/* <img src={selectedImage} alt="model dress" className="w-100" /> */}
   
        
-    <Slider  {...settings}>
-    {productdetails.images?.map((image, index) => (
+          <OwlCarousel {...settings}>    
+            {productdetails.images?.map((image, index) => (
             <div key={index}>
               <img src={image} alt="" className={style.imgDefault} />
             </div>
           ))}
-      </Slider>
+      </OwlCarousel>
   
         </div>
         <div className="col-lg-8">
           <div className="item">
             <h2>{productdetails.name}</h2>
-            <h3>{productdetails.price} EGP</h3>
-            <p>Sizes</p>
-            {error && ( <div className="text-danger fw-bold p-1 w-50">
-            Size is Required
-          </div>  )}
-            <ul className="list-unstyled d-flex flex-row gap-3">
-              {productdetails?.sizes?.map((product)=>
-               <li
-               key={product.id} 
-               className={`sizebtn ${selectedSizeId === product.id ? 'selected' : ''}`}
-               onClick={() => onSizeClick(product.id)} 
-               style={{ cursor: 'pointer' }} 
-             >
-               {product.size}
-             </li>
-                )}
-                </ul>
-  
+            {/* <h3>{productdetails.price} EGP</h3> */}
+            
+            <div className="product-price">
+              {productdetails?.original_price !== productdetails.price ? (
+                <span style={{ textDecoration: 'line-through', color: 'red' }}>
+                  {productdetails?.original_price} 
+                </span>
+              ) : null}
+              <span style={{ marginLeft: productdetails.original_price !== productdetails.price ? '10px' : '0' }}>
+                {productdetails.price} Egp
+              </span>
+            </div>
+
+            {productdetails?.sizes?.length >0 &&
+              <div>
+              <p>Sizes</p>
+              {error && ( <div className="text-danger fw-bold p-1 w-50">
+              Size is Required
+            </div>  )}
+              <ul className="list-unstyled d-flex flex-row gap-3">
+                {productdetails?.sizes?.map((product)=>
+                 <li
+                 key={product.id} 
+                 className={`sizebtn ${selectedSizeId === product.id ? 'selected' : ''}`}
+                 onClick={() => onSizeClick(product.id)} 
+                 style={{ cursor: 'pointer' }} 
+               >
+                 {product.size}
+               </li>
+                  )}
+                  </ul>
+         </div>
+          }
+          
             <form onSubmit={Addtocart}>
             <div className="buy">
       <div className="d-flex align-items-center">
@@ -248,32 +273,29 @@ console.log("response", response)
                 
               </div>
             </div>
+              {productdetails?.colors?.length > 0 && 
             <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
-              <h4>Color</h4>
-              <div className="color my-2 d-flex align-items-center">
-            {/* \
-                    // key={color}
-                    // className={`${style.ball} mx-2`}
-                    // style={{ backgroundColor: color }}
-                    // onClick={() => handleColorChange(color, productdetails.images[index])}
-                  > */}
-            <ul className="list-unstyled d-flex flex-row gap-3">
-              {productdetails?.colors?.map((product)=>
-               <li
-               key={product.id} 
-               className={`${style.ball} mx-2 ${selectedColorId === product.id ? 'selected' : ''}`}
-               
-               onClick={() => handleColorChange(product.id)} 
-               style={{ cursor: 'pointer',backgroundColor: product.name }} 
-             >
-               {/* {product.name} */}
-             </li>
-                )}
-                </ul>
-                  
-               
-              </div>
-            </div>{" "}
+
+               <h4>Colors</h4>
+               <div className="color my-2 d-flex align-items-center">
+             <ul className="list-unstyled d-flex flex-row gap-3">
+               {productdetails?.colors?.map((product)=>
+                <li
+                key={product.id} 
+                className={`${style.ball} mx-2 ${selectedColorId === product.id ? 'selected' : ''}`}
+                
+                onClick={() => handleColorChange(product.id)} 
+                style={{ cursor: 'pointer',backgroundColor: product.name }} 
+              >
+                {/* {product.name} */}
+              </li>
+                 )}
+                 </ul>
+               </div>
+                </div>
+              }
+             
+        
             <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
               <span onClick={()=> handleAddtoWishlist(productdetails.id)} >
                 <i className="fa-solid fa-heart"></i> Add To WishList
@@ -307,36 +329,27 @@ console.log("response", response)
                 {productdetails.desc}
               </p>
               </div>
-              {/* <p className="my-1">Size 1 : S/M</p>
-              <p className="my-1">Skirt waist “stretchy “ from 70:85 CM</p> */}
-           
-            {/* <div className="small my-3">
-              <p className="my-1">
-                Size 2 :L/XL <br /> Skirt waist “stretchy “
-              </p>
-              <p className="my-1">From 80:95 cm</p>
-              <p className="my-1">Skirt length of both sizes is 107 CM</p>
-            </div>
-            <div className="small my-3">
-              <p className="my-1">البلوزة مقاس فري سايز ومتاح مقاسين</p>
-              <p className="my-1">
-                Size 1 : S/M الطول <br />
-                ١٠٧
-              </p>
-              <p className="my-1">الوسط يلبس من ٧٠ الى ٨٥ س</p>
-            </div> */}
           </div>
-          <hr className={`${style.hr} my-4`} />
-          <div className="small my-3">
-            <h3>Additional information</h3>
-            <p className="my-1 ms-5">
+          {productdetails?.colors?.length || productdetails?.sizes?.length > 0 && 
+          <div>          
+             <hr className={`${style.hr} my-4`} />
+              <div className="small my-3">
+              <h3>Additional information</h3>
+              {productdetails?.colors?.length >0 && 
+              <p className="my-1 ms-5">
               <span className="fw-bolder me-2">Color</span>{productdetails.colors?.map((color)=>color.name).join(' , ')}
             </p>
-            <p className="my-1 ms-5">
-              <span className="fw-bolder me-2">Size</span>
-              {productdetails.sizes?.map((item)=>item.size).join(' , ')}
-            </p>
-          </div>
+            }
+              {productdetails?.sizes?.length > 0 &&   <p className="my-1 ms-5">
+                <span className="fw-bolder me-2">Size</span>
+                {productdetails.sizes?.map((item)=>item.size).join(' , ')}
+              </p>}
+            
+            </div>
+             </div>
+            
+          }
+        
           </div>
  : "" }
       

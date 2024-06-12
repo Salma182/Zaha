@@ -29,10 +29,13 @@ export const AuthProvider = ({ children }) => {
       }
     );
       localStorage.setItem('token', data.token);
+      localStorage.setItem("userid", data.user.id);
       setIsAuthenticated(true);
       const adminStatus = data.user.isadmin === 'admin';
       setIsAdmin(adminStatus);
       localStorage.setItem('isAdmin', adminStatus.toString());
+    console.log(data.user.id)
+
     } catch (error) {
       if (error.response) {
         console.error('Server responded with an error:', error.response.data);

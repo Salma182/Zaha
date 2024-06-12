@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import TopNav from "../TopNav/TopNav";
 import logo from '../../Images/Logo PNG.png'
 import Wishlist from "../Wishlist/Wishlist";
+import Navbar from "../Navbar/Navbar";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -22,9 +23,7 @@ export default function Header() {
         className={`bg-color p-3 text-capitalize fixed-top dark-color shadowx`}
       >
         <div className="container d-flex justify-content-center align-items-center ">
-          <div className="bar small sidebar" onClick={() => setIsOpen(true)}>
-            <i className="fa-solid fa-bars fs-5 pointer small"></i>
-          </div>
+      
           <div className="logo">
             <Link className={style.link} to="/">
           <img src={logo} alt=""  width={150}/>
@@ -53,7 +52,7 @@ export default function Header() {
         </div>
         <TopNav />
       </nav>
-      <TopNav isOpen={isOpen} setIsOpen={setIsOpen} />
+      <TopNav isOpen={isOpen} setIsOpen={setIsOpen} setCartOpen={setCartOpen} cartOpen={cartOpen} setWishlistOpen={setWishlistOpen} wishlistOpen={wishlistOpen} />
     </>
   );
 }

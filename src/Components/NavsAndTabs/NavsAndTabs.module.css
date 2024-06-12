@@ -205,6 +205,18 @@
   font-size: 12px; /* Adjust font size as necessary */
   z-index: 10; /* Ensure it appears above other elements */
 }
+
+.select{
+  width: 20%;
+  z-index: 10000;
+}
+
+.Dropdown{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
 /* .newcollection{
 
 

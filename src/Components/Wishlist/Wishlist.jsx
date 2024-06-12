@@ -7,16 +7,16 @@ export default function Wishlist({wishlistOpen, setWishlistOpen , addwishlist}) 
 
   const[wishlistProducts,setWishlistProducts] = useState([])
 
-// const {selectedwishlist, setSelectedwishlist} = useContext(WishlistContext)
+const {DeleteWishlist} = useContext(WishlistContext)
+const wtoken= localStorage.getItem("wtoken");
 
 function remove(e) {
   if (e.target.classList.contains("cart")) {
     setWishlistOpen(false);
   }
 }
-const wtoken= localStorage.getItem("wtoken");
 
-async function GetWishlist() {
+async function GetWishlist(wtoken) {
 
   const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${wtoken}`
   )
@@ -69,7 +69,7 @@ useEffect(()=> {
       </div>
       <div className="col-md-2">
         <div className="close">
-          {/* <i onClick={()=> handleDelete(item.product_id)} className="fa-solid fa-xmark pointer"></i> */}
+          <i onClick={()=> DeleteWishlist(item.product_id)} className="fa-solid fa-xmark pointer"></i>
         </div>
       </div>
     </div>

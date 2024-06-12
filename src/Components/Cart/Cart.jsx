@@ -62,7 +62,6 @@ console.log("cart", data.cart)
     GetToCart();
   }, []);
   
-
   useEffect(()=> {
     handleDelete(id, guestToken)
   },[id, guestToken])

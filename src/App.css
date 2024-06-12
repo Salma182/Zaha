@@ -128,9 +128,34 @@ color: white;
     color: white;
   }
  
-  
+  .responsive{
+    margin-top: 10%;
+  }
+  @media  (max-width: 1200px) {
+
+
+    .responsive{
+      margin-top: 13%;
+    }
+
+  }
+
+  @media  (max-width: 992px) {
+
+    .responsive{
+      margin-top: 17%;
+    }
+
+  }
+
+
 @media (max-width: 768px) {
 
+  .responsive{
+    margin-top: 12%;
+  }
+
+  
     .search-icon{
         display: inline-block!important;
     }

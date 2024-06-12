@@ -134,7 +134,7 @@ useEffect(() => {
                     <form onSubmit={Review}>
                     <p className="my-1">
                       <span className="me-3">Your rating:</span>
-                      <Rate initialRate={1} onRate={setRate} Rating={rating}/>
+                      <Rate initialRate={5} onRate={setRate} Rating={rating}/>
                       {errors.rate && <p className="text-danger">{errors.rate}</p>}
                     </p>
                     <label htmlFor="rev">Your Review : *</label> 
@@ -200,7 +200,7 @@ useEffect(() => {
                       </div> */}
                       <button
                         type="submit"
-                        className="btn btn-success btn-sm my-3 px-4"
+                        className="text-white border-0 rounded p-2 bgGold btn-sm my-3 "
                         onClick={Review}
                       >
                         {" "}

@@ -8,6 +8,7 @@ export default function Checkout() {
 
 const [cities, setCities]= useState([])
 const [cityId, setCityId]= useState("")
+const userId= localStorage.getItem('userid')
 
     const user = {
       first_name: "",
@@ -18,7 +19,8 @@ const [cityId, setCityId]= useState("")
       address:"",
       additional_phone:"",
       city:"",
-    instagram_user: ""
+    instagram_user: "",
+    user_id: userId
       }
 
       const errors = {};

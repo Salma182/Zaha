@@ -6,9 +6,9 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import Pagination from "react-bootstrap/Pagination";
 import Loading from "../../Loading/Loading";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import OwlCarousel from "react-owl-carousel";
+import "owl.carousel/dist/assets/owl.carousel.min.css";
+import "owl.carousel/dist/assets/owl.theme.default.min.css";
 
 export default function ProductsForDashboard() {
   const [products, setProducts] = useState([]);
@@ -43,15 +43,20 @@ export default function ProductsForDashboard() {
   const token = localStorage.getItem('token');
 
   const settings = {
-    dots: false,
-      infinite: true,
-      autoplay: false, // Disable autoplay to handle manually
-      speed: 300,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipeToSlide: true,
+    margin: 20,
+    responsiveClass: true,
+    loop: true,
+    autoplay: false,
+    smartSpeed: 500,
+    responsive: {
+      0: { items: 1 },
+      400: { items: 1 },
+      550: { items:1 },
+      750: { items: 1 },
+      1000: { items: 1 },
+      1200: { items: 1 },
+    },
   };
-  
   async function getProducts(pageNumber = 1) {
     setLoading(true)
     try {
@@ -326,13 +331,13 @@ export default function ProductsForDashboard() {
                <div key={product.id} className="col-sm-6 col-md-4 col-lg-3">
                <div className="card product-card">
 
-               <Slider {...settings}>
+             <OwlCarousel {...settings}>    
                             {product.images?.map((image, index) => (
                                     <div key={index}>
                                       <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
                                     </div>
                                   ))}
-                              </Slider>
+                              </OwlCarousel>
 
               
                  <div className="card-body d-flex flex-column">

@@ -4,17 +4,16 @@ import img from "../../Images/fff.jpg";
 import axios from "axios";
 import ProductDetails from "../ProductDetails/ProductDetails";
 import { useNavigate } from "react-router-dom";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import WishlistContext from "../../WishlistContext/WishlistContext";
+import OwlCarousel from "react-owl-carousel";
+import "owl.carousel/dist/assets/owl.carousel.min.css";
+import "owl.carousel/dist/assets/owl.theme.default.min.css";
+import Rate from "../ProductDetails/Rate";
 
 export default function NavsAndTabs() {
   const [product, setProduct] = useState([]);
   const [nav, setNav]= useState('');
   const[specificProducts,setSpecificProducts] = useState([])
-  const [isHovering, setIsHovering] = useState(false);
-  const sliderRef = useRef(null);
   const[categories, setCategories] = useState([])
   const navigate = useNavigate()
    const[Id, setId] = useState(null)
@@ -28,29 +27,22 @@ const handleAddtoWishlist=(id) =>{
     console.log(selectedwishlist)
 }  
 
-  // useEffect(() => {
-  //   let interval;
-  //   if (isHovering) {
-  //     interval = setInterval(() => {
-  //       if (sliderRef.current) {
-  //         sliderRef.current.slickNext();
-  //       }
-  //     }, 1000); // Adjust the interval as needed
-  //   }
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [isHovering]);
 
-const settings = {
-  dots: false,
-    infinite: true,
-    autoplay: false, // Disable autoplay to handle manually
-    speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    swipeToSlide: true,
-};
+  const settings = {
+    margin: 20,
+    responsiveClass: true,
+    loop: true,
+    autoplay: false,
+    smartSpeed: 500,
+    responsive: {
+      0: { items: 1 },
+      400: { items: 1 },
+      550: { items:1 },
+      750: { items: 1 },
+      1000: { items: 1 },
+      1200: { items: 1 },
+    },
+  };
 
   async function Navs() {
 const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`
@@ -96,7 +88,6 @@ console.log("navs",data.category)
     setId(categoryId);
   };
 
-  console.log(Id)
   useEffect(() => {
     getAllProducts();
     getCategories();
@@ -147,7 +138,7 @@ console.log("navs",data.category)
         ))}
       </ul>
 
-      <div className="tab-content" id="myTabContent">
+      <div className="tab-content gold" id="myTabContent">
         <div
          className={`tab-pane fade ${Id === null || Id === undefined ? 'show active' : ''}`}
           id="all"
@@ -160,18 +151,17 @@ console.log("navs",data.category)
       <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
         <div
           className="mycard rounded rounded-3 overflow-hidden pointer"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+      
           onClick={() => handleProductClick(product.name)}
         >
           <div className={`${style.myimg}`}>
-            <Slider ref={sliderRef} {...settings}>
+          <OwlCarousel {...settings}>
               {product.images?.map((image, index) => (
                 <div key={index}>
                   <img src={image} alt="img" height={400} className="w-100 object-fit-cover pointer" onClick={() => handleProductClick(product.name)} />
                 </div>
               ))}
-            </Slider>
+            </OwlCarousel>
 
             <i
               onClick={(e) => {
@@ -183,26 +173,11 @@ console.log("navs",data.category)
 
             <div className={`${style.layer}`}>
               {product.badge !== null ? <div className={style.badge}>{product.badge}</div> : ""}
-              {/* <span className={`${style.eye}`}>
-                <i className={` fa-solid fa-eye fs-5`}></i>
-                <small className={`${style.small}`}>overview</small>
-              </span>
-              <div className={`${style.shopCart} pointer`}>
-                <i className="fa-solid fa-cart-plus"></i>
-              </div> */}
             </div>
           </div>
           <div className={`${style.content}`}>
             <div className="left">
               <h6 className="small my-2">{product.name}</h6>
-              <ul className="p-0 my-2">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <i
-                    key={index}
-                    className={`fa-solid fa-star ${index < product.rating ? 'text-warning' : ''}`}
-                  ></i>
-                ))}
-              </ul>
               <p className="small">{product.price} EGP</p>
             </div>
             <div className={`${style.right}`}>
@@ -234,20 +209,19 @@ console.log("navs",data.category)
                   onClick={() => handleProductClick(product.name)}
                   >
                     <div className="mycard rounded rounded-3 overflow-hidden pointer"
-                  onMouseEnter={() => setIsHovering(true)}
-                        onMouseLeave={() => setIsHovering(false)} 
+              
                         onClick={()=>handleProductClick(product.name)}
                         >
 
 
                     <div className={`${style.myimg}`}>
-                    <Slider  ref={sliderRef} {...settings}>
+                    <OwlCarousel {...settings}>
                             {product.images?.map((image, index) => (
                                     <div key={index}>
                                       <img src={image} alt="img"  height={400} className="w-100 object-fit-cover"/>
                                     </div>
                                   ))}
-                              </Slider>
+                              </OwlCarousel>
                               <div onClick={() => handleAddtoWishlist(product.id)} className={style.hearticon}>
                         <i className={` fa-heart gold ${selectedwishlist.includes(product.id) ? `fa-solid` : `fa-regular ` } text-red  pointer fs-3`}></i>
                      </div>
