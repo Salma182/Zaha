@@ -10,7 +10,7 @@ export default function Contacts() {
 async function getLinks(){
   const {data} = await axios.get(`https://zahaback.com/api/allSocialLink`)
   setLinks(data.allSocialLink)
-  console.log(data.allSocialLink)
+  //console.log(data.allSocialLink)
 }
 
 useEffect(() => {
@@ -60,9 +60,9 @@ const renderLink = (link) => {
           <h4 className="mb-4 fw-bold">
           Contact Zaha On:
           </h4>
-          <p className="small my-1">(+20) 521 - 249 - 976</p>
-          <p className="small my-1">info@zahacarves.com</p>
-          <span className="smal">Zaha.com</span>
+          <p className=" my-1">
+        <Link to="mailto:info@zahacarves.com" className="gold" style={{ textDecoration: 'none' }}>info@zahacarves.com</Link>
+        </p>
         </div>
         <div className="col-lg-9 col-md-8 space-bottom bg-light p-3 shadow shadow-md">
       <div className="d-flex flex-row justify-content-start">

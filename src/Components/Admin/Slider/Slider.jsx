@@ -49,14 +49,14 @@ export default function Slider() {
           },
         }
       );
-      console.log(data)
+      //console.log(data)
       setImages(data.slider.data);
       setCurrentPage(data.slider.current_page);
       setLastPage(data.slider.last_page);
       setLoading(false)
 
     }catch(e){
-      console.log(e)
+      //console.log(e)
   }
   }
   
@@ -212,7 +212,7 @@ export default function Slider() {
 
   return (
     <>
-      <h1 className="text-center bg-light text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         Slider
       </h1>
       {loading ? <Loading /> :  <div className="container">
@@ -278,16 +278,15 @@ export default function Slider() {
       </div> }
      
 
-      <div className="my-2 d-flex justify-content-center">
-        {paginationBasic}
+      <div className="Btn">
+      <button className="addBtn" variant="success" onClick={handleShowAddModal}>
+              Add Slide
+            </button>
       </div>
 
-<div className="Btn">
-<button className="addBtn" variant="success" onClick={handleShowAddModal}>
-        Add Slide
-      </button>
-</div>
-
+      <div className="my-2 d-flex justify-content-center">
+              {paginationBasic}
+            </div>
 
       {/* Add Slide Modal */}
       <Modal show={showAddModal} onHide={handleCloseAddModal}>

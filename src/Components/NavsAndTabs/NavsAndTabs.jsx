@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "./NavsAndTabs.module.css";
 import img from "../../Images/fff.jpg";
 import axios from "axios";
+import classNames from 'classnames'; // For better class name handling
 import ProductDetails from "../ProductDetails/ProductDetails";
 import { useNavigate } from "react-router-dom";
 import WishlistContext from "../../WishlistContext/WishlistContext";
@@ -20,13 +21,14 @@ export default function NavsAndTabs() {
    const[productName, setproductName] = useState("")
    const { AddtoWishlist, setproductname, productname , selectedwishlist, setSelectedwishlist  } = useContext(WishlistContext);
 
-const handleAddtoWishlist=(id) =>{
-    AddtoWishlist(id);
-    setSelectedwishlist((prev) => [...prev, id]);
-    console.log("wishlist",id)
-    console.log(selectedwishlist)
-}  
-
+   const handleAddtoWishlist = (productId) => {
+    AddtoWishlist(productId);
+    setSelectedwishlist((prevWishlist) => 
+      prevWishlist.includes(productId)
+        ? prevWishlist.filter((id) => id !== productId) // Remove from wishlist if already present
+        : [...prevWishlist, productId] // Add to wishlist if not present
+    );
+  };
 
   const settings = {
     margin: 20,
@@ -49,7 +51,7 @@ const {data}= await axios.get(`https://zahaback.com/api/categoriesCollection`
 )
 setNav(data.category)
 setId(null)
-console.log("navs",data.category)
+//console.log("navs",data.category)
   }
 
   async function getAllProducts() {
@@ -58,7 +60,7 @@ console.log("navs",data.category)
     );
     setProduct(data.products);
     setSpecificProducts(data.products);
-    console.log("products",data.products);
+    //console.log("products",data.products);
   }
 
   async function getCategories(){
@@ -66,7 +68,7 @@ console.log("navs",data.category)
     )
     setCategories(data.category)
     setId(data.category.id)
-    console.log("productCategory",data.category)
+    //console.log("productCategory",data.category)
   }
 
 
@@ -74,7 +76,7 @@ console.log("navs",data.category)
     const{data}= await axios.get(`https://zahaback.com/api/products/category/${Id}`
     )
     setSpecificProducts(data.products)
-    console.log("productCategory",data.products)
+    //console.log("productCategory",data.products)
   }
   const handleProductClick = (productName) => {
     setproductName(productName)
@@ -164,13 +166,20 @@ console.log("navs",data.category)
             </OwlCarousel>
 
             <i
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent event bubbling
-                handleAddtoWishlist(product.id);
-              }}
-              className={`fa-heart gold ${selectedwishlist.includes(product.id) ? 'fa-solid' : 'fa-regular'} text-red pointer fs-3 ${style.hearticon}`}
-            ></i>
-
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent event bubbling
+              handleAddtoWishlist(product.id);
+            }}
+            className={classNames(
+              'fa-heart gold text-red pointer fs-3',
+              {
+                'fa-solid': selectedwishlist.includes(product.id),
+                'fa-regular': !selectedwishlist.includes(product.id),
+              },
+              style.hearticon
+            )}
+          ></i>
+          
             <div className={`${style.layer}`}>
               {product.badge !== null ? <div className={style.badge}>{product.badge}</div> : ""}
             </div>

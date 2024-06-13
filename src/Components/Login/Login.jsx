@@ -29,14 +29,14 @@ export default function Login() {
 
   return (
     <>
-      <div className="container mt-5">
-        <div className="py-5"></div>
+      <div className="container responsive">
+        <div className="py-3"></div>
         <h1 className="text-center fw-bold mb-3">Login</h1>
-        <form onSubmit={formik.handleSubmit} className="bg-color p-3 rounded-3 w-50 m-auto">
+        <form onSubmit={formik.handleSubmit} className="Authform ">
           {error ? <div className='alert alert-danger'>{error}</div> : ''}
 
-          <div className="my-3">
-            <label htmlFor="email">Email:</label>
+          <div className="my-3 fw-bold">
+            <label htmlFor="email">Email</label>
             <input
               onBlur={formik.handleBlur} onChange={formik.handleChange}
               type="email"
@@ -46,8 +46,8 @@ export default function Login() {
             />
             {formik.errors.email && formik.touched.email ? <div style={{ color: "red" }}>{formik.errors.email}</div> : ''}
           </div>
-          <div className="my-3">
-            <label htmlFor="password">Password:</label>
+          <div className="my-3 fw-bold">
+            <label htmlFor="password">Password</label>
             <input
               onBlur={formik.handleBlur} onChange={formik.handleChange}
               type="password"

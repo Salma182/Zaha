@@ -68,12 +68,12 @@ export default function ProductsForDashboard() {
           },
         }
       );
-      console.log(data.products);
+      //console.log(data.products);
       setProducts(data.products);
       setCurrentPage(data.pagination.current_page);
       setLastPage(data.pagination.total_pages);
       setLoading(false)
-      console.log(data);
+      //console.log(data);
 
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -93,7 +93,7 @@ export default function ProductsForDashboard() {
         }
       );
       setSubcategories(data.SubCategory.data);
-      console.log("subcategory",data.SubCategory.data)
+      //console.log("subcategory",data.SubCategory.data)
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
@@ -103,6 +103,9 @@ export default function ProductsForDashboard() {
     setImages(Array.from(e.target.files));
   };
   
+  const handleImageChange2 = (e) => {
+    setupdatedImages(e.target.files); // Use e.target.files directly to set new images
+  };
   
   const handleColorsChange = (e) => {
     setColors(e.target.value.split(','));
@@ -124,6 +127,8 @@ export default function ProductsForDashboard() {
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
       });
+
+    
       colors.forEach((color, index) => {
         formData.append(`colors[${index}]`, color);
       });
@@ -134,17 +139,17 @@ export default function ProductsForDashboard() {
 
       formData.append("subcategory_id", categoryId);
 
-      console.log({
-        name,
-        desc,
-        material,
-        price,
-        quantity,
-        images,
-        colors,
-        sizes,
-        subcategory_id: categoryId,
-      });
+      // console.log({
+      //   name,
+      //   desc,
+      //   material,
+      //   price,
+      //   quantity,
+      //   images,
+      //   colors,
+      //   sizes,
+      //   subcategory_id: categoryId,
+      // });
 
       await axios.post(
         `https://zahaback.com/api/product/create`,
@@ -193,10 +198,10 @@ export default function ProductsForDashboard() {
   const handleCloseUpdateModal = () => {
     setShowUpdateModal(false);
   };
-  console.log(updatedSubcategory);
+  //console.log(updatedSubcategory);
 
   async function updateProduct() {
-    console.log(updatedSubcategory);
+    //console.log(updatedSubcategory);
 
     try {
       const selectedId = updatedSubcategory;
@@ -206,7 +211,7 @@ export default function ProductsForDashboard() {
           title: 'Error',
           text: 'Invalid subcategory selected',
         });
-          console.log(selectedId) ;
+          //console.log(selectedId) ;
           return; 
       }
       const formData = new FormData();
@@ -216,9 +221,11 @@ export default function ProductsForDashboard() {
       formData.append("quantity", updatedquantity);
       formData.append("price", updatedPrice);
 
-      if (updatedImages) {
-        formData.append('images', updatedImages);
-      }
+      if (updatedImages.length > 0) {
+        for (let i = 0; i < updatedImages.length; i++) {
+          formData.append(`images[${i}]`, updatedImages[i]);
+        }
+      }      
 
       updatedcolors.forEach((color, index) => {
         formData.append(`colors[${index}]`, color);
@@ -247,8 +254,8 @@ export default function ProductsForDashboard() {
         getProducts(currentPage);
         window.location.reload();
       })
-    console.log(updatedSubcategory)
-    console.log(selectedId) 
+    //console.log(updatedSubcategory)
+    //console.log(selectedId) 
 
     } catch (error) {
       console.error("Error updating product:", error);
@@ -556,7 +563,7 @@ export default function ProductsForDashboard() {
               <Form.Control
                 type="file"
                 multiple
-                onChange={(e) => handleImageChange(e)}
+                onChange={(e) => handleImageChange2(e)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="productColors">

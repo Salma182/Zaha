@@ -61,7 +61,7 @@ const user = {
           'Content-Type': 'application/json',
         },
       });
-      console.log("data", data);
+      //console.log("data", data);
       localStorage.setItem('token',data.token)  
       setUserToken(localStorage.getItem('token'))
       navigate('/')
@@ -82,15 +82,14 @@ const user = {
   
   return (
     <>
-      <div className="container mt-5">
-        <div className="py-5"></div>
+      <div className="container responsive">
+        <div className="py-3"></div>
         <h1 className="text-center fw-bold mb-3">Register</h1>
-        <form onSubmit={formik.handleSubmit} className="bg-color p-3 rounded-3 w-50 m-auto">
+        <form onSubmit={formik.handleSubmit} className=" Authform">
         {error ? <div className='alert alert-danger'> {error} </div> : ''}
 
-          
-          <div>
-        <label htmlFor="name">Username :</label>
+          <div className="fw-bold">
+        <label htmlFor="name">Username </label>
         <input
           autoComplete="off"
           onBlur={formik.handleBlur}
@@ -107,8 +106,8 @@ const user = {
         )}
       </div>
 
-      <div>
-      <label htmlFor="user_email">Email :</label>
+      <div className="fw-bold">
+      <label htmlFor="user_email">Email </label>
             <input
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -127,8 +126,8 @@ const user = {
             )}
           </div>
 
-          <div className="my-3">
-              <label htmlFor="password">Password :</label>
+          <div className="my-3 fw-bold">
+              <label htmlFor="password">Password </label>
             <input
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -146,8 +145,8 @@ const user = {
             )}  
           </div>
 
-          <div className="my-3">
-            <label htmlFor="password_confirmation">Re-Password :</label>
+          <div className="my-3 fw-bold">
+            <label htmlFor="password_confirmation">Confirm Password </label>
             <input
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}       
@@ -166,8 +165,8 @@ const user = {
           </div>
 
 
-          <div className="my-3">
-            <label htmlFor="user_phone">Phone :</label>
+          <div className="my-3 fw-bold">
+            <label htmlFor="user_phone">Phone</label>
             <input
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}       

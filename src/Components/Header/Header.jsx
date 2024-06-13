@@ -41,12 +41,12 @@ export default function Header() {
             ></i>
             <i
               onClick={() => setCartOpen((cart) => !cart)}
-              className="fa-solid fa-cart-arrow-down fs-5 mt-1  me-3 small pointer"
+              className="fa-solid fa-cart-arrow-down fs-5 mt-1  me-3 small pointer carticon"
             ></i>
 
 
         <i onClick={() => setWishlistOpen((wishlist) => !wishlist)}
-        className="fa-regular fa-heart fs-5 mt-1 small pointer">
+        className="fa-regular fa-heart fs-5 mt-1 small pointer wishlisticon">
           </i>
           </div>
         </div>

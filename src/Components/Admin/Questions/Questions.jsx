@@ -20,7 +20,7 @@ export default function Questions() {
           },
         }
       );
-      console.log(data.allQuestions.data);
+      //console.log(data.allQuestions.data);
       setQuestions(data.allQuestions.data);
       setLoading(false)
     }catch(e){

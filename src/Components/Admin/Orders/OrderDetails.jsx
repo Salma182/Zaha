@@ -27,7 +27,7 @@ async function getOrder(orderId){
           }
         )
         setOrder(data.order)
-    console.log(data);
+    //console.log(data);
     }catch(e)
     {console.error(e)
 
@@ -64,16 +64,16 @@ async function updateStatus(orderId) {
       title: "Order status updated successfully",
     })
     // setOrders(data.allOrders.data)
-    console.log(data)
+    //console.log(data)
     setLoading(false)
   }
   catch(error)
-  {console.log(error)
+  {//console.log(error)
   }
 }
 
 const item = order
-console.log(item.email)
+//console.log(item.email)
 
 useEffect(() => {
 getOrder(orderId)

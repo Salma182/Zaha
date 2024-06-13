@@ -10,7 +10,7 @@ export default function AskQuestions({ productId: productid }) {
   const token = localStorage.getItem('token');
   
   async function AskQuestion(values) {
-    console.log("Submitted values:", values); 
+    //console.log("Submitted values:", values); 
     const { data } = await axios.post(
       `https://zahaback.com/api/question/create`,
       { ...values },
@@ -28,8 +28,8 @@ export default function AskQuestions({ productId: productid }) {
         showConfirmButton: false,
         timer: 2000,
       });
-    console.log("values");
-    console.log(data);
+    //console.log("values");
+    //console.log(data);
  }
   }
   const phoneRegex = /^01[0125][0-9]{8}$/gm;
@@ -45,7 +45,7 @@ export default function AskQuestions({ productId: productid }) {
 
   // setproductId(productId.productId)
   
-  console.log(productid);
+  //console.log(productid);
 
 
   const formik = useFormik({

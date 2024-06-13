@@ -22,7 +22,7 @@ async function getReview(id){
 const{data}= await axios.get(`https://zahaback.com/api/review/getReviewByProduct/${id}`
 )
 setreviews(data.reviews)
-console.log(data.reviews)
+//console.log(data.reviews)
 }
 
 async function GetRate(id){
@@ -33,7 +33,7 @@ async function GetRate(id){
   )
   setRating(data.ceil_rate)
   setData(data)
-  console.log("returnedData",data)
+  //console.log("returnedData",data)
   }catch(e){
     console.error(e)
   }finally{
@@ -80,13 +80,13 @@ async function Review(e){
     timer: 2000,
   });
   // setData(data)
-  console.log(data.message)
+  //console.log(data.message)
 }catch(e) {
-  console.log(e)
+  //console.log(e)
 }
 }
 
-console.log("productid",productId)
+//console.log("productid",productId)
 
 useEffect(() => {
   GetRate(id)

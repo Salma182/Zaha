@@ -13,7 +13,7 @@ export default function Carousel() {
   async function getProductsFromPage(page) {
     try {
       const { data } = await axios.get(`https://zahaback.com/api/allSlider?page=${page}`);
-      console.log(`Data from page ${page}:`, data.slider.data);
+      //console.log(`Data from page ${page}:`, data.slider.data);
       return data.slider.data;
     } catch (error) {
       console.error(`Error fetching products from page ${page}:`, error.response || error);
@@ -26,7 +26,7 @@ export default function Carousel() {
     try {
       const response = await axios.get(`https://zahaback.com/api/allSlider`);
       const { data } = response;
-      console.log("API Response:", data);
+      //console.log("API Response:", data);
 
       if (data && data.sliders) {
         setProducts(data.sliders);

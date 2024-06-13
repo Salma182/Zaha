@@ -11,18 +11,18 @@ export const WishlistProvider = ({ children }) => {
     const [selectedwishlist, setSelectedwishlist]=useState([])
     const [Wtoken, setWToken] = useState(() => {
       const token = localStorage.getItem('wtoken');
-      console.log("Initial token from localStorage:", token);
+      //console.log("Initial token from localStorage:", token);
       return token || '';
     });
 
     useEffect(() => {
-      console.log("Wtoken updated:", Wtoken);
+      //console.log("Wtoken updated:", Wtoken);
     }, [Wtoken]);
   
     async function AddtoWishlist(productId) {
       // Always get the latest token from localStorage
       const currentWToken = localStorage.getItem('wtoken');
-      console.log("Current Wtoken from localStorage:", currentWToken);
+      //console.log("Current Wtoken from localStorage:", currentWToken);
   
       const products = [
         {
@@ -42,28 +42,28 @@ export const WishlistProvider = ({ children }) => {
           `https://zahaback.com/api/wishlist/create`,
           payload
         );
-        console.log("API Response:", data.wishlist_items[0].guest_token);
+        //console.log("API Response:", data.wishlist_items[0].guest_token);
   
         // If data.wishlist_items exists and has guest_token, update it
         if (data.wishlist_items && data.wishlist_items[0].guest_token) {
           const newToken = data.wishlist_items[0].guest_token;
-          console.log("New Token from wishlist_items:", newToken);
+          //console.log("New Token from wishlist_items:", newToken);
           setWToken(newToken);
           localStorage.setItem('wtoken', newToken);
         } else if (!currentWToken && data.wishlist_items[0].guest_token) {
           // If there's no token in localStorage, set the new token from data
           const newToken = data.wishlist_items[0].guest_token;
-          console.log("New Token from data.guest_token:", newToken);
+          //console.log("New Token from data.guest_token:", newToken);
           setWToken(newToken);
           localStorage.setItem('wtoken', newToken);
         } else {
           // Ensure the token state is set to the current token
-          console.log("Using existing token:", currentWToken);
+          //console.log("Using existing token:", currentWToken);
           setWToken(currentWToken);
         }
-  
+
         setAddWishlist(data.wishlist_items || []);
-        console.log("Wishlist Data:", data.wishlist_items);
+        //console.log("Wishlist Data:", data.wishlist_items);
       } catch (error) {
         console.error("Error adding to wishlist:", error);
       }
@@ -82,13 +82,12 @@ try{
       timer: 2000,
     });
   }
-  console.log("wishlistProducts",data)
+  //console.log("wishlistProducts",data)
 }catch(e){console.error(e)}
-     
     }
 
 useEffect(() => {
-  console.log('Current Wtoken:', Wtoken);
+  //console.log('Current Wtoken:', Wtoken);
 }, [Wtoken]);
 
   return (

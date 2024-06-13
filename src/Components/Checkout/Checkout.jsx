@@ -54,7 +54,7 @@ const userId= localStorage.getItem('userid')
       validationSchema: valid,
       onSubmit: (values) => {
         const FormData = { ...values, city: cityId.toString() };
-        console.log('Form data:', FormData);
+        //console.log('Form data:', FormData);
         Checkout(FormData);
       },
       initialErrors: {}, // No initial errors
@@ -93,7 +93,7 @@ const handleChangeCity = (e) => {
   const selectedCity = cities.map((city)=>city).find(city => city.city === e.target.value)
   setCityId(selectedCity ? selectedCity.id : '');
   formik.handleChange(e);
-  console.log('Selected city ID:', selectedCity ? selectedCity.id : 'Not found');
+  //console.log('Selected city ID:', selectedCity ? selectedCity.id : 'Not found');
 };
 
 

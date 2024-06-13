@@ -73,7 +73,7 @@ async function getImages(page = 1){
     )
     setCurrentPage(data.link.current_page);
     setLastPage(data.link.last_page);
-    console.log(data)
+    //console.log(data)
     setData(data.link.data)
   }catch(e){
     console.error(e)
@@ -105,7 +105,7 @@ async function getImages(page = 1){
         title: "customerlink created successfully",
       });
     }
-    console.log("images", data)
+    //console.log("images", data)
   }catch(e) {
     console.error(e)
   }
@@ -143,7 +143,7 @@ async function updateImage() {
     })
   }
 
-  console.log(data)
+  //console.log(data)
 }catch(e) {
   console.error(e)
 }
@@ -169,7 +169,7 @@ async function deleteImage(link) {
       window.location.reload();
     })
   }
-  console.log(data)
+  //console.log(data)
 }catch(e) {
   console.error(e)
 }
@@ -217,16 +217,15 @@ useEffect(() => {
           {data && data.length > 0 ? (
             data.map((link,index)=>
               <tr>
-              <td width={50}>{index  +1}</td>
-              <td className="text-center" width={50}>
+              <td width={50}>{index +1}</td>
+              <td className="text-center" >
                 <img src={link.path} height={80} alt="product" />
               </td>
-               <td width={100}> <Link to={link.name}> {link.name} </Link></td>
-              <td className={style.cont}>
-              <div className="w-50 buttons"> 
-                    <button
-                      className="deleteBtn"
-                      onClick={() => {
+               <td  className='w-50'> <Link to={link.name}> {link.name} </Link></td>
+              <td className={`text-center `}>
+                    <Button
+                        variant="danger me-2 mb-2"
+                        onClick={() => {
                         Swal.fire({
                           title: "Are you sure?",
                           text: "You won't be able to revert this!",
@@ -243,15 +242,13 @@ useEffect(() => {
                       }}
                     >
                       Delete
-                    </button>
-                    <button
-                      className="editBtn"
-                      onClick={() => handleEditSlide(link)}
+                    </Button>
+                    <Button
+                        variant="primary me-2 mb-2"
+                        onClick={() => handleEditSlide(link)}
                     >
                       Edit
-                    </button>
-  
-                    </div>
+                    </Button>
                     
               </td>
             </tr>
@@ -260,10 +257,12 @@ useEffect(() => {
         
         </tbody>
 
-        
       </Table>)}
-     
-      <div onClick={handleShowAddModal} className="btn btn-primary w-100 my-3">Add Image</div>
+      <div className="Btn">
+        <button className="addBtn" variant="success" onClick={handleShowAddModal}>
+        Add Image
+            </button>
+        </div>
 
       <div className="my-2 d-flex justify-content-center">
         {paginationBasic}

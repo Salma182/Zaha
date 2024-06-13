@@ -39,7 +39,7 @@
 //     const name = data.allcategories.map((category) => category.name)
 //     setCategoryName(name)
 
-//     console.log("categories",categoryName)
+//     //console.log("categories",categoryName)
 //  }
 
 //  const handleCategoriesClick = (e) =>{

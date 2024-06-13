@@ -56,12 +56,12 @@ const settings = {
 
 function onSizeClick (sizeId) {
   setSelectedSizeId(sizeId);
-    console.log('Selected size ID:', sizeId);
+    //console.log('Selected size ID:', sizeId);
 }
 
 function handleColorChange(colorid){
 setSelectedColorId(colorid);
-console.log('Selected color ID:', colorid);
+//console.log('Selected color ID:', colorid);
 
 }
 
@@ -80,7 +80,7 @@ async function ProductDetails(productId)  {
     //   },
     // }
     )
-    // console.log(data)
+    // //console.log(data)
     setProductDetails(data.product)
     setproductid(data.product.id)
     }catch (e) {console.error(e)} finally{
@@ -88,7 +88,7 @@ async function ProductDetails(productId)  {
     }
   }
 
-console.log("productdetails:",productdetails)
+//console.log("productdetails:",productdetails)
 
 useEffect(() => {
   ProductDetails(productId);
@@ -120,7 +120,7 @@ async function Addtocart(e) {
     }],
   guest_token: guestToken
 }
- console.log("userId",userId)
+ //console.log("userId",userId)
 
   try{
     const {data} = await axios.post(`https://zahaback.com/api/cart/add`, payload 
@@ -145,7 +145,7 @@ async function Addtocart(e) {
     showConfirmButton: false,
     timer: 2000,
   });
-  console.log("addtocart", data)
+  //console.log("addtocart", data)
 
    }
   catch(error){
@@ -156,7 +156,7 @@ async function Addtocart(e) {
   }
 }
 
-console.log("response", response)
+//console.log("response", response)
 
 // const handleColorChange = (color, image) => {
 //   setSelectedColor(color);

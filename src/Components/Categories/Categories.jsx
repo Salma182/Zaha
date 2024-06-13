@@ -39,7 +39,7 @@ export default function Categories() {
       setLoading(false)
 
       // setIsHome(data.category.data.is_home === "true");
-      console.log(data)
+      //console.log(data)
     } catch (error) {
       console.error("Error fetching categories:", error);
     }

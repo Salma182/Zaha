@@ -39,6 +39,8 @@ import Loading from "./Components/Loading/Loading.jsx";
 import { WishlistProvider } from "./WishlistContext/WishlistContext.jsx";
 import { CommonProvider } from "./CommonContext/CommonContext.jsx";
 import OrderDetails from "./Components/Admin/Orders/OrderDetails.jsx";
+import profile from "./Components/User/profile.jsx";
+import Profile from "./Components/User/profile.jsx";
 
 
 const LazyComponent = ({ Component }) => (
@@ -65,7 +67,9 @@ const routers = createBrowserRouter([
       { path: "checkout", element: <LazyComponent Component={Checkout} /> },
       { path: "searchedproducts", element: <LazyComponent Component={SearchedProducts} /> },
       { path: "category/:categoryName", element: <LazyComponent Component={ChosenCategory} /> },
+      { path: "profile", element: <LazyComponent Component={Profile} /> },
       { path: "*", element: <LazyComponent Component={Notfound} /> },
+      
     ],
   },
   {

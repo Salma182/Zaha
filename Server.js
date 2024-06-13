@@ -17,7 +17,7 @@ res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.use(function(req, res, next) {
-//console.log(req, res, next, "req, res, nextreq, res, next")
+////console.log(req, res, next, "req, res, nextreq, res, next")
 if (
 req.method === "GET" &&
 req.accepts("html") &&

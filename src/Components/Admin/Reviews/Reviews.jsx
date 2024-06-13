@@ -23,8 +23,8 @@ const token = localStorage.getItem('token');
           },
         }
       );
-      console.log(111);
-      console.log(data.allReviews.data);
+      //console.log(111);
+      //console.log(data.allReviews.data);
       setReviews(data.allReviews.data);
 
       if(data.allReviews.data.is_accepted === "accepted" ){
@@ -35,7 +35,7 @@ const token = localStorage.getItem('token');
       setLoading(false)
 
     }catch(e){
-      console.log(e)
+      //console.log(e)
     }
   }
 
@@ -62,10 +62,10 @@ const token = localStorage.getItem('token');
       }).then(() => {
         getReviews();
       });
-      console.log(data.message);
+      //console.log(data.message);
       // setReviews(data.allReviews.data);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   }
   
@@ -88,10 +88,10 @@ const token = localStorage.getItem('token');
         getReviews();
         window.location.reload();
     })
-      console.log(data.message);
+      //console.log(data.message);
       // setReviews(data.allReviews.data);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     } finally {
       setLoading(false);
     }

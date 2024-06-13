@@ -60,7 +60,7 @@ export default function SubCategory() {
             },
           }
         );
-        console.log(data);
+        //console.log(data);
         totalPages = data.category.last_page;
 
         allCategories = allCategories.concat(data.category.data);
@@ -183,7 +183,7 @@ export default function SubCategory() {
       </Pagination.Item>
     );
   }
-console.log(products)
+//console.log(products)
   return (
     <>
       <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">

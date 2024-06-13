@@ -21,7 +21,7 @@ async function GetWishlist(wtoken) {
   const{data}= await axios.get(`https://zahaback.com/api/wishlist/get/${wtoken}`
   )
   setWishlistProducts(data.wishlist)
-  console.log("wishlistProducts",data)
+  //console.log("wishlistProducts",data)
 }
 
 useEffect(()=> {

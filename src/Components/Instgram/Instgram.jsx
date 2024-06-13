@@ -33,7 +33,7 @@ const[loading, setLoading] = useState(false)
     try {
       const { data } = await axios.get('https://zahaback.com/api/allInsta');
       setImages(data.allInsta);
-      console.log(data.allInsta);
+      //console.log(data.allInsta);
       setLoading(false); // Set loading to false after fetching data
     } catch (e) {
       console.error(e);

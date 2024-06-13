@@ -21,7 +21,7 @@ export default function CallbacksForDashboard() {
         }
       );
       setLoading(false)
-      console.log(data.allCallbacks.data);
+      //console.log(data.allCallbacks.data);
       setCallBackes(data.allCallbacks.data);
     }catch(e){
   

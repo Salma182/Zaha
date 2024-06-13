@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       const adminStatus = data.user.isadmin === 'admin';
       setIsAdmin(adminStatus);
       localStorage.setItem('isAdmin', adminStatus.toString());
-    console.log(data.user.id)
+    //console.log(data.user.id)
 
     } catch (error) {
       if (error.response) {

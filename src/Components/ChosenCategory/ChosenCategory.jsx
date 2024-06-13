@@ -43,8 +43,8 @@ export default function  ChosenCategory(){
 const handleAddtoWishlist=(id) =>{
   AddtoWishlist(id);
   setSelectedwishlist((prev) => [...prev, id]);
-  console.log("wishlist",id)
-  console.log(selectedwishlist)
+  //console.log("wishlist",id)
+  //console.log(selectedwishlist)
 }  
 
 const handleProductClick = (productId) => {

@@ -27,11 +27,11 @@ async function getOrders(page = 1) {
     setOrders(data.allOrders.data)
     setCurrentPage(data.allOrders.current_page);
     setLastPage(data.allOrders.last_page);
-    console.log(data.allOrders)
+    //console.log(data.allOrders)
     setLoading(false)
   }
   catch(error)
-  {console.log(error)
+  {//console.log(error)
   }
 }
 

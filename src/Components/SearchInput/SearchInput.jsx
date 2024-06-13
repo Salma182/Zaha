@@ -62,7 +62,7 @@ export default function SearchInput({ searchOpen, setSearchOpen }) {
       });
       setProducts(data.products);
       setShowResults(data.products.length > 0 ? true : false);
-      console.log(data.products);
+      //console.log(data.products);
     } catch (error) {
       setShowResults(false);
       console.error(error);

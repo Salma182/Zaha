@@ -44,7 +44,7 @@ const NotifyMeModal = ({ productId}) => {
           showConfirmButton: false,
           timer: 2000,
         });
-      console.log('Notification request sent successfully', data);
+      //console.log('Notification request sent successfully', data);
       setShowModal(false); // Close the modal on success
     } catch (e) {
       console.error(e);

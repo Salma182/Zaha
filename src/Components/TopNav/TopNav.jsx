@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import style from "./TopNav.module.css"
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Navigate, useNavigate } from "react-router-dom";
 import logo from '../../Images/Logo PNG.png';
 import SearchInput from "./../SearchInput/SearchInput";
 import Cart from "./../Cart/Cart";
@@ -15,7 +15,7 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
   const [cartOpen, setCartOpen] = useState(false);
   // const [wishlistOpen, setWishlistOpen] = useState(false);
   const [categories, setCategories] = useState("");
-
+const navigate =useNavigate()
   const { isAdmin, isAuthenticated } = useContext(AuthContext);
   const { categoryName, setCategoryName, setProducts, setOptions , setloading} = useContext(CategoriesContext);
 
@@ -64,6 +64,13 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
     e.stopPropagation();
     setIsOpen(false);
   };
+  const handleprofile = () => {
+    navigate("/profile");
+  };
+
+  const handlelogin = () => {
+    navigate("login");
+  };
 
   return (
     <>
@@ -81,20 +88,28 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
           <SearchInput searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
           <div className="icons d-flex">
-            <Link className="text-decoration-none text-dark fw-bold me-2" to="login">Login</Link>
-            <Link className="text-decoration-none text-dark fw-bold me-2" to="register">Register</Link>
+            <i onClick={handlelogin}
+            className="fa-solid fa-user fs-5 mt-1 me-3 small pointer loginicon"
+            ></i>
+
+          {/* <Link className="text-decoration-none text-dark fw-bold me-2" to="login">Login</Link> */}
+          {/* <Link className="text-decoration-none text-dark fw-bold me-2" to="register">Register</Link> */}
+
             <i
               onClick={() => setSearchOpen(true)}
               className="fa-solid fa-magnifying-glass fs-5 me-3 mt-1 pointer search-icon"
             ></i>
+
             <i
               onClick={() => setCartOpen((cart) => !cart)}
-              className="fa-solid fa-cart-arrow-down fs-5 mt-1  me-3 small pointer"
+              className={`fa-solid fa-cart-arrow-down fs-5 mt-1  me-3 small pointer carticon`}
             ></i>
+
             <i
               onClick={() => setWishlistOpen((wishlist) => !wishlist)}
-              className="fa-regular fa-heart fs-5 mt-1 small pointer"
+              className={`fa-regular fa-heart fs-5 mt-1 small pointer wishlisticon`}
             ></i>
+
           </div>
         </div>
         <div className="container topnav">
@@ -122,9 +137,10 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
           <div className="ico d-flex align-items-center justify-content-center small flex-column dark-color pointer">
             <i className="fa-solid fs-4 fa-layer-group mt-1 pointer" onClick={(e)=>handleCategoriesClick(e)}></i>
           </div>
-          <div className="ico d-flex align-items-center justify-content-center small flex-column dark-color pointer">
-            <i className="fa-solid fa-circle-user fs-4 mt-1 pointer"> </i>
-          </div>
+          {/* <div className="ico d-flex align-items-center justify-content-center small flex-column dark-color pointer">
+            <i onClick={handleprofile}
+            className="fa-solid fa-circle-user fs-4 mt-1 pointer"> </i>
+          </div> */}
           <div className="ico small d-flex align-items-center justify-content-center small flex-column dark-color pointer">
           <i onClick={() => setWishlistOpen((wishlist) => !wishlist)}
            className="fa-regular fa-heart fs-4  mt-1 pointer">
@@ -133,7 +149,7 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
           <div className="ico small d-flex align-items-center justify-content-center small flex-column dark-color pointer">
           <i
               onClick={() => setCartOpen((cart) => !cart)}
-              className="fa-solid fs-4 fa-cart-arrow-down mt-1  me-3  pointer"
+              className="fa-solid fs-4 fa-cart-arrow-down mt-1 me-3 pointer"
             ></i>
           </div>
         </div>
@@ -221,7 +237,7 @@ export default function TopNav({isOpen, setIsOpen,wishlistOpen,setWishlistOpen }
 //     const name = data.allcategories.map((category) => category.name)
 //     setCategoryName(name)
 
-//     console.log("categories",categoryName)
+//     //console.log("categories",categoryName)
 //  }
 
 // useEffect(() => {

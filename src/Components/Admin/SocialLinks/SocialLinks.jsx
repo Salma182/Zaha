@@ -33,7 +33,7 @@ export default function SocialLinks() {
           },
         }
       );
-      console.log(data);
+      //console.log(data);
       setLinks(data.social.data);
       setCurrentPage(data.social.current_page);
       setLastPage(data.social.last_page);
@@ -98,7 +98,7 @@ export default function SocialLinks() {
           title: "Social link added successfully",
         });
       }
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       console.error("Error adding social link:", error);
     }
@@ -106,7 +106,7 @@ export default function SocialLinks() {
   
 
   const updateSocialLink = async (selectedLink) => {
-    console.log(selectedLink)
+    //console.log(selectedLink)
 
     const formData = new FormData();
     formData.append("name", updatedSocial);
@@ -164,7 +164,7 @@ export default function SocialLinks() {
 
   return (
     <>
-      <h1 className="text-center bg-dark text-light rounded-3 fw-bold text-capitalize p-3 my-3">
+      <h1 className="text-center bg-color text-dark rounded-3 fw-bold text-capitalize p-3 my-3">
         SocialLinks
       </h1>
 
@@ -226,6 +226,14 @@ export default function SocialLinks() {
             )}
           </Table>
 
+
+          <div className="Btn">
+          <button className="addBtn" onClick={handleShowAddModal}>
+          Add Social Link
+                </button>
+          </div>
+
+
           <div className="d-flex justify-content-center">
           <Pagination>
             {[...Array(lastPage)].map((_, index) => (
@@ -242,13 +250,7 @@ export default function SocialLinks() {
         </>
       }
 
-      <Button
-        className="w-100 my-3"
-        variant="success"
-        onClick={handleShowAddModal}
-      >
-        Add Social Link
-      </Button>
+
 
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>

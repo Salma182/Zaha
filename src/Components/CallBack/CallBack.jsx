@@ -53,8 +53,8 @@ export default function CallBack() {
           showConfirmButton: false,
           timer: 2000,
         });
-      console.log("values");
-      console.log(data);
+      //console.log("values");
+      //console.log(data);
    }
     } catch (error) {
       console.error("Error submitting form:", error);

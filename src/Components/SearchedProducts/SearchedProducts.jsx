@@ -42,8 +42,8 @@ export default function SearchedProducts() {
   const handleAddtoWishlist=(id) =>{
     AddtoWishlist(id);
     setSelectedwishlist((prev) => [...prev, id]);
-    console.log("wishlist",id)
-    console.log(selectedwishlist)
+    //console.log("wishlist",id)
+    //console.log(selectedwishlist)
   }  
 
 

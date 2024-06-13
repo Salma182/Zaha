@@ -197,14 +197,15 @@ export default function EsimateArea() {
                 <td>{index + 1}</td>
                 <td>{area.city}</td>
                 <td>{area.price}</td>
-                <td className="text-center">
-                  <div
+              <td className={`text-center `}>
+                  <Button
                     onClick={() => handleShowUpdate(area)}
-                    className="btn btn-warning w-25 mx-2"
+                    variant="primary me-2 mb-2 w-25"
+
                   >
                     Edit
-                  </div>
-                  <div
+                  </Button>
+                  <Button
                     onClick={() =>
                       Swal.fire({
                         title: "Are you sure?",
@@ -220,10 +221,11 @@ export default function EsimateArea() {
                         }
                       })
                     }
-                    className="btn btn-danger w-25 mx-2"
+                    variant="danger me-2 mb-2 w-25"
+
                   >
                     delete
-                  </div>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -233,9 +235,12 @@ export default function EsimateArea() {
         )}
       </Table> }
      
-      <Button className="w-100" variant="primary" onClick={handleShow}>
+      <div className="Btn">
+        <button className="addBtn" variant="success" onClick={handleShow}>
         Add Area
-      </Button>
+            </button>
+        </div>
+
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

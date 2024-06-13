@@ -58,7 +58,7 @@ export default function Coupon() {
       setLastPage(data.coupon.last_page);
       setLoading(false)
     }catch(e){
-      console.log(e)
+      //console.log(e)
  
   }
   }

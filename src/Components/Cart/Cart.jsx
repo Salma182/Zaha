@@ -33,7 +33,7 @@ export default function Cart({ cartOpen, setCartOpen, response}) {
       showConfirmButton: false,
       timer: 2000,
     });
-    console.log(data)
+    //console.log(data)
   }
 
   function handleDelete(id){
@@ -47,7 +47,7 @@ try {
 const {data} = await axios.get(`https://zahaback.com/api/cart/${guestToken}`
 )
 setCart(data.cart)
-console.log("cart", data.cart)
+//console.log("cart", data.cart)
 }catch(error) {
   console.error(error);
 }
@@ -58,7 +58,7 @@ console.log("cart", data.cart)
     navigate("/checkout")
   }
   useEffect(() => {
-    console.log("Fetching cart data for guestToken:", guestToken);
+    //console.log("Fetching cart data for guestToken:", guestToken);
     GetToCart();
   }, []);
   

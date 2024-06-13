@@ -9,6 +9,17 @@
   .bgGold{
     background-color: #956911;
   }
+
+  .Authform{
+    background-color: #ffcbd3;
+    padding: 2%;
+    margin: auto ;
+    width: 60%;
+    border-radius: 20px;
+    margin-bottom: 5%;
+
+  }
+
 .topnav{
 display: block;
 }
@@ -31,7 +42,7 @@ display: block;
 
 .editBtn{
 border-radius: 7px;
-background-color: rgb(52, 52, 241);
+background-color: #0D6EFD;
 /* background-color: #; */
 font-weight: 500;
 border:1px solid transparent;
@@ -46,7 +57,7 @@ color: white;
 }
 .deleteBtn{
     border-radius: 7px;
-    background-color: rgb(218, 12, 12);
+    background-color: #DC3545;
     font-weight: 500;
     border:1px solid transparent;
     box-shadow: 0px 3px 5px rgb(0, 0, 0, 0.1);
@@ -54,6 +65,9 @@ color: white;
     padding: 1.5%;
     color: white;
 
+}
+.wishlisticon, .carticon {
+  display: block; /* Default display block */
 }
 .accepted , .rejected{
     padding: 2%;
@@ -112,6 +126,7 @@ color: white;
 .logo{
     display: block;
 }
+
 .bottom-navbar{
     display: none;
 }
@@ -131,8 +146,13 @@ color: white;
   .responsive{
     margin-top: 10%;
   }
-  @media  (max-width: 1200px) {
 
+  @media  (max-width: 1200px) {
+    /* .buttons{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  } */
 
     .responsive{
       margin-top: 13%;
@@ -148,13 +168,15 @@ color: white;
 
   }
 
-
 @media (max-width: 768px) {
 
-  .responsive{
-    margin-top: 12%;
+  .wishlisticon, .carticon {
+    display: none !important; /* Hide when screen width is 768px or less */
   }
 
+  .responsive{
+    margin-top: 14%;
+  }
   
     .search-icon{
         display: inline-block!important;
@@ -163,9 +185,10 @@ color: white;
     .sidebar{
         display: block;
     }
-    .logo{
+    /* .logo{
         display: none;
-    }
+    } */
+  
     .bottom-navbar{
         display: block;
     }
