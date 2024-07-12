@@ -71,6 +71,41 @@ export default function DeliveryDetails() {
                 </li>
               </ul>
             </div>
+
+            <hr />
+            <div className="modal-body">
+  <h3 className="m-auto text-center gold p-2 rounded rounded-2">
+    التوصيل
+  </h3>
+  <p className="small my-1 text-end">التوصيل</p>
+  <p className="my-1 small text-end">٥ - ٧ ايام توصيل</p>
+  <hr />
+  <h3 className="m-auto text-center gold p-2 rounded rounded-2">
+    الاسترجاع و الاستبدال
+  </h3>
+  <ul className="small text-end">
+    <li className="small">
+      يرجي التحقق من المنتج وتجربته عند استلامه اثناء انتظار المندوب
+    </li>
+    <br />
+    <li className="small">
+      إذا كنت لا تريد المنتج، فيمكن استرجاعه إلى شركة الشحن ويتم دفع مصاريف الشحن فقط
+    </li>
+    <br />
+    <li className="small">
+      في حالة استلام أي منتجات خاطئة أو تالفة، يمكن استرجاع المنتجات على الفور إلى شركة الشحن ونحن نتكفل بمصاريف الشحن 
+    </li>
+    <br />
+    <li className="small">
+      ⁠العناصر غير قابلة للاسترداد بمجرد استلامها ودفع ثمنها
+    </li>
+    <br />
+    <li className="small">
+      ⁠ يمكن استبدال العناصر خلال 7 أيام
+    </li>
+  </ul>
+</div>
+
             <div className="modal-footer">
               <button
                 type="button"

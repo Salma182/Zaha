@@ -102,7 +102,7 @@ setId(null)
 
 <div className="mt-5">
   <div className="container w-100">
-  <h1 className="title">New Collection</h1>
+  <h1 className="title">FEATURED</h1>
 
   </div>
       <ul className={`nav ${style.tabs}`} id="myTab" role="tablist">

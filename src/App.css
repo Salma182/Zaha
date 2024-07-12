@@ -1,5 +1,6 @@
 * {
-    font-family: "Fraunces",serif;
+    /* font-family: "Fraunces",serif; */
+    font-family: "Montserrat", sans-serif;
   }
   
   .gold{
@@ -66,6 +67,42 @@ color: white;
     color: white;
 
 }
+
+.info-table {
+  width: 50%;
+  /* border-collapse: collapse; */
+}
+
+.info-table th, .info-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+.info-table th {
+  font-weight: 700;
+  font-size: 1.2em;
+  color: #000;
+}
+.info-table td a {
+  color: #d4af37; /* Gold color */
+  text-decoration: none;
+}
+.info-table td {
+  font-size: 1em;
+  color: #333;
+  /* width:100% */
+}
+.highlight {
+  color: #d4af37; /* Gold color */
+}
+
+.info-table {
+  /* background-color: #f9f9f9; */
+  /* border: 1px solid #ddd; */
+  border-radius: 5px;
+  /* padding: 10px; */
+}
+
 .wishlisticon, .carticon {
   display: block; /* Default display block */
 }

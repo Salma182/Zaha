@@ -51,7 +51,7 @@ const[loading, setLoading] = useState(false)
 
 {loading ? <Loading /> : (<div>
 <h1 className={` title `}>
-        follow us on Instgram
+        follow us on Instagram
       </h1>
 
   <OwlCarousel {...options}>

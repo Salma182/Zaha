@@ -68,7 +68,14 @@ setSelectedColorId(colorid);
 const handleAddtoWishlist=(id) =>{
   AddtoWishlist(id);
   setSelectedwishlist((prev) => [...prev, id]);
-}  
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title:"Add To wishlist Successfully",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  }
 
 async function ProductDetails(productId)  {
   setloading(true)
@@ -88,7 +95,7 @@ async function ProductDetails(productId)  {
     }
   }
 
-//console.log("productdetails:",productdetails)
+console.log("productdetails:",productdetails)
 
 useEffect(() => {
   ProductDetails(productId);
@@ -146,8 +153,8 @@ async function Addtocart(e) {
     timer: 2000,
   });
   //console.log("addtocart", data)
-
    }
+  
   catch(error){
     console.error('Error adding item to cart:', error);
     if(error.response.data.message === "The items.0.size_id field is required."){
@@ -166,7 +173,7 @@ async function Addtocart(e) {
   return (
     <>
 
-    {loading ? (<Loading />) :  
+    {loading ? (<Loading />) :
     (
       <div>
       <div className="py-5"></div>
@@ -178,7 +185,6 @@ async function Addtocart(e) {
           {" "}
           {/* <img src={selectedImage} alt="model dress" className="w-100" /> */}
   
-       
           <OwlCarousel {...settings}>    
             {productdetails.images?.map((image, index) => (
             <div key={index}>
@@ -190,9 +196,7 @@ async function Addtocart(e) {
         </div>
         <div className="col-lg-8">
           <div className="item">
-            <h2>{productdetails.name}</h2>
-            {/* <h3>{productdetails.price} EGP</h3> */}
-            
+            <h2>{productdetails.name}</h2>            
             <div className="product-price">
               {productdetails?.original_price !== productdetails.price ? (
                 <span style={{ textDecoration: 'line-through', color: 'red' }}>
@@ -265,13 +269,13 @@ async function Addtocart(e) {
             </form>
             {response && <Cart response={response} />}
             <div className="item p-2 mb-2 mt-3 rounded-3 bg-light shadow-lg">
-              <h3>{productdetails.material}</h3>
+              {/* <h3>{productdetails.material}</h3>
               <div className="rate">
               <Rate productId={productid} />
               
-                {/* <span className="ms-2">(7 customer reviews)</span> */}
-                
-              </div>
+                <span className="ms-2">(7 customer reviews)</span>
+            
+              </div> */}
             </div>
               {productdetails?.colors?.length > 0 && 
             <div className="item my-2 p-2 rounded-3 bg-light shadow-lg ">
@@ -295,7 +299,6 @@ async function Addtocart(e) {
                 </div>
               }
              
-        
             <div className="item my-2 p-3 bg-light rounded-3 shadow-lg pointer">
               <span onClick={()=> handleAddtoWishlist(productdetails.id)} >
                 <i className="fa-solid fa-heart"></i> Add To WishList
@@ -318,19 +321,78 @@ async function Addtocart(e) {
       </div>
       : <Loading />}
           
-  
         </div>
        {productdetails ?  <div className="container my-5">
           <hr className={style.hr} />
           <div className="desc my-5">
-            <h2>Description</h2>
-            <div className="small my-3">
+            {/* <h2>Description</h2> */}
+            {/* <div className="small my-3">
               <p className="my-1">
                 {productdetails.desc}
               </p>
-              </div>
+              </div> */}
+               <table class="info-table">
+    <thead>
+      <tr>
+        <th colspan="2">ADDITIONAL INFORMATION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MATERIAL</td>
+        <td className="Gold">{productdetails.material}</td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td className="Gold">{productdetails.desc}</td>
+      </tr>
+      {/* <tr>
+        <td>CHARACTERISTIC</td>
+        <td className="Gold">{productdetails.material}</td>
+      </tr> */}
+
+      <tr>
+        <td>Colors</td>
+         {productdetails?.colors?.length > 0 &&      
+            <td><ul className="list-unstyled d-flex flex-row gap-3">
+                {productdetails?.colors?.map((product)=>
+                 <li
+                 key={product.id} 
+               >
+                 {product.name} 
+               </li>
+                  )}
+                  </ul>
+                  </td>
+          }
+      </tr>
+
+      <tr>
+      <td>Sizes</td>
+      {productdetails?.sizes?.length > 0 &&      
+            <td><ul className="list-unstyled d-flex flex-row gap-3">
+                {productdetails?.sizes?.map((product)=>
+                 <li
+                 key={product.id} 
+               >
+                 {product.size}
+               </li>
+                  )}
+                  </ul>
+                  </td>
+          }
+      </tr>
+      
+      {/* <tr>
+        <td colspan="2">
+          Hand wash gently without scrubbing or twisting, Hand wash separately in cold water with Downy, don't get in contact while wet with other fabrics, Wash in a load that doesn’t contain other items that have
+        </td>
+      </tr> */}
+
+    </tbody>
+  </table>
           </div>
-          {productdetails?.colors?.length || productdetails?.sizes?.length > 0 && 
+          {/* {productdetails?.colors?.length || productdetails?.sizes?.length > 0 && 
           <div>          
              <hr className={`${style.hr} my-4`} />
               <div className="small my-3">
@@ -347,20 +409,15 @@ async function Addtocart(e) {
             
             </div>
              </div>
-            
-          }
-        
+          } */}
+
           </div>
  : "" }
-      
 
-             
         <PostReview productId={productid}  />
   
       </div>
     )}
- 
-      
 
       <Delivery />
       <BackToTop />
